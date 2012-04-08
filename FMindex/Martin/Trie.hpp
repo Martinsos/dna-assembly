@@ -1,5 +1,0 @@
-
-class Trie
-{
-  public:
-};
