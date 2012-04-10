@@ -1,8 +1,12 @@
+#ifndef OPP_HPP
+#define OPP_HPP
+
 #include <string>
 
 using namespace std;
 
 typedef unsigned int Index;
+
 
 class OppRows
 {
@@ -30,5 +34,7 @@ class Opp
 	 * Returns indexes of first and last row (rows are contiguous).
 	 * First row is indexed with 1.
 	 */	
-	OppRows findRows(const string &P);
+	OppRows findRows(const string &P) const;
 };
+
+#endif // OPP_HPP

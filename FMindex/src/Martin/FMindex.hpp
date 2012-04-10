@@ -1,3 +1,6 @@
+#ifndef FMINDEX_HPP
+#define FMINDEX_HPP
+
 #include "Opp.hpp"
 #include "Trie.hpp"
 
@@ -6,8 +9,8 @@
 
 using namespace std;
 
-
 typedef unsigned int Index; // index of string T
+
 
 class FMindex
 {
@@ -35,8 +38,14 @@ class FMindex
 	Trie *trie_;
 	
 	Index dictSize_;	// size of LZ78 dictionary
-	char LZsep_;	// separator for LZ words
+	char LZsep_;		// separator for LZ words
 	  
-	vector<Index> getInternal(const string &P);			// TODO
+	/**
+	 * Finds internal occurrences of string P in string T.
+	 * Internal means that whole P is inside one LZ78 word.
+	 */
+	vector<Index> getInternal(const string &P);
 	vector<Index> getOverlaping(const string &P);		// TODO
 };
+
+#endif // FMINDEX_HPP
