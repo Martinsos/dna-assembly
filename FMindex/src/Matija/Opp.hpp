@@ -1,9 +1,13 @@
+#ifndef OPP_HPP
+#define OPP_HPP
+
 #include <string>
 
 using namespace std;
 
 typedef unsigned int Index;
 
+/* Result */
 class OppRows
 {
   public:
@@ -32,3 +36,5 @@ class Opp
 	 */	
 	OppRows findRows(const string &P);
 };
+
+#endif // OPP_HPP
