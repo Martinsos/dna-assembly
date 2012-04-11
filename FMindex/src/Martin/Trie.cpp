@@ -68,12 +68,13 @@ void Trie::mapRowsToNodesRec(const Opp &oppTLZR, TrieNode *node, string &LZwordR
 	}
 	
 	map<char, TrieNode*>::iterator it;
-	for (it = node->children.begin(); it != node->children.end(); it++)
-	{
-		LZwordR = it->first + LZwordR;
-		mapRowsToNodesRec(oppTLZR, it->second, LZwordR);
-		LZwordR = LZwordR.substr(1);
-	}
+	for (it = node->children.begin(); it != node->children.end(); it++)  // map rows for all children
+		if (it->first != Trie::end)	// except for last word (if same word already exists)
+		{
+			LZwordR = it->first + LZwordR;
+			mapRowsToNodesRec(oppTLZR, it->second, LZwordR);
+			LZwordR = LZwordR.substr(1);
+		}
 	
 	return;
 }
