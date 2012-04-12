@@ -19,9 +19,10 @@ class TrieNode
 {
   public:  
 	Index location;		// starting position of word in string T
+	Index length;		// length of word
 	map<char, TrieNode*> children;
 	
-	TrieNode(Index loc) { location = loc; }
+	TrieNode(Index loc, Index len) { location = loc; length = len; }
 };
 
 class Trie
@@ -48,9 +49,9 @@ class Trie
   	/**
   	 * Given index of row in conceptual matrix, maps that index to
   	 * a subtree using array N, goes through that subtree and returns
-  	 * locations of string P in string T.
+  	 * locations of string P in string T. Uses length of P to calculate the locations.
   	 */
-  	vector<Index> getSubtreeAtRow(Index row);		// TODO
+  	void getSubtreeAtRow(Index row, Index lengthP);		// TODO
   
   private:
 	static const char end = 0;	// used to represent last word if it is same like some other word
@@ -64,6 +65,11 @@ class Trie
 	 * Maps row prefixed with reverse of given word to given node. Repeats for children.
 	 */
 	void mapRowsToNodesRec(const Opp &oppTLZR, TrieNode *node, string &LZword);		// TOTEST
+	
+	/**
+	 * 
+	 */
+	void getSubtreeAtRowRec(TrieNode *node, Index prefixLength, vector<Index> &locations);	// TODO
 	
 	/**
 	 * Maps row of conceptual matrix to node of trie.

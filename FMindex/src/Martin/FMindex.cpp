@@ -65,14 +65,14 @@ vector<Index> FMindex::getInternal(const string &P)
 	// find rows of conceptual matrix that start with $PR
 	OppRows rows = oppTLZR_->findRows(LZsep_ + P);
 	
-	// if there no rows were found, return empty vector
+	// if no rows were found, return empty vector
 	if (rows.isEmpty())
 		return locations;
 	
 	// for each row find subtree in trie, read all locations and add them to solution.
 	for (Index rowI = rows.getFirst(); rowI <= rows.getLast(); rowI++)
 	{
-		vector<Index> locs = trie_->getSubtreeAtRow(rowI);
+		vector<Index> locs = trie_->getSubtreeAtRow(rowI, P.length());
 		locations.insert( locations.end(), locs.begin(), locs.end() );
 	}
 	

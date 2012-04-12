@@ -7,7 +7,7 @@ using namespace std;
 
 Trie::Trie()
 {
-	root_ = new TrieNode(0);
+	root_ = new TrieNode(0, 0);
 }  
 
 Trie::~Trie()
@@ -31,13 +31,13 @@ vector<Index> Trie::buildTrieLZ78(const string &T, char LZsep)
 			currNode = currNode->children[T[i]];
 			if (i == T.length()-1)  // if we are looking at last word in T and same word already exists
 			{
-				currNode->children[Trie::end] = new TrieNode(startPos);		// add special node
+				currNode->children[Trie::end] = new TrieNode(startPos, wordLength);		// add special node
 				wordLengths.push_back(wordLength);
 			}
 		}
 		else // if child with this letter doesn't exist, we found a new word! We create new node.
 		{
-			currNode->children[T[i]] = new TrieNode(startPos);
+			currNode->children[T[i]] = new TrieNode(startPos, wordLength);
 			wordLengths.push_back(wordLength);
 			
 			startPos += wordLength;
@@ -51,38 +51,46 @@ vector<Index> Trie::buildTrieLZ78(const string &T, char LZsep)
 
 void Trie::mapRowsToNodes(const Opp &oppTLZR)
 {
-	offsetN_ = oppTLZR.findRows(string(1,LZsep_)).getFirst();
+	OppRows rows = oppTLZR.findRows(string(1,LZsep_));	// get rows starting with $
+	offsetN_ = rows.getFirst();
 	
-	string LZwordR = "";	
-	mapRowsToNodesRec(oppTLZR, root_, LZwordR);
+	Index rowI = rows.getFirst();  // we use it as global counter for mapRowsToNodesRec() */
+	mapRowsToNodesRec(oppTLZR, root_, rowI);
 	
 	return;
 }
 
-void Trie::mapRowsToNodesRec(const Opp &oppTLZR, TrieNode *node, string &LZwordR) 
+void Trie::mapRowsToNodesRec(const Opp &oppTLZR, TrieNode *node, Index &rowI) 
 {
-	if (LZwordR != "")	// we don't do anything for root
+	if (node != root_)	// we don't do any mapping for root
 	{		
-		Index rowI = oppTLZR.findRows(LZsep_ + LZwordR).getFirst();
-		N_[ rowI - offsetN_ ] = node;
+		N_[ rowI - offsetN_ ] = node;	// map row to node;
+		rowI++;
 	}
 	
 	map<char, TrieNode*>::iterator it;
 	for (it = node->children.begin(); it != node->children.end(); it++)  // map rows for all children
-		if (it->first != Trie::end)	// except for last word (if same word already exists)
-		{
-			LZwordR = it->first + LZwordR;
-			mapRowsToNodesRec(oppTLZR, it->second, LZwordR);
-			LZwordR = LZwordR.substr(1);
-		}
-	
-	return;
+		mapRowsToNodesRec(oppTLZR, it->second, rowI);
 }
 
-vector<Index> Trie::getSubtreeAtRow(Index row)
+vector<Index> Trie::getSubtreeAtRow(Index row, Index lengthP)
 {
-	// TODO
-	return vector<Index>();
+	vector<Index> locations;
+	TrieNode *node = getNodeAtRow(row);
+	getSubtreeAtRowRec(node, node->length, locations);
+	return locations;
+}
+
+void getSubtreeAtRowRec(TrieNode *node, Index prefixLength, vector<Index> &locations)
+{
+	// Pazi: kad obilazis podstablo sa korijenom K, ako je Trie::end direktno dijete od K onda njega nemoj brojati.
+	// ovdje treba koristiti i duljinu od P
+	
+	/* Mozda ne bi bilo lose da posao trazenja internih pojavljivanja cijeli prebacim u Trie, 
+	 * dakle da Trie sam pita Opp za redove prefiksirane sa $PR i onda te redove upotrijebi za
+	 * obilazenje odgovarajucih podstabala. U tom slucaju bih mogao napraviti da se Opp registrira
+	 * kod Trie, posto ga koristi vise puta.
+	 */
 }
 
 TrieNode* Trie::getNodeAtRow(Index rowI)
