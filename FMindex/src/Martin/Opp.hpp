@@ -2,6 +2,7 @@
 #define OPP_HPP
 
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -11,16 +12,25 @@ typedef unsigned int Index;
 class OppRows
 {
   public:
-    OppRows(Index first, Index last, bool isEmpty);
+    OppRows(Index f, Index l, bool e)
+    {
+		first = f;
+		last = l;
+		empty = e;
+	}
     
     /**
      * If there are no rows returns true, otherwise false.
      * If OppRows is empty, getFirst() and getLast() can return anything.
      */
-    bool isEmpty();
+    bool isEmpty() { return empty; }
     
-    Index getFirst();
-    Index getLast();
+    Index getFirst() { return first; }
+    Index getLast() { return last; }
+  
+  private:
+    Index first, last;
+    bool empty;
 };
 
 class Opp
@@ -35,6 +45,11 @@ class Opp
 	 * First row is indexed with 1.
 	 */	
 	OppRows findRows(const string &P) const;
+	
+	void printOpp();
+	
+  private:
+	vector<string> M;
 };
 
 #endif // OPP_HPP

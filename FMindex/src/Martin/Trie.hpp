@@ -51,7 +51,7 @@ class Trie
   	 * a subtree using array N, goes through that subtree and returns
   	 * locations of string P in string T. Uses length of P to calculate the locations.
   	 */
-  	void getSubtreeAtRow(Index row, Index lengthP);		// TODO
+  	vector<Index> getLocationsFromSubtree(Index row, Index lengthP);		// TOTEST
   
   private:
 	static const char end = 0;	// used to represent last word if it is same like some other word
@@ -62,14 +62,14 @@ class Trie
 	char LZsep_;				// separator used to separate LZ words
 	
 	/**
-	 * Maps row prefixed with reverse of given word to given node. Repeats for children.
+	 * Maps given row to given node and moves forward in both lists.
 	 */
-	void mapRowsToNodesRec(const Opp &oppTLZR, TrieNode *node, string &LZword);		// TOTEST
+	void mapRowsToNodesRec(TrieNode *node, Index &rowI);		// TOTEST
 	
 	/**
 	 * 
 	 */
-	void getSubtreeAtRowRec(TrieNode *node, Index prefixLength, vector<Index> &locations);	// TODO
+	void getLocationsFromSubtreeRec(TrieNode *node, Index rootLength, Index lengthP, vector<Index> &locations);	// TOTEST
 	
 	/**
 	 * Maps row of conceptual matrix to node of trie.

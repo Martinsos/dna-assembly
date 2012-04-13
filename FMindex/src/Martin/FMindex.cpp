@@ -72,7 +72,7 @@ vector<Index> FMindex::getInternal(const string &P)
 	// for each row find subtree in trie, read all locations and add them to solution.
 	for (Index rowI = rows.getFirst(); rowI <= rows.getLast(); rowI++)
 	{
-		vector<Index> locs = trie_->getSubtreeAtRow(rowI, P.length());
+		vector<Index> locs = trie_->getLocationsFromSubtree(rowI, P.length());
 		locations.insert( locations.end(), locs.begin(), locs.end() );
 	}
 	

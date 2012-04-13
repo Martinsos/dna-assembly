@@ -55,12 +55,12 @@ void Trie::mapRowsToNodes(const Opp &oppTLZR)
 	offsetN_ = rows.getFirst();
 	
 	Index rowI = rows.getFirst();  // we use it as global counter for mapRowsToNodesRec() */
-	mapRowsToNodesRec(oppTLZR, root_, rowI);
+	mapRowsToNodesRec(root_, rowI);
 	
 	return;
 }
 
-void Trie::mapRowsToNodesRec(const Opp &oppTLZR, TrieNode *node, Index &rowI) 
+void Trie::mapRowsToNodesRec(TrieNode *node, Index &rowI) 
 {
 	if (node != root_)	// we don't do any mapping for root
 	{		
@@ -70,18 +70,18 @@ void Trie::mapRowsToNodesRec(const Opp &oppTLZR, TrieNode *node, Index &rowI)
 	
 	map<char, TrieNode*>::iterator it;
 	for (it = node->children.begin(); it != node->children.end(); it++)  // map rows for all children
-		mapRowsToNodesRec(oppTLZR, it->second, rowI);
+		mapRowsToNodesRec(it->second, rowI);
 }
 
-vector<Index> Trie::getSubtreeAtRow(Index row, Index lengthP)
+vector<Index> Trie::getLocationsFromSubtree(Index row, Index lengthP)
 {
-	vector<Index> locations;
-	TrieNode *node = getNodeAtRow(row);
-	getSubtreeAtRowRec(node, node->length, locations);
+	vector<Index> locations;	// solution goes here
+	TrieNode *node = getNodeAtRow(row);	
+	getLocationsFromSubtreeRec(node, node->length, lengthP, locations);		// recursion that iterates through tree
 	return locations;
 }
 
-void getSubtreeAtRowRec(TrieNode *node, Index prefixLength, vector<Index> &locations)
+void Trie::getLocationsFromSubtreeRec(TrieNode *node, Index rootLength, Index lengthP, vector<Index> &locations)
 {
 	// Pazi: kad obilazis podstablo sa korijenom K, ako je Trie::end direktno dijete od K onda njega nemoj brojati.
 	// ovdje treba koristiti i duljinu od P
@@ -91,6 +91,13 @@ void getSubtreeAtRowRec(TrieNode *node, Index prefixLength, vector<Index> &locat
 	 * obilazenje odgovarajucih podstabala. U tom slucaju bih mogao napraviti da se Opp registrira
 	 * kod Trie, posto ga koristi vise puta.
 	 */
+	 
+	 locations.push_back(node->location + rootLength - lengthP);	// add location
+	 
+	 map<char, TrieNode*>::iterator it;
+	 for (it = node->children.begin(); it != node->children.end(); it++)  // do same for all children
+		if ( !(it->first == Trie::end && rootLength == node->length) )	// if child is not Trie::end and also directly child of root of subtree, call recursion
+			getLocationsFromSubtreeRec(it->second, rootLength, lengthP, locations);
 }
 
 TrieNode* Trie::getNodeAtRow(Index rowI)
