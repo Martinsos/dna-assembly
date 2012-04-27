@@ -46,7 +46,7 @@ class Opp
 	 */	
 	OppRows findRows(const string &P) const;
 	
-	void printOpp();
+	void printOpp();   // FOR TESTING
 	
   private:
 	vector<string> M;

@@ -1,14 +1,14 @@
 #include "Opp.hpp"
 
 #include <algorithm>
-#include <iostream>
 
 using namespace std;
 
 Opp::Opp(const string &T)
 {
-	M.push_back(T);
-	for (int i = 1; i < T.length(); i++)
+    string T_ = T+"#";
+	M.push_back(T_);
+	for (int i = 1; i < T_.length(); i++)
 	{
 		string last = M[M.size()-1];
 		M.push_back(last.substr(1)+last[0]);  // rotate to left
@@ -33,18 +33,30 @@ OppRows Opp::findRows(const string &P) const
 	return OppRows(first,last,false);		
 }
 
+#include <iostream>
 void Opp::printOpp()
 {
 	for (int i = 0; i < M.size(); i++)
-		cout << M[i] << endl;
+		cout << i+1 << " " << M[i] << endl;
 }
 /*
 int main()
 {
-	Opp opp = Opp("mississipi");
+    string T;
+    string P;
+    
+    cin >> T;
+    cin >> P;
+	
+    Opp opp = Opp(T);
+    cout << "Conceptual matrix: " << endl;
 	opp.printOpp();
-	OppRows oppR = opp.findRows("si");
-	cout << oppR.getFirst() << " " << oppR.getLast() << endl;
-	return 0;
+	cout << endl;
+    
+    OppRows oppR = opp.findRows(P);
+	cout << "Rows starting with " << P << ":" << endl;
+    cout << oppR.getFirst() << " " << oppR.getLast() << endl;
+	
+    return 0;
 }
 */

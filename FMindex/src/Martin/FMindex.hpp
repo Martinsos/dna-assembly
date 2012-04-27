@@ -26,7 +26,7 @@ class FMindex
 	 * Returns all locations of string P in string T.
 	 * First character of string T is on position 1.
 	 */
-	vector<Index> getLocations(const string &P);		// TODO
+	vector<Index> getLocations(const string &P);		// HALF-IMPLEMENTED
 	
 	/**
 	 * Returns number of occurrences of string P in string T.
@@ -44,7 +44,8 @@ class FMindex
 	 * Finds internal occurrences of string P in string T.
 	 * Internal means that whole P is inside one LZ78 word.
 	 */
-	vector<Index> getInternal(const string &P);
+	vector<Index> getInternal(const string &P);         // TOTEST
+    
 	vector<Index> getOverlaping(const string &P);		// TODO
 };
 

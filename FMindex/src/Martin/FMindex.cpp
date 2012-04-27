@@ -1,12 +1,13 @@
 #include "FMindex.hpp"
 
+#include <iostream>
 #include <algorithm>
 
 using namespace std;
 
 
 /**
- * Possible problem: buildTrie() returns vector<string>,
+ * Possible problem: buildTrie() returns vector<Index>,
  * if it is very big maybe it would be better to pass reference to buildTrie().
  */
 FMindex::FMindex(const string &T)
@@ -15,36 +16,15 @@ FMindex::FMindex(const string &T)
 	LZsep_ = '$';
 	
 	// We use LZ78 parsing to parse string T and build a trie. 
+    // oppTLZR is also created.
 	trie_ = new Trie();
-	vector<Index> wordLengths = trie_->buildTrieLZ78(T, LZsep_);
+	vector<Index> wordLengths = trie_->buildTrieLZ78(T, LZsep_, oppTLZR_);
 	
 	// set dictionary size.
 	dictSize_ = wordLengths.size();
-	
-	// create string TLZR
-	string TLZR = "";
-	Index wordI = 0;
-	Index wordLength = 0;
-	for (int i = 0; i < T.length(); i++)
-	{
-		wordLength++;
-		TLZR += T[i];
 		
-		if (wordLength == wordLengths[wordI])
-		{
-			TLZR += LZsep_;
-			wordLength = 0;
-			wordI++;
-		}
-	}
-	reverse(TLZR.begin(), TLZR.end());
-	
-	// create Opp(TLZR) and Opp(T).
+	// create Opp(T)
 	oppT_ = new Opp(T);
-	oppTLZR_ = new Opp(TLZR);
-	
-	// create mapping beetwen matrix rows and trie nodes.
-	trie_->mapRowsToNodes(*oppTLZR_);
 }
 
 FMindex::~FMindex()
@@ -63,12 +43,15 @@ vector<Index> FMindex::getInternal(const string &P)
 	reverse(PR.begin(), PR.end());
 	
 	// find rows of conceptual matrix that start with $PR
-	OppRows rows = oppTLZR_->findRows(LZsep_ + P);
+	OppRows rows = oppTLZR_->findRows(LZsep_ + PR);
 	
 	// if no rows were found, return empty vector
 	if (rows.isEmpty())
 		return locations;
 	
+    cout << LZsep_ + P << endl;
+    cout << rows.getFirst() << endl;
+    cout << rows.getLast() << endl;
 	// for each row find subtree in trie, read all locations and add them to solution.
 	for (Index rowI = rows.getFirst(); rowI <= rows.getLast(); rowI++)
 	{
@@ -76,5 +59,28 @@ vector<Index> FMindex::getInternal(const string &P)
 		locations.insert( locations.end(), locs.begin(), locs.end() );
 	}
 	
+trie_->printTrie();
 	return locations;
+}
+
+vector<Index> FMindex::getLocations(const string &P)
+{
+    return getInternal(P);
+}
+
+// FOR TESTING
+int main()
+{
+    string T = "aabaaabababababbabbbaab";
+    string P = "ab";
+    FMindex fmIndex = FMindex (T);
+    
+    vector<Index> locs = fmIndex.getLocations(P);
+    
+    cout << endl;
+    cout << "lokacije:" << endl;
+    for (int i = 0; i < locs.size(); i++)
+        cout << locs[i] << endl;
+    
+    return 0;
 }
