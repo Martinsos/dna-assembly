@@ -25,6 +25,14 @@ class TrieNode
 	TrieNode(Index loc, Index len) { location = loc; length = len; }
 };
 
+/**
+ * Trie used for finding internal occurences of string P in string T.
+ * Trie parses T using LZ78 algorithm, and then stores LZ78 words in suffix tree (trie).
+ * Parsed T is called TLZ.
+ * It also builds Opp(TLZR) and returns it.
+ * It also maps rows of Opp(TLZR) to nodes of trie. (only some rows, all nodes).
+ * Efficiently returns locations of string P in certain subtree.
+ */
 class Trie
 {
   public:
@@ -49,30 +57,39 @@ class Trie
   	 * locations of string P in string T. Uses length of P to calculate the locations.
   	 */
   	vector<Index> getLocationsFromSubtree(Index row, Index lengthP);		// TOTEST
+    
+    /**
+     * Returns number of LZ words in Trie.
+     */
+    Index getSize();
   
-	static const char end = 0;	// used to represent last word if it is same like some other word
+	static const char duplicate = 0;	// used to represent last word if it is same like some other word
     
   private:
 	TrieNode *root_;			// root is only node that doesn't contain location (location = 0)
     Index size_;                // size of Trie (without root)
-	vector<TrieNode*> N_;		// maps rows of conceptual matrix to nodes of trie
+	vector<TrieNode*> N_;		// maps certain rows of conceptual matrix to nodes of trie
 	Index offsetN_;				// offset beetwen vector N and first row in matrix prefixed with $
 	char LZsep_;				// separator used to separate LZ words
 	
     /**
   	 * Uses given Opp structure to map certain rows of conceptual matrix to nodes of trie.
   	 * Mapping will be stored in array N.
-     * WARNING: Not all rows will be mapped.
+     * WARNING: Not all rows will be mapped, only those which have node in trie to map to.
   	 */
   	void mapRowsToNodes(const Opp &oppTLZR);		// TOTEST
     
 	/**
-	 * Maps given row to given node and moves forward in both lists.
+	 * Function that does recursive job for mapRowsToNodes
 	 */
 	void mapRowsToNodesRec(TrieNode *node, string& word, const Opp &oppTLZR); 	// TOTEST
 	
 	/**
-	 * 
+	 * Function that does recursive job for getLocationsFromSubtree.
+     * params:  node: node in subtree that we are currently looking at
+     *          rootLength: length of word represented by root of subtree
+     *          lengthP: length of string P
+     *          locations: when done, function stores location into this vector
 	 */
 	void getLocationsFromSubtreeRec(TrieNode* node, Index rootLength, Index lengthP, vector<Index> &locations);	// TOTEST
 	

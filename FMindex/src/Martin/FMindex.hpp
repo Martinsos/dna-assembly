@@ -19,6 +19,11 @@ class FMindex
 	 * Builds FMindex for string T.
 	 */
 	FMindex(const string &T);
+    
+    /**
+     * Builds FMindex for string ""
+     */
+    FMindex();
 	
 	~FMindex();
 	
@@ -31,18 +36,18 @@ class FMindex
 	/**
 	 * Returns number of occurrences of string P in string T.
 	 */
-	Index getCount(const string &P);					// TODO
+	Index getCount(const string &P);
 	
   private:
 	Opp *oppT_, *oppTLZR_;
 	Trie *trie_;
 	
-	Index dictSize_;	// size of LZ78 dictionary
 	char LZsep_;		// separator for LZ words
-	  
+	
+  public:                                                                           // PUBLIC BECAUSE I NEED IT TO TEST, SHOULD BE PRIVATE
 	/**
 	 * Finds internal occurrences of string P in string T.
-	 * Internal means that whole P is inside one LZ78 word.
+	 * Internal means that whole P is inside one LZ78 word of TLZ (TLZ: T parsed using LZ78).
 	 */
 	vector<Index> getInternal(const string &P);         // TOTEST
     
