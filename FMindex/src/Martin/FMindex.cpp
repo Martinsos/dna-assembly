@@ -86,25 +86,23 @@ bool testFMIndex(); // FOR TESTING
 
 // FOR TESTING
 int main()
-{
+{/*
     if (testFMIndex())
         cout << "Test prosao dobro" << endl;
     else
         cout << "Test nije prodjen" << endl;
-    
+    */
     string T = "aabaaabababababbabbbaab";
     
-    
-    // string T = "aabbbbcb";
     FMindex fmIndex;
-    fmIndex = FMindex (T);                                                          // SEGMENTATION FAULT
+    fmIndex = FMindex(T);                                                          // SEGMENTATION FAULT HAPPENS LATER - WHY???
     
     string P = "";
     while (true)
     {
         cin >> P;
         if (P == "KRAJ") break;
-        vector<Index> locs = fmIndex.getLocations(P);
+        vector<Index> locs = fmIndex.getLocations(P);                               // SEGMENTATION FAULT
         
         cout << endl;
         cout << "lokacije:" << endl;
