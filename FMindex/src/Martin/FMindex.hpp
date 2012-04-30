@@ -52,6 +52,9 @@ class FMindex
 	vector<Index> getInternal(const string &P);         // TOTEST
     
 	vector<Index> getOverlaping(const string &P);		// TODO
+    
+  private:
+    void operator = (const FMindex&);       // there is no implementation: assigment can not be used
 };
 
 #endif // FMINDEX_HPP
