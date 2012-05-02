@@ -1,3 +1,6 @@
+#ifndef FMINDEX_HPP
+#define FMINDEX_HPP
+
 #include "Opp.hpp"
 #include "Trie.hpp"
 
@@ -6,8 +9,8 @@
 
 using namespace std;
 
+typedef int Index; // index of string T, it has to be signed or errors occur
 
-typedef unsigned int Index; // index of string T
 
 class FMindex
 {
@@ -16,6 +19,11 @@ class FMindex
 	 * Builds FMindex for string T.
 	 */
 	FMindex(const string &T);
+    
+    /**
+     * Builds FMindex for string ""
+     */
+    FMindex();
 	
 	~FMindex();
 	
@@ -23,20 +31,60 @@ class FMindex
 	 * Returns all locations of string P in string T.
 	 * First character of string T is on position 1.
 	 */
-	vector<Index> getLocations(const string &P);		// TODO
+	vector<Index> getLocations(const string &P);		// HALF-IMPLEMENTED
 	
 	/**
 	 * Returns number of occurrences of string P in string T.
 	 */
-	Index getCount(const string &P);					// TODO
+	Index getCount(const string &P);
 	
   private:
-	Opp *oppT_, *oppTLZR_;
-	Trie *trie_;
+    Trie *trie_;
+	Opp *oppT_;
+    Opp* oppTLZR_;
+    map< string, vector<Index> >* shortPatterns_;    // contains locations in T for each existing short pattern that overlaps
 	
-	Index dictSize_;	// size of LZ78 dictionary
-	char LZsep_;	// separator for LZ words
-	  
-	vector<Index> getInternal(const string &P);			// TODO
-	vector<Index> getOverlaping(const string &P);		// TODO
+	char LZsep_;		// separator for LZ words
+    Index n_;           // size of T: |T|
+    Index lengthThreshold_;   // if P is longer than threshold then it is considered long, otherwise short
+	
+  public:                                                                           // PUBLIC BECAUSE I NEED IT TO TEST, SHOULD BE PRIVATE
+	/**
+	 * Finds internal occurrences of string P in string T.
+	 * Internal means that whole P is inside one LZ78 word of TLZ (TLZ: T parsed using LZ78).
+	 */
+	vector<Index> getInternal(const string &P);         
+    
+    /**
+	 * Finds overlapping occurrences of string P in string T.
+	 * Overlapping means that P is not inside just one LZ78 word of TLZ (TLZ: T parsed using LZ78).
+	 */
+	vector<Index> getOverlapping(const string &P);
+    
+    /**
+     * Algorithm used when |P| > log(log |T|)
+     */
+    vector<Index> getOverlappingLong(const string &P);      // TODO
+    
+    /**
+     * Algorithm used when |P| <= log(log |T|)
+     */
+    vector<Index> getOverlappingShort(const string &P);
+    
+    /**
+     * Builds structure shortPatterns.
+     * @param T
+     * @param wordLengths Lengths of LZ78 words, by order.
+     */
+    void memorizeShortPatterns(const string& T, const vector<Index>& wordLengths);
+    
+    /**--- UTILITY ---**/
+    Index max (Index a, Index b);
+    Index min (Index a, Index b);
+    /**---------------**/
+    
+  private:
+    void operator = (const FMindex&); // there is no implementation: assignment can not be used
 };
+
+#endif // FMINDEX_HPP
