@@ -9,7 +9,7 @@
 
 using namespace std;
 
-typedef unsigned int Index;
+typedef int Index;
 
 
 /**
@@ -32,6 +32,8 @@ class TrieNode
  * It also builds Opp(TLZR) and returns it.
  * It also maps rows of Opp(TLZR) to nodes of trie. (only some rows, all nodes).
  * Efficiently returns locations of string P in certain subtree.
+ * Usage: Create trie, then call method buildTrieLZ78(...) to initialize and build trie,
+ * then you can use getLocationsFromSubtree(...) method.
  */
 class Trie
 {
@@ -56,7 +58,7 @@ class Trie
   	 * a subtree using array N, goes through that subtree and returns
   	 * locations of string P in string T. Uses length of P to calculate the locations.
   	 */
-  	vector<Index> getLocationsFromSubtree(Index row, Index lengthP);		// TOTEST
+  	vector<Index> getLocationsFromSubtree(Index row, Index lengthP);		
     
     /**
      * Returns number of LZ words in Trie.
@@ -77,12 +79,12 @@ class Trie
   	 * Mapping will be stored in array N.
      * WARNING: Not all rows will be mapped, only those which have node in trie to map to.
   	 */
-  	void mapRowsToNodes(const Opp &oppTLZR);		// TOTEST
+  	void mapRowsToNodes(const Opp &oppTLZR);		
     
 	/**
 	 * Function that does recursive job for mapRowsToNodes
 	 */
-	void mapRowsToNodesRec(TrieNode *node, string& word, const Opp &oppTLZR); 	// TOTEST
+	void mapRowsToNodesRec(TrieNode *node, string& word, const Opp &oppTLZR); 	
 	
 	/**
 	 * Function that does recursive job for getLocationsFromSubtree.
@@ -91,7 +93,7 @@ class Trie
      *          lengthP: length of string P
      *          locations: when done, function stores location into this vector
 	 */
-	void getLocationsFromSubtreeRec(TrieNode* node, Index rootLength, Index lengthP, vector<Index> &locations);	// TOTEST
+	void getLocationsFromSubtreeRec(TrieNode* node, Index rootLength, Index lengthP, vector<Index> &locations);	
 	
 	/**
 	 * Maps certain rows (those starting with $) of conceptual matrix to node of trie.

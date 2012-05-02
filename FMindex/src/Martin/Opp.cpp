@@ -39,24 +39,4 @@ void Opp::printOpp()
 	for (int i = 0; i < M.size(); i++)
 		cout << i+1 << " " << M[i] << endl;
 }
-/*
-int main()
-{
-    string T;
-    string P;
-    
-    cin >> T;
-    cin >> P;
-	
-    Opp opp = Opp(T);
-    cout << "Conceptual matrix: " << endl;
-	opp.printOpp();
-	cout << endl;
-    
-    OppRows oppR = opp.findRows(P);
-	cout << "Rows starting with " << P << ":" << endl;
-    cout << oppR.getFirst() << " " << oppR.getLast() << endl;
-	
-    return 0;
-}
-*/
+

@@ -6,7 +6,7 @@
 
 using namespace std;
 
-typedef unsigned int Index;
+typedef int Index;
 
 
 class OppRows

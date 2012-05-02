@@ -2,6 +2,8 @@
 
 #include <iostream>
 #include <algorithm>
+#include <cmath>
+#include <map>
 
 using namespace std;
 
@@ -14,14 +16,27 @@ FMindex::FMindex(const string &T)
 {
 	// Set LZ separator.
 	LZsep_ = '$';
+    // Remember size of T
+    n_ = T.length();
+    // calculate lengthThreshold_
+    if (n_ >= 4)
+        lengthThreshold_ = (Index) trunc(log2(log2(n_)));
+    else
+        lengthThreshold_ = 4;  // if word T is shorter than 4, set lengthThreshold_ to 4 so every word P is considered short
 	
 	// We use LZ78 parsing to parse string T and build a trie. 
     // oppTLZR is also created.
 	trie_ = new Trie();
-	trie_->buildTrieLZ78(T, LZsep_, oppTLZR_);  // oppTLZR_ is created, return value is not used
+	vector<Index> wordLengths = trie_->buildTrieLZ78(T, LZsep_, oppTLZR_);  // oppTLZR_ is created!
 		
 	// create Opp(T)
 	oppT_ = new Opp(T);
+    
+    // TODO: create RTQ
+    //buildRTQ();
+    
+    // create shortPatterns
+    memorizeShortPatterns(T, wordLengths);
 }
 
 FMindex::FMindex()
@@ -34,6 +49,7 @@ FMindex::~FMindex()
 	delete trie_;
 	delete oppT_;
 	delete oppTLZR_;
+    delete shortPatterns_;
 }
 
 vector<Index> FMindex::getInternal(const string &P)                                         // HM: maybe move this to Trie?
@@ -66,20 +82,88 @@ cout << rows.getLast() << endl;
 	return locations;
 }
 
+vector<Index> FMindex::getOverlapping(const string &P)
+{
+    if (P.length() <= lengthThreshold_)
+        return getOverlappingShort(P);
+    else
+        return getOverlappingLong(P);
+}
+
+vector<Index> FMindex::getOverlappingLong(const string &P)
+{
+    return vector<Index>();
+}
+
+vector<Index> FMindex::getOverlappingShort(const string &P)
+{
+    map< string, vector<Index> >::iterator it;
+    it = shortPatterns_->find(P);
+    
+    if (it != shortPatterns_->end())
+        return it->second;
+    else
+        return vector<Index>();
+}
+
+void FMindex::memorizeShortPatterns(const string& T, const vector<Index>& wordLengths)
+{
+    shortPatterns_ = new map< string, vector<Index> >();
+    if (wordLengths.size() == 0)
+        return;  
+    Index endOfWord = -1;
+    Index endOfNextWord = wordLengths[0];
+    for (Index i = 1; i < wordLengths.size(); i++)   // for each LZ word except last
+    {
+        endOfWord = endOfNextWord;
+        endOfNextWord += wordLengths[i];
+        for (Index patternStart = max(1, endOfWord-lengthThreshold_+2); patternStart <= endOfWord; patternStart++) // pick start of pattern            
+        {
+            for (Index patternEnd = min(endOfNextWord, patternStart+lengthThreshold_-1); patternEnd > max(endOfWord, patternStart); patternEnd--) // pick end of pattern
+            {
+                string P = T.substr(patternStart-1, patternEnd-patternStart+1);  // short pattern we found
+cout << "kratki uzorak: " << P << " " << patternStart << endl;
+                (*shortPatterns_)[P].push_back(patternStart); 
+            }
+        }
+    }
+}
+
 vector<Index> FMindex::getLocations(const string &P)
 {
-    return getInternal(P);
+    if (P.length() == 0)
+        return vector<Index>();
+    vector<Index> locs, tmp;
+    tmp = getInternal(P);
+    locs.insert( locs.end(), tmp.begin(), tmp.end() );
+    tmp = getOverlapping(P);
+    locs.insert( locs.end(), tmp.begin(), tmp.end() );
+    return locs;
 }
 
 Index FMindex::getCount(const string &P)
 {
+    if (P.length() == 0)
+        return 0;
     OppRows rows = oppT_->findRows(P);
     if (rows.isEmpty())
         return 0;
-    else
-        return 1+rows.getLast()-rows.getFirst();
+    return 1+rows.getLast()-rows.getFirst();
 }
 
+Index FMindex::max (Index a, Index b)
+{
+    if (b > a)
+        return b;
+    return a;
+}
+
+Index FMindex::min (Index a, Index b)
+{
+    if (b < a)
+        return b;
+    return a;
+}
 
 
 bool testFMIndex(); // FOR TESTING
@@ -87,11 +171,11 @@ bool testFMIndex(); // FOR TESTING
 // FOR TESTING
 int main()
 {   
-    if (testFMIndex())
+ /*   if (testFMIndex())
         cout << "Test prosao dobro" << endl;
     else
         cout << "Test nije prodjen" << endl;
-    
+ */   
     string T = "aabaaabababababbabbbaab";
     
     FMindex fmIndex = FMindex(T);                                                        
@@ -99,9 +183,10 @@ int main()
     string P = "";
     while (true)
     {
-        cin >> P;
+        getline(cin, P);
         if (P == "KRAJ") break;
         vector<Index> locs = fmIndex.getLocations(P);                              
+        sort(locs.begin(), locs.end());
         
         cout << endl;
         cout << "lokacije:" << endl;
