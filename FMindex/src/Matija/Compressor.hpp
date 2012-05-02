@@ -43,7 +43,7 @@ class Compressor
          *  @param T Input text
          *  @return  Burrows-Wheeler transform of T
          */
-        string getBWT(const string& T);
+        string getBWT(string& T);
         
         /** Get suffix array of input text
          *

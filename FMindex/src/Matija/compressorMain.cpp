@@ -1,17 +1,19 @@
 
 #include "Compressor.hpp"
+
+#include <string>
 #include <iostream>
 
 using namespace std;
 
 int main()
-{
+{   
+    string T = "mississippi";
+
     Compressor myCompressor('#');
-    vector<Index> SA = myCompressor.getSuffixArray("matija");
+    string L = myCompressor.getBWT(T); 
     
-    for (int i = 0; i < SA.size(); i++)
-        cout << SA[i] << ' ';
-    cout << endl;
+    cout << L << endl;
 
     return 0;
 }
