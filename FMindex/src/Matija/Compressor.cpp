@@ -4,15 +4,15 @@
 
 #include "Compressor.hpp"
 
-#include <string>
-#include <vector>
 #include <algorithm>
 
 using namespace std;
 
-Compressor::Compressor(char eof)
+/** Constructor
+ */
+Compressor::Compressor(char eof, Alphabet alpha) : alphabet(alpha)
 {
-    BWTEof = eof;
+    BWTEof   = eof;
 }
 
 /** Class for comparing string suffixes
@@ -65,4 +65,29 @@ string Compressor::getBWT(string& T)
             bwt += string(1, T[SA[i] - 1]);
 
     return bwt;
+}
+
+vector<int> Compressor::getMTF(const string& L)
+{
+    // Construct initial MTF list
+    list<char> MTFList = alphabet.toList();
+    
+    // Generate MTF code for L
+    vector<int> MTF (0); 
+    for (int i = 0; i < L.length(); i++)
+    {
+        // Find position of L[i] in MTFList and encode it
+        list<char>::iterator it;
+        int pos;
+        for (pos = 0, it = MTFList.begin(); it != MTFList.end(); it++, pos++)
+            if (*it == L[i])
+            {
+                MTF.push_back(pos);
+                MTFList.push_front(*it);
+                MTFList.erase(it);
+
+                break;
+            }
+    }
+    return MTF;
 }

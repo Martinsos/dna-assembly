@@ -5,8 +5,6 @@
 
 #include "Opp.hpp"
 
-#include <string>
-
 using namespace std;
 
 Opp::Opp(const string& T)

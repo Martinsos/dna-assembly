@@ -1,6 +1,8 @@
 #ifndef COMPRESSOR_HPP
 #define COMPRESSOR_HPP
 
+#include "Alphabet.hpp"
+
 #include <string>
 #include <vector>
 
@@ -23,10 +25,12 @@ class Compressor
     public:
         /** Constructor
          *  Sets eof character used in compression
+         *  Sets alphabet of input text
          *
          *  @param eof
+         *  @param alpha
          */
-        Compressor(char eof);
+        Compressor(char eof, Alphabet alpha);
 
         /** Compresses input text to binary format
          *  Pipeline: T | BWT | MTF | RLE | VLPC
@@ -36,7 +40,8 @@ class Compressor
          */
         string compress(const string& T);
     //private:
-        char BWTEof;    // Character appended to T, end-of-file
+        char BWTEof;        // Character appended to T, end-of-file
+        Alphabet alphabet;  // Alphabet used in encoding
 
         /** Calculate BWT of input text
          *
@@ -57,7 +62,7 @@ class Compressor
          *  @param T Input text
          *  @return  MTF of T
          */
-        string getMTF(const string& L);
+        vector<int> getMTF(const string& L);
 
         /** Apply run-length encoding to input string
          *  Replace 0 sequences with binary numbers
