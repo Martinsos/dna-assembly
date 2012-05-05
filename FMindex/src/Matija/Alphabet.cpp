@@ -14,12 +14,12 @@ Alphabet::Alphabet(vector<char> letters_)
     sort(letters.begin(), letters.end());
 }
 
-vector<char> Alphabet::toVector()
+vector<char> Alphabet::toSortedVector()
 {
     return letters;
 }
 
-list<char> Alphabet::toList()
+list<char> Alphabet::toSortedList()
 {
     return list<char>(letters.begin(), letters.end());
 }

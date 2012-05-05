@@ -38,8 +38,8 @@ class Compressor
          *  @param T Original text
          *  @return  Compressed T
          */
-        string compress(const string& T);
-    //private:
+        vector<bool> compress(string& T);
+    private:
         char BWTEof;        // Character appended to T, end-of-file
         Alphabet alphabet;  // Alphabet used in encoding
 
@@ -57,26 +57,27 @@ class Compressor
          */
         vector<Index> getSuffixArray(const string& T);
 
-        /** Apply move-to-front to input text
+        /** Apply move-to-front encoding to input text
          *
          *  @param T Input text
          *  @return  MTF of T
          */
         vector<int> getMTF(const string& L);
 
-        /** Apply run-length encoding to input string
-         *  Replace 0 sequences with binary numbers
-         *  
-         *  @param MTF Input string
-         *  @return    RLE of MTF
-         */
-        string getRLE(const string& MTF);
-
         /** Apply variable-length prefix encoding to input string
          *
-         *  @param RLE Input string
-         *  @return    Encoded string over alphabet {0, 1}
+         *  Also applies run-length encoding on-fly
+         *
+         *  @param MTF MTF code of T
+         *  @return    Encoded T over alphabet {0, 1}
          */
-        string getVLPC(const string& RLE);
+        vector<bool> getVarLengthPrefixEncoding(const vector<int>& MTF);
+
+        /** Convert integer value to binary
+         *
+         *  @param a Input value
+         *  @return  binary representation     
+         */
+        vector<bool> intToBin(int a);
 };
 #endif // COMPRESSOR_HPP

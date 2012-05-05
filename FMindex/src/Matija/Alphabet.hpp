@@ -19,11 +19,11 @@ class Alphabet
 
         /** Returns vector representation of alphabet
          */
-        vector<char> toVector();
+        vector<char> toSortedVector();
         
         /** Returns linked list representation of alphabet
          */
-        list<char> toList();
+        list<char> toSortedList();
 
     private:
         vector<char> letters;
