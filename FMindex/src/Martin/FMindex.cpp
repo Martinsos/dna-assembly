@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <cmath>
 #include <map>
+#include <utility>
 
 using namespace std;
 
@@ -31,9 +32,9 @@ FMindex::FMindex(const string &T)
 		
 	// create Opp(T)
 	oppT_ = new Opp(T);
-    
-    // TODO: create RTQ
-    //buildRTQ();
+
+    // create RTQ
+    buildRTQ(T, wordLengths);
     
     // create shortPatterns
     memorizeShortPatterns(T, wordLengths);
@@ -92,7 +93,43 @@ vector<Index> FMindex::getOverlapping(const string &P)
 
 vector<Index> FMindex::getOverlappingLong(const string &P)
 {
-    return vector<Index>();
+    vector<Index> locations;
+    
+    // create suffixesOfP
+    vector<OppRows> suffixesOfP = findSuffixesOfP(P);
+/*oppT_->printOpp(); 
+cout << "suffixesOfP:";
+for (int i = 0; i < suffixesOfP.size(); i++)
+    cout << " [" << suffixesOfP[i].getFirst() << ", " << suffixesOfP[i].getLast() << "]";
+cout << endl;*/
+    // create prefixesOfP
+    vector<OppRows> prefixesOfP = findPrefixesOfP(P);
+/*oppTLZR_->printOpp();
+cout << "prefixesOfP:";
+for (int i = 0; i < prefixesOfP.size(); i++)
+    cout << " [" << prefixesOfP[i].getFirst() << ", " << prefixesOfP[i].getLast() << "]";
+cout << endl;*/
+    
+    // for each h = i*log(log n)+1, i from 0 to trunc(p/log(log n)), do query on RTQ
+    Index iMax = (Index)trunc(P.length() / (double)this->lengthThreshold_); 
+    Index hMax = iMax * lengthThreshold_ + 1;                        
+    for (Index h = 1; h <= hMax && h < suffixesOfP.size(); h+=lengthThreshold_)     // is condition h < suffixesOfP.size() neccesary? I think it is.
+    {
+        OppRows prefixRows = prefixesOfP[h-1];  // h-1 instead of h because vector prefixesOfP starts from 0 while P starts from 1
+        OppRows suffixRows = suffixesOfP[h];    // h instead of h+1 because vector suffixesOfP starts from 0 while P starts from 1
+            
+        if (!prefixRows.isEmpty() && !suffixRows.isEmpty())
+        {
+            // query RTQ: [prefix_rows] x [suffix_rows] : values v(x,y) are obtained
+            vector<Index> vs = this->rtQ_->query(   prefixRows.getFirst(), prefixRows.getLast(), 
+                                                    suffixRows.getFirst(), suffixRows.getLast() );
+            // use obtained values v to calculate locations
+            for (int j = 0; j < vs.size(); j++)     
+                locations.push_back(vs[j] - h);
+        }
+    }
+    
+    return locations;  
 }
 
 vector<Index> FMindex::getOverlappingShort(const string &P)
@@ -113,20 +150,64 @@ void FMindex::memorizeShortPatterns(const string& T, const vector<Index>& wordLe
         return;  
     Index endOfWord = -1;
     Index endOfNextWord = wordLengths[0];
-    for (Index i = 1; i < wordLengths.size(); i++)   // for each LZ word except last
+    for (Index i = 1; i < wordLengths.size(); i++)   // for each separator of LZ words
     {
         endOfWord = endOfNextWord;
         endOfNextWord += wordLengths[i];
         for (Index patternStart = max(1, endOfWord-lengthThreshold_+2); patternStart <= endOfWord; patternStart++) // pick start of pattern            
-        {
             for (Index patternEnd = min(endOfNextWord, patternStart+lengthThreshold_-1); patternEnd > max(endOfWord, patternStart); patternEnd--) // pick end of pattern
             {
                 string P = T.substr(patternStart-1, patternEnd-patternStart+1);  // short pattern we found
-cout << "kratki uzorak: " << P << " " << patternStart << endl;
-                (*shortPatterns_)[P].push_back(patternStart); 
+                (*shortPatterns_)[P].push_back(patternStart);   // add found pattern to vector
             }
-        }
     }
+}
+
+vector<OppRows> FMindex::findSuffixesOfP(const string& P) 
+{
+    vector<OppRows> oppRows = this->oppT_->findRowsForSuffixes(P);
+    reverse(oppRows.begin(), oppRows.end());
+    return oppRows;
+}
+    
+vector<OppRows> FMindex::findPrefixesOfP(const string& P)
+{
+    string PR = P;
+	reverse(PR.begin(), PR.end());
+    return this->oppTLZR_->findRowsForSuffixes(PR);
+}
+
+void FMindex::buildRTQ(const string& T, const vector<Index>& wordLengths)   // DANGEROUS: I MAKE MANY COPIES OF STRING -> WE COULD FASTEN THAT UP
+{
+    // create Q and V on heap because they could be big
+    vector< pair<Index, Index> >* Q = new vector< pair<Index, Index> >();
+    vector<Index>* V = new vector<Index>();
+    
+    // build Q and V
+    Index wordStart = 0;    // position of first character in word
+    for (Index i = 0; i < wordLengths.size()-1; i++)   // for all words except last
+    {
+        Index wordEnd = wordStart + wordLengths[i] - 1;  // position in T of last character of word
+        for (Index k = 0; k < lengthThreshold_ && k < wordLengths[i]; k++)  // for each of last log(log n) positions in word
+        {
+            Index prefixEnd = wordEnd-k;  // position in T of last character of prefix
+            string prefix = T.substr(wordStart, prefixEnd+1);
+            string suffix = T.substr(prefixEnd+1);
+cout << prefix << " " << suffix << endl;            
+            // calculate (x,y) and add it to Q
+            // TODO
+            // calculate v and it to V
+            // TODO
+        }
+        wordStart += wordLengths[i];
+    }
+    
+    // create RTQ from Q and V
+    this->rtQ_ = new RTQ(*Q, *V);
+                                
+    // delete Q and V
+    delete Q;
+    delete V;
 }
 
 vector<Index> FMindex::getLocations(const string &P)

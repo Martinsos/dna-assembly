@@ -3,6 +3,7 @@
 
 #include "Opp.hpp"
 #include "Trie.hpp"
+#include "RTQ.hpp"
 
 #include <vector>
 #include <string>
@@ -31,7 +32,7 @@ class FMindex
 	 * Returns all locations of string P in string T.
 	 * First character of string T is on position 1.
 	 */
-	vector<Index> getLocations(const string &P);		// HALF-IMPLEMENTED
+	vector<Index> getLocations(const string &P);
 	
 	/**
 	 * Returns number of occurrences of string P in string T.
@@ -39,10 +40,11 @@ class FMindex
 	Index getCount(const string &P);
 	
   private:
-    Trie *trie_;
-	Opp *oppT_;
+    Trie* trie_;
+	Opp* oppT_;
     Opp* oppTLZR_;
     map< string, vector<Index> >* shortPatterns_;    // contains locations in T for each existing short pattern that overlaps
+    RTQ* rtQ_;
 	
 	char LZsep_;		// separator for LZ words
     Index n_;           // size of T: |T|
@@ -64,7 +66,7 @@ class FMindex
     /**
      * Algorithm used when |P| > log(log |T|)
      */
-    vector<Index> getOverlappingLong(const string &P);      // TODO
+    vector<Index> getOverlappingLong(const string &P);      // TOTEST
     
     /**
      * Algorithm used when |P| <= log(log |T|)
@@ -77,6 +79,23 @@ class FMindex
      * @param wordLengths Lengths of LZ78 words, by order.
      */
     void memorizeShortPatterns(const string& T, const vector<Index>& wordLengths);
+    
+    /**
+     * Returns ranges of rows in OppT for all suffixes of P. 
+     * @return vector[m] corresponds to P[m+1,p]
+     */ 
+    vector<OppRows> findSuffixesOfP(const string& P);
+    
+    /**
+     * Returns range of rows in OppTLZR for all prefixes of P. 
+     * @return vector[m] corresponds to P[1,m+1]
+     */ 
+    vector<OppRows> findPrefixesOfP(const string& P);
+    
+    /**
+     * Builds Q and V, creates RTQ(Q,V) and stores it into rtQ_
+     */
+    void buildRTQ(const string& T, const vector<Index>& wordLengths);   // TODO
     
     /**--- UTILITY ---**/
     Index max (Index a, Index b);
