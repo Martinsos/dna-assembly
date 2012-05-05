@@ -95,7 +95,7 @@ class FMindex
     /**
      * Builds Q and V, creates RTQ(Q,V) and stores it into rtQ_
      */
-    void buildRTQ(const string& T, const vector<Index>& wordLengths);   // TODO
+    void buildRTQ(const string& T, const vector<Index>& wordLengths);   // TOTEST - just a little bit (already tested with mock RTQ)
     
     /**--- UTILITY ---**/
     Index max (Index a, Index b);

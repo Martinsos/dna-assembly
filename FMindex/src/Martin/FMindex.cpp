@@ -182,32 +182,44 @@ void FMindex::buildRTQ(const string& T, const vector<Index>& wordLengths)   // D
     // create Q and V on heap because they could be big
     vector< pair<Index, Index> >* Q = new vector< pair<Index, Index> >();
     vector<Index>* V = new vector<Index>();
-    
+
+//oppT_->printOpp();
+//cout << "--------" << endl;
+//oppTLZR_->printOpp();
+   
     // build Q and V
     Index wordStart = 0;    // position of first character in word
-    for (Index i = 0; i < wordLengths.size()-1; i++)   // for all words except last
-    {
+
+    for (Index i = 0; i < (Index)wordLengths.size()-1; i++)   // for all words except last
+    { 
         Index wordEnd = wordStart + wordLengths[i] - 1;  // position in T of last character of word
+
         for (Index k = 0; k < lengthThreshold_ && k < wordLengths[i]; k++)  // for each of last log(log n) positions in word
         {
-            Index prefixEnd = wordEnd-k;  // position in T of last character of prefix
-            string prefix = T.substr(wordStart, prefixEnd+1);
-            string suffix = T.substr(prefixEnd+1);
-cout << prefix << " " << suffix << endl;            
-            // calculate (x,y) and add it to Q
-            // TODO
+            string prefix = T.substr(wordStart, wordLengths[i]-k);
+            string suffix = T.substr(wordEnd-k+1);
+//cout << prefix << " " << suffix << endl;            
+            // calculate (x,y) and add it to Q : x -> prefix, y -> suffix
+            reverse(prefix.begin(), prefix.end());
+            Index x = this->oppTLZR_->findRows(this->LZsep_+prefix).getFirst();
+            Index y = this->oppT_->findRows(suffix).getFirst();
+            Q->push_back(make_pair(x, y));
+            
             // calculate v and it to V
-            // TODO
+            Index v = wordStart + wordLengths[i] + 1 - k;
+            V->push_back(v);
+//cout << "(" << x << ", " << y << ")" << " -> " << v << endl;
         }
         wordStart += wordLengths[i];
     }
-    
+   
     // create RTQ from Q and V
     this->rtQ_ = new RTQ(*Q, *V);
                                 
     // delete Q and V
     delete Q;
     delete V;
+
 }
 
 vector<Index> FMindex::getLocations(const string &P)
@@ -247,146 +259,5 @@ Index FMindex::min (Index a, Index b)
 }
 
 
-bool testFMIndex(); // FOR TESTING
 
-// FOR TESTING
-int main()
-{   
- /*   if (testFMIndex())
-        cout << "Test prosao dobro" << endl;
-    else
-        cout << "Test nije prodjen" << endl;
- */   
-    string T = "aabaaabababababbabbbaab";
-    
-    FMindex fmIndex = FMindex(T);                                                        
-    
-    string P = "";
-    while (true)
-    {
-        getline(cin, P);
-        if (P == "KRAJ") break;
-        vector<Index> locs = fmIndex.getLocations(P);                              
-        sort(locs.begin(), locs.end());
-        
-        cout << endl;
-        cout << "lokacije:" << endl;
-        for (int i = 0; i < locs.size(); i++)
-            cout << locs[i] << endl;
-        cout << "Broj pojavljivanja(svih)" << endl;
-        cout << fmIndex.getCount(P) << endl;
-    }
-    
-    return 0;
-}
 
-// auto-test
-bool testFMIndex()
-{
-    FMindex* fmIndex;
-    vector<Index> locs;
-    string T;
-    string P;
-    
-    ///////////////
-    T = "";
-    fmIndex = new FMindex (T);
-    
-    P = "ab";
-    locs = fmIndex->getInternal(P);
-    sort(locs.begin(), locs.end());
-    if ( !(locs.size() == 0) )
-        return false;
-    delete fmIndex;
-    
-    ///////////////
-    T = "aabaaabababababbabbbaab";
-    fmIndex = new FMindex (T);
-    
-    P = "ab";
-    locs = fmIndex->getInternal(P);
-    sort(locs.begin(), locs.end());
-    if ( !(locs.size() == 7 && locs[0] == 2 && locs[1] == 6 && locs[2] == 10 && locs[3] == 12
-                            && locs[4] == 14 && locs[5] == 17 && locs[6] == 22) )
-        return false;
-        
-    P = "aba";
-    locs = fmIndex->getInternal(P);
-    sort(locs.begin(), locs.end());
-    if ( !(locs.size() == 2 && locs[0] == 6 && locs[1] == 10) )
-        return false;
-        
-    P = "bbba";
-    locs = fmIndex->getInternal(P);
-    sort(locs.begin(), locs.end());
-    if ( !(locs.size() == 0) )
-        return false;
-    delete fmIndex;
-        
-    //////////////////    
-    T = "aabaaabababababbabbbab";
-    fmIndex = new FMindex (T);
-    
-    P = "ab";
-    locs = fmIndex->getInternal(P);
-    sort(locs.begin(), locs.end());
-    if ( !(locs.size() == 7 && locs[0] == 2 && locs[1] == 6 && locs[2] == 10 && locs[3] == 12
-                            && locs[4] == 14 && locs[5] == 17 && locs[6] == 21) )
-        return false;
-    
-    P = "aba";
-    locs = fmIndex->getInternal(P);
-    sort(locs.begin(), locs.end());
-    if ( !(locs.size() == 2 && locs[0] == 6 && locs[1] == 10) )
-        return false;
-        
-    P = "bbba";
-    locs = fmIndex->getInternal(P);
-    sort(locs.begin(), locs.end());
-    if ( !(locs.size() == 0) )
-        return false;
-    delete fmIndex;
-        
-    ///////////////////    
-    T = "aabbbbcb";
-    fmIndex = new FMindex (T);
-    
-    P = "b";
-    locs = fmIndex->getInternal(P);
-    sort(locs.begin(), locs.end());
-    if ( !(locs.size() == 5 && locs[0] == 3 && locs[1] == 4 && locs[2] == 5 && locs[3] == 6
-                            && locs[4] == 8) )
-        return false;
-        
-    P = "bb";
-    locs = fmIndex->getInternal(P);
-    sort(locs.begin(), locs.end());
-    if ( !(locs.size() == 1 && locs[0] == 5) )
-        return false;
-    
-    P = "f";
-    locs = fmIndex->getInternal(P);
-    sort(locs.begin(), locs.end());
-    if ( !(locs.size() == 0) )
-        return false;
-    delete fmIndex;
-        
-    ///////////////////    
-    T = "a";
-    fmIndex = new FMindex (T);
-    
-    P = "a";
-    locs = fmIndex->getInternal(P);
-    sort(locs.begin(), locs.end());
-    if ( !(locs.size() == 1 && locs[0] == 1) )
-        return false;
-        
-    P = "b";
-    locs = fmIndex->getInternal(P);
-    sort(locs.begin(), locs.end());
-    if ( !(locs.size() == 0) )
-        return false;
-    delete fmIndex;
-    
-    return true;
-}
