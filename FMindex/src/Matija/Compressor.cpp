@@ -40,7 +40,7 @@ class SASort
  *  Main (and only) public class
  *
  */
-vector<bool> Compressor::compress(string& T)
+BitArray Compressor::compress(string& T)
 {
     return getVarLengthPrefixEncoding( getMTF(getBWT(T)) );
 }
@@ -128,7 +128,7 @@ vector<int> Compressor::getMTF(const string& L)
 
 void dumpVector(vector<bool> a);
 
-vector<bool> Compressor::getVarLengthPrefixEncoding(const vector<int>& MTF)
+BitArray Compressor::getVarLengthPrefixEncoding(const vector<int>& MTF)
 {
     vector<bool> vlpc(0);
 
@@ -162,7 +162,7 @@ vector<bool> Compressor::getVarLengthPrefixEncoding(const vector<int>& MTF)
             }
         }
     }
-    return vlpc;
+    return BitArray(vlpc);
 }
 
 /** For testing
@@ -185,6 +185,5 @@ vector<bool> Compressor::intToBin(int a)
         a /= 2;
     }
     reverse (binary.begin(), binary.end());
-
     return binary;
 }

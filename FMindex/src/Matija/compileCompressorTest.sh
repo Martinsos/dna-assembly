@@ -1,2 +1,2 @@
 #!/bin/bash
-g++ -o compressorTest.exe compressorMain.cpp Compressor.cpp Alphabet.cpp
+g++ -o compressorTest.exe compressorMain.cpp Compressor.cpp Alphabet.cpp BitArray.cpp
