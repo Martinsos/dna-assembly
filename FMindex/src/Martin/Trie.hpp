@@ -109,8 +109,8 @@ class Trie
     /**
      * Prints Trie, used for testing.
      */
-    public: void printTrie();
-    private: void printTrieRec(TrieNode* node);
+    public: void printTrie();                       // FOR TESTING
+    private: void printTrieRec(TrieNode* node);     // FOR TESTING
 };
 
 #endif // TRIE_HPP

@@ -1,6 +1,7 @@
 #include "Opp.hpp"
 
 #include <algorithm>
+#include <iostream>
 
 using namespace std;
 
@@ -33,8 +34,15 @@ OppRows Opp::findRows(const string &P) const
 	return OppRows(first,last,false);		
 }
 
-#include <iostream>
-void Opp::printOpp()
+vector<OppRows> Opp::findRowsForSuffixes(const string &P) const
+{
+    vector<OppRows> rows;
+    for (int i = P.length()-1; i >= 0; i--)
+        rows.push_back( findRows(P.substr(i, P.length()-i)) );
+    return rows;
+}
+
+void Opp::printOpp()       // FOR TESTING
 {
 	for (int i = 0; i < M.size(); i++)
 		cout << i+1 << " " << M[i] << endl;

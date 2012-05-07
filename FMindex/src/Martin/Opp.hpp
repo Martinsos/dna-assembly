@@ -45,6 +45,13 @@ class Opp
 	 * First row is indexed with 1.
 	 */	
 	OppRows findRows(const string &P) const;
+    
+    /**
+     * Same as method findRows() but returns rows for all suffixes of P, not just P.
+     * IMPORTANT: same time complexity as oppRows (not |P| * O(oppRows) as you would expect).
+     * @return vector[m] corresponds to P[p-m,p]
+     */
+    vector<OppRows> findRowsForSuffixes(const string &P) const;
 	
 	void printOpp();   // FOR TESTING
 	
