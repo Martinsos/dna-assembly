@@ -77,7 +77,7 @@ class Trie
     /**
   	 * Uses given Opp structure to map certain rows of conceptual matrix to nodes of trie.
   	 * Mapping will be stored in array N.
-     * WARNING: Not all rows will be mapped, only those which have node in trie to map to.
+     * WARNING: Not all rows will be mapped, only those which have node in trie to map to. 
   	 */
   	void mapRowsToNodes(const Opp &oppTLZR);		
     

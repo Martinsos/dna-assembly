@@ -119,15 +119,15 @@ vector<Index> Trie::getLocationsFromSubtree(Index row, Index lengthP)
 {
 	vector<Index> locations;	// solution goes here
 	TrieNode* node = getNodeAtRow(row);
-cout << "Sada cu poceti gledati podstablo sa korijenom " << node << endl;
-cout << "Row: " << row << ", Location: " << node->location << ", length: " << node->length << endl;
+//cout << "Sada cu poceti gledati podstablo sa korijenom " << node << endl;
+//cout << "Row: " << row << ", Location: " << node->location << ", length: " << node->length << endl;
 	getLocationsFromSubtreeRec(node, node->length, lengthP, locations);		// recursion that iterates through tree
 	return locations;
 }
 
 void Trie::getLocationsFromSubtreeRec(TrieNode* node, Index rootLength, Index lengthP, vector<Index> &locations)
 {
-cout << "Gledam cvor " << node << endl;
+//cout << "Gledam cvor " << node << endl;
 	 locations.push_back(node->location + rootLength - lengthP);	// add location
 	 
 	 map<char, TrieNode*>::iterator it;

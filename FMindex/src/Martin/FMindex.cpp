@@ -51,14 +51,15 @@ FMindex::~FMindex()
 	delete oppT_;
 	delete oppTLZR_;
     delete shortPatterns_;
+    delete rtQ_;
 }
 
 vector<Index> FMindex::getInternal(const string &P)                                         // HM: maybe move this to Trie?
 {
 	vector<Index> locations;
-cout << endl;
-trie_->printTrie();	
-cout << "Size of trie: " << trie_->getSize() << endl;
+//cout << endl;
+//trie_->printTrie();	
+//cout << "Size of trie: " << trie_->getSize() << endl;
 	// reverse string P
 	string PR = P;
 	reverse(PR.begin(), PR.end());
@@ -70,9 +71,9 @@ cout << "Size of trie: " << trie_->getSize() << endl;
 	if (rows.isEmpty())
 		return locations;
 	
-cout << LZsep_ + P << endl;
-cout << rows.getFirst() << endl;
-cout << rows.getLast() << endl;
+//cout << LZsep_ + P << endl;
+//cout << rows.getFirst() << endl;
+//cout << rows.getLast() << endl;
 	// for each row find subtree in trie, read all locations and add them to solution.
 	for (Index rowI = rows.getFirst(); rowI <= rows.getLast(); rowI++)
 	{
@@ -96,36 +97,38 @@ vector<Index> FMindex::getOverlappingLong(const string &P)
     vector<Index> locations;
     
     // create suffixesOfP
-    vector<OppRows> suffixesOfP = findSuffixesOfP(P);
-/*oppT_->printOpp(); 
-cout << "suffixesOfP:";
-for (int i = 0; i < suffixesOfP.size(); i++)
-    cout << " [" << suffixesOfP[i].getFirst() << ", " << suffixesOfP[i].getLast() << "]";
-cout << endl;*/
+    vector<OppRows> suffixesOfP = findSuffixesOfP(P);   // suffixesOfP[i] -> indexes of rows in OppT that start with P[1,p]
+//oppT_->printOpp(); 
+//cout << "suffixesOfP:";
+//for (int i = 0; i < suffixesOfP.size(); i++)
+//    cout << " [" << suffixesOfP[i].getFirst() << ", " << suffixesOfP[i].getLast() << "]";
+//cout << endl;
     // create prefixesOfP
-    vector<OppRows> prefixesOfP = findPrefixesOfP(P);
-/*oppTLZR_->printOpp();
-cout << "prefixesOfP:";
-for (int i = 0; i < prefixesOfP.size(); i++)
-    cout << " [" << prefixesOfP[i].getFirst() << ", " << prefixesOfP[i].getLast() << "]";
-cout << endl;*/
+    vector<OppRows> prefixesOfP = findPrefixesOfP(P);   // prefixesOfP[i] -> indexes of rows in OppTLZR that start with P[1,p]
+//oppTLZR_->printOpp();
+//cout << "prefixesOfP:";
+//for (int i = 0; i < prefixesOfP.size(); i++)
+//    cout << " [" << prefixesOfP[i].getFirst() << ", " << prefixesOfP[i].getLast() << "]";
+//cout << endl;
     
     // for each h = i*log(log n)+1, i from 0 to trunc(p/log(log n)), do query on RTQ
     Index iMax = (Index)trunc(P.length() / (double)this->lengthThreshold_); 
     Index hMax = iMax * lengthThreshold_ + 1;                        
     for (Index h = 1; h <= hMax && h < suffixesOfP.size(); h+=lengthThreshold_)     // is condition h < suffixesOfP.size() neccesary? I think it is.
     {
+//cout << "h: " << h << endl;
         OppRows prefixRows = prefixesOfP[h-1];  // h-1 instead of h because vector prefixesOfP starts from 0 while P starts from 1
         OppRows suffixRows = suffixesOfP[h];    // h instead of h+1 because vector suffixesOfP starts from 0 while P starts from 1
             
         if (!prefixRows.isEmpty() && !suffixRows.isEmpty())
         {
             // query RTQ: [prefix_rows] x [suffix_rows] : values v(x,y) are obtained
-            vector<Index> vs = this->rtQ_->query(   prefixRows.getFirst(), prefixRows.getLast(), 
+            vector< pair<Index, Index> > vs = this->rtQ_->query(   prefixRows.getFirst(), prefixRows.getLast(), 
                                                     suffixRows.getFirst(), suffixRows.getLast() );
             // use obtained values v to calculate locations
-            for (int j = 0; j < vs.size(); j++)     
-                locations.push_back(vs[j] - h);
+            for (int j = 0; j < vs.size(); j++)
+                if (h + vs[j].second < P.length())  // h+k must be < p, because if not then the word is not overlapping.
+                    locations.push_back(vs[j].first - h);
         }
     }
     
@@ -170,18 +173,21 @@ vector<OppRows> FMindex::findSuffixesOfP(const string& P)
     return oppRows;
 }
     
-vector<OppRows> FMindex::findPrefixesOfP(const string& P)
+vector<OppRows> FMindex::findPrefixesOfP(const string& P)                   // BAD: complexity: p^2, should be: p
 {
+    vector<OppRows> oppRows;
     string PR = P;
 	reverse(PR.begin(), PR.end());
-    return this->oppTLZR_->findRowsForSuffixes(PR);
+    for (int i = PR.length()-1; i >= 0; i--)
+        oppRows.push_back(oppTLZR_->findRows(LZsep_+PR.substr(i)));
+    return oppRows;
 }
 
 void FMindex::buildRTQ(const string& T, const vector<Index>& wordLengths)   // DANGEROUS: I MAKE MANY COPIES OF STRING -> WE COULD FASTEN THAT UP
 {
     // create Q and V on heap because they could be big
     vector< pair<Index, Index> >* Q = new vector< pair<Index, Index> >();
-    vector<Index>* V = new vector<Index>();
+    vector< pair<Index, Index> >* V = new vector< pair<Index, Index> >();
 
 //oppT_->printOpp();
 //cout << "--------" << endl;
@@ -207,7 +213,7 @@ void FMindex::buildRTQ(const string& T, const vector<Index>& wordLengths)   // D
             
             // calculate v and it to V
             Index v = wordStart + wordLengths[i] + 1 - k;
-            V->push_back(v);
+            V->push_back(make_pair(v, k));
 //cout << "(" << x << ", " << y << ")" << " -> " << v << endl;
         }
         wordStart += wordLengths[i];

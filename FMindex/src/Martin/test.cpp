@@ -17,7 +17,7 @@ int main()
     else
         cout << "Test nije prodjen" << endl;
     */
-    string T = "aabaaabababababbabbbaab";
+    string T = "aabaaabababababbabbbab";
     
     FMindex fmIndex = FMindex(T);                                                        
     

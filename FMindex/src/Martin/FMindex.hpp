@@ -82,20 +82,22 @@ class FMindex
     
     /**
      * Returns ranges of rows in OppT for all suffixes of P. 
+     * Time complexity: O(p)
      * @return vector[m] corresponds to P[m+1,p]
      */ 
     vector<OppRows> findSuffixesOfP(const string& P);
     
     /**
      * Returns range of rows in OppTLZR for all prefixes of P. 
+     * Time complexity: O(p)    // BUT IS O(p^2) currently, I don't know how to make it faster
      * @return vector[m] corresponds to P[1,m+1]
      */ 
-    vector<OppRows> findPrefixesOfP(const string& P);
+    vector<OppRows> findPrefixesOfP(const string& P);   // TOTEST -> TOO SLOW FOR NOW
     
     /**
      * Builds Q and V, creates RTQ(Q,V) and stores it into rtQ_
      */
-    void buildRTQ(const string& T, const vector<Index>& wordLengths);   // TOTEST - just a little bit (already tested with mock RTQ)
+    void buildRTQ(const string& T, const vector<Index>& wordLengths);   // TOTEST
     
     /**--- UTILITY ---**/
     Index max (Index a, Index b);
