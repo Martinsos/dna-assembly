@@ -34,10 +34,8 @@ int main()
     cout << endl;
     */
     cout << "==Variable length prefix encoding========================" << endl;
-    vector<bool> VLPC = myCompressor.compress(T);
-    for (int i = 0; i < VLPC.size(); i++)
-        cout << VLPC[i];
+    BitArray VLPC = myCompressor.compress(T);
+    VLPC.print();
 
-    cout << endl;
     return 0;
 }

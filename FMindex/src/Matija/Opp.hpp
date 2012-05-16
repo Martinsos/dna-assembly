@@ -46,7 +46,7 @@ class Opp
 {
   private:
     /* Data structures */
-    string Z;   // Contains compressed input text
+    Z;   // Contains compressed input text
 
     /* Methods */
 

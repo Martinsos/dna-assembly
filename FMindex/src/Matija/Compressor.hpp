@@ -2,6 +2,7 @@
 #define COMPRESSOR_HPP
 
 #include "Alphabet.hpp"
+#include "BitArray.hpp"
 
 #include <string>
 #include <vector>
@@ -30,7 +31,7 @@ class Compressor
          *  @param eof
          *  @param alpha
          */
-        Compressor(char eof, Alphabet alpha);
+        Compressor(char eof, Alphabet alpha);   // OPTIMIZIRATI
 
         /** Compresses input text to binary format
          *  Pipeline: T | BWT | MTF | RLE | VLPC
@@ -38,7 +39,7 @@ class Compressor
          *  @param T Original text
          *  @return  Compressed T
          */
-        vector<bool> compress(string& T);
+        BitArray compress(string& T);
     private:
         char BWTEof;        // Character appended to T, end-of-file
         Alphabet alphabet;  // Alphabet used in encoding
@@ -55,7 +56,7 @@ class Compressor
          *  @param T Input text
          *  @return  Indices referencing on T 
          */
-        vector<Index> getSuffixArray(const string& T);
+        vector<Index> getSuffixArray(const string& T);  // ISTO OPTIMIZIRATI
 
         /** Apply move-to-front encoding to input text
          *
@@ -71,7 +72,7 @@ class Compressor
          *  @param MTF MTF code of T
          *  @return    Encoded T over alphabet {0, 1}
          */
-        vector<bool> getVarLengthPrefixEncoding(const vector<int>& MTF);
+        BitArray getVarLengthPrefixEncoding(const vector<int>& MTF);    // OPTIMIZIRATI
 
         /** Convert integer value to binary
          *
