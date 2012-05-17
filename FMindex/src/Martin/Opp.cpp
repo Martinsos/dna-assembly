@@ -42,6 +42,14 @@ vector<OppRows> Opp::findRowsForSuffixes(const string &P) const
     return rows;
 }
 
+vector<OppRows> Opp::findRowsForSuffixesWithPrefix(const string &P, char C) const
+{
+	vector<OppRows> rows;
+    for (int i = P.length()-1; i >= 0; i--)
+        rows.push_back( findRows( C + P.substr(i, P.length()-i) ) );
+    return rows;
+}
+
 void Opp::printOpp()       // FOR TESTING
 {
 	for (int i = 0; i < M.size(); i++)

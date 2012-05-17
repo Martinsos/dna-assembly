@@ -173,14 +173,11 @@ vector<OppRows> FMindex::findSuffixesOfP(const string& P)
     return oppRows;
 }
     
-vector<OppRows> FMindex::findPrefixesOfP(const string& P)                   // BAD: complexity: p^2, should be: p
+vector<OppRows> FMindex::findPrefixesOfP(const string& P)                   
 {
-    vector<OppRows> oppRows;
     string PR = P;
 	reverse(PR.begin(), PR.end());
-    for (int i = PR.length()-1; i >= 0; i--)
-        oppRows.push_back(oppTLZR_->findRows(LZsep_+PR.substr(i)));
-    return oppRows;
+    return oppTLZR_->findRowsForSuffixesWithPrefix(PR, LZsep_);
 }
 
 void FMindex::buildRTQ(const string& T, const vector<Index>& wordLengths)   // DANGEROUS: I MAKE MANY COPIES OF STRING -> WE COULD FASTEN THAT UP
