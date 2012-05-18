@@ -22,7 +22,8 @@ int main()
     
     dic2_item x;
     forall(x, L) {
-        cout << ((int*)(x->inf())) << endl;
+        int v = leda::LEDA_ACCESS(int, x->inf());
+        cout << v << endl;
     }
     
     cout << "kraj" << endl;
