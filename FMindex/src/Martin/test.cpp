@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <ctime>
 
 using namespace std;
 
@@ -17,24 +18,69 @@ int main()
     else
         cout << "Test nije prodjen" << endl;
     */
-    string T = "aabaaabababababbabbbab";
+    string T2 = "aabaaabababababbabbbab";
+    string T = "";
+    for (int i = 0; i < 20; i++)
+        T += T2;
     
+    clock_t begin, end, begin2, end2;
+    
+    begin = clock();
     FMindex fmIndex = FMindex(T);                                                        
+    end = clock();
+    printf("Vrijeme izgradnje: %.5lf\n", (double)(end-begin) / CLOCKS_PER_SEC);
+    
     
     string P = "";
     while (true)
-    {
+    {        
         getline(cin, P);
         if (P == "KRAJ") break;
-        vector<Index> locs = fmIndex.getLocations(P);                              
-        sort(locs.begin(), locs.end());
         
-        cout << endl;
+        
+        cout << "Brutfors: " << endl;
+        vector<Index> lokacije;
+        begin = clock();
+        for (Index i = 0; i+P.length() <= T.length(); i++)
+            if (T.substr(i, P.length()) == P)
+                lokacije.push_back(i+1);
+        end = clock();
         cout << "lokacije:" << endl;
-        for (int i = 0; i < locs.size(); i++)
-            cout << locs[i] << endl;
+//        for (Index i = 0; i < lokacije.size(); i++)
+//            cout << lokacije[i] << endl;
         cout << "Broj pojavljivanja(svih)" << endl;
+        cout << lokacije.size() << endl;
+        printf("Vrijeme lociranja: %.5lf\n", (double)(end-begin) / CLOCKS_PER_SEC);
+        
+        cout << "FMindex: " << endl;
+        cout << "lokacije:" << endl;
+        begin = clock();
+        vector<Index> locs = fmIndex.getLocations(P);
+        end = clock();                              
+        sort(locs.begin(), locs.end());
+//        for (Index i = 0; i < locs.size(); i++)
+//            cout << locs[i] << endl;
+        cout << "Broj pojavljivanja(svih)" << endl;
+        Index numOcc = fmIndex.getCount(P);
+        begin2 = clock();
         cout << fmIndex.getCount(P) << endl;
+        end2 = clock();
+        printf("Vrijeme lociranja:     %.5lf\n", (double)(end-begin) / CLOCKS_PER_SEC);
+        printf("Vrijeme samo brojanja: %.5lf\n", (double)(end2-begin2) / CLOCKS_PER_SEC);
+        
+        bool isto = true;
+        if (lokacije.size() != numOcc)
+            isto = false;
+        else {
+            bool isto = true;
+            for (int i = 0; i < lokacije.size(); i++)
+                if (lokacije[i] != locs[i])
+                    isto = false;
+        }
+        if (isto)
+            cout << "ISTO JE!" << endl;
+        else
+            cout << "NIJE ISTO!" << endl;
     }
     
     return 0;

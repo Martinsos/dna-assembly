@@ -168,31 +168,3 @@ void Trie::printTrieRec(TrieNode* node)
     for (it = node->children.begin(); it != node->children.end(); it++)
         printTrieRec(it->second);
 }
-
-/*
-// FOR TESTING
-#include <iostream>
-int main()
-{
-	Trie trie = Trie();
-    Opp* oppTLZR;
-    string T = "aabaaabababababbabbbaab";
-    char LZsep = '$';
-    
-	vector<Index> wordLengths = trie.buildTrieLZ78(T, LZsep, oppTLZR);
-	
-	for (int i = 0; i < wordLengths.size(); i++)
-		cout << wordLengths[i] << " ";
-	cout << endl;
-       
-    oppTLZR->printOpp();
-    cout << endl;
-    
-    cout << oppTLZR->findRows(string(1,LZsep)).getFirst() << endl;
-    cout << oppTLZR->findRows(string(1,LZsep)).getLast() << endl;
-	
-    delete oppTLZR;
-    
-	return 0;
-}
-*/

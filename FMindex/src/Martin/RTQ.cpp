@@ -2,34 +2,26 @@
 
 using namespace std;
 
-// MOCK IMPLEMENTATION
 #include <iostream>
 
 RTQ::RTQ (const vector< pair<Index,Index> >& Q, const vector< pair<Index,Index> >& V)
 {
-//cout << "Q:" << endl;
-//    for (int i = 0; i < Q.size(); i++)
-//        cout << "(" << Q[i].first << ", " << Q[i].second << ")" << endl;
-//cout << "V:" << endl;
-//    for (int i = 0; i < V.size(); i++)
-//        cout << "(" << V[i].first << ", " << V[i].second << ")" << endl;
-    this->Q = Q;
-    this->V = V;
+    // insert all points in dictionary
+    for (int i = 0; i < Q.size(); i++)
+        D.insert(Q[i].first, Q[i].second, Information(V[i].first, V[i].second));
 }
 
 vector< pair<Index,Index> > RTQ::query(Index xMin, Index xMax, Index yMin, Index yMax)
 {
-//cout << "Query: " << endl;
-//cout << xMin << endl;
-//cout << xMax << endl;
-//cout << yMin << endl;
-//cout << yMax << endl;
     vector< pair<Index,Index> > result;
-    for (int i = 0; i < Q.size(); i++) 
-    {
-        pair<Index,Index> point = Q[i];
-        if (point.first >= xMin && point.first <= xMax && point.second >= yMin && point.second <= yMax)
-            result.push_back(this->V[i]);
+    
+    // do a range search, list is returned
+    leda::list<leda::dic2_item> L = D.range_search(xMin, xMax, yMin, yMax);
+    leda::dic2_item item;
+    forall(item, L) {   // extract information and add it to vector
+        Information inf = leda::LEDA_ACCESS(Information, item->inf());
+        result.push_back(make_pair(inf.v, inf.k));
     }
+    
     return result;
 }
