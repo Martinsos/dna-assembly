@@ -44,7 +44,7 @@ class FMindex
 	Opp* oppT_;
     Opp* oppTLZR_;
     map< string, vector<Index> >* shortPatterns_;    // contains locations in T for each existing short pattern that overlaps
-    RTQ* rtQ_;
+    RTQ* rtQ_;  // geometric structure that offers fast orthogonal queries
 	
 	char LZsep_;		// separator for LZ words
     Index n_;           // size of T: |T|
@@ -66,7 +66,7 @@ class FMindex
     /**
      * Algorithm used when |P| > log(log |T|)
      */
-    vector<Index> getOverlappingLong(const string &P);      // TOTEST
+    vector<Index> getOverlappingLong(const string &P);     
     
     /**
      * Algorithm used when |P| <= log(log |T|)
@@ -92,12 +92,12 @@ class FMindex
      * Time complexity: O(p)    // BUT IS O(p^2) currently, I don't know how to make it faster
      * @return vector[m] corresponds to P[1,m+1]
      */ 
-    vector<OppRows> findPrefixesOfP(const string& P);   // TOTEST -> TOO SLOW FOR NOW
+    vector<OppRows> findPrefixesOfP(const string& P);  
     
     /**
      * Builds Q and V, creates RTQ(Q,V) and stores it into rtQ_
      */
-    void buildRTQ(const string& T, const vector<Index>& wordLengths);   // TOTEST
+    void buildRTQ(const string& T, const vector<Index>& wordLengths);  
     
     /**--- UTILITY ---**/
     Index max (Index a, Index b);

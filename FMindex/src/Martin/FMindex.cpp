@@ -54,7 +54,7 @@ FMindex::~FMindex()
     delete rtQ_;
 }
 
-vector<Index> FMindex::getInternal(const string &P)                                         // HM: maybe move this to Trie?
+vector<Index> FMindex::getInternal(const string &P)                                      
 {
 	vector<Index> locations;
 //cout << endl;
