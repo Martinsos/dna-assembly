@@ -6,8 +6,6 @@
 
 #include <string>
 #include <vector>
-#include <list>
-#include <map>
 
 typedef int Index;
 
@@ -29,13 +27,13 @@ class Compressor
 {   
     public:
         /** Constructor
-         *  Initializes stuff
+         *  Sets eof character used in compression
+         *  Sets alphabet of input text
          *
-         *  @param eof          eof character used in compression
-         *  @param alpha        alphabet of input text
-         *  @param bucketSize   size of a bucket
+         *  @param eof
+         *  @param alpha
          */
-        Compressor(char eof, Alphabet alpha, int bucketSize);   // OPTIMIZIRATI
+        Compressor(char eof, Alphabet alpha);   // OPTIMIZIRATI
 
         /** Compresses input text to binary format
          *  Pipeline: T | BWT | MTF | RLE | VLPC
@@ -44,40 +42,9 @@ class Compressor
          *  @return  Compressed T
          */
         BitArray compress(string& T);
-        
-        /** Getter for MTFStates
-         */
-        vector< list<char> > getMTFStates();
     private:
-        char BWTEof;            // Character appended to T, end-of-file
-        Alphabet alphabet;      // Alphabet used in encoding
-        
-        // OPP data structures
-        int bucketSize;         // Size of a bucket (l in article)         
-        int superBucketSize;    // Size of a super bucket (l^2 in article)
-        
-        /** For bucket i, MTFStates[i] keeps the state of MTF table just before encoding it
-         *  getMTF() initializes it
-         */
-        vector< list<char> > MTFStates;
-
-        /** Number of occurrences - superbucket
-         *  sbNO[i][c] - number of occurrences of character c in superbuckets 0 - i (included)
-         */
-        vector< map<char, int> > sbNO;
-        /** For each superbucket stores size in bits of superbuckets 0 - i (included)
-         */ 
-        vector<int> sbW;
-
-        /** Number of occurrences - bucket
-         *  bNO[i][c] - number of occurrences of character c in buckets x - i (included)
-         *  x - first bucket in current superbucket
-         */
-        vector< map<char, int> > bNO;
-        /** For each bucket stores size in bits of buckets x - i (included)
-         *  x - first bucket int current superbucket
-         */
-        vector<int> bW;
+        char BWTEof;        // Character appended to T, end-of-file
+        Alphabet alphabet;  // Alphabet used in encoding
 
         /** Calculate BWT of input text
          *
@@ -95,17 +62,14 @@ class Compressor
 
         /** Apply move-to-front encoding to input text
          *
-         *  Side effect: Initialize MTFStates structure for each bucket
-         *
          *  @param T Input text
          *  @return  MTF of T
          */
         vector<int> getMTF(const string& L);
 
         /** Apply variable-length prefix encoding to input string
-         *  Also applies run-length encoding on-fly
          *
-         *  Side effect: initializes structures (sbNO, sbW) and (bNO, bW)
+         *  Also applies run-length encoding on-fly
          *
          *  @param MTF MTF code of T
          *  @return    Encoded T over alphabet {0, 1}

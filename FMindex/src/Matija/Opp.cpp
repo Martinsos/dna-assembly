@@ -12,7 +12,6 @@ Opp::Opp(const string& T)
     // Do nothing for now
 }
     
-
 /** Finds rows of conceptual matrix prefixed by P
  *   
  *  @param P

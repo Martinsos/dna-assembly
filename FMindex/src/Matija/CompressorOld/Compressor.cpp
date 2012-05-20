@@ -12,18 +12,9 @@ using namespace std;
 
 /** Constructor
  */
-Compressor::Compressor(char eof, Alphabet alpha, int bucketSize) : alphabet(alpha)
+Compressor::Compressor(char eof, Alphabet alpha) : alphabet(alpha)
 {
     BWTEof   = eof;
-    this->bucketSize = bucketSize;
-    this->superBucketSize = bucketSize * bucketSize;
-}
-
-/** Getter for MTFStates
- */
-vector< list<char> > Compressor::getMTFStates()
-{
-    return MTFStates;    
 }
 
 /** Class for comparing string suffixes
@@ -92,10 +83,8 @@ string Compressor::getBWT(string& T)
  *
  * Starts with sorted list of alphabet characters.
  * To each character of input string L is assigned it's position in list (0-based). When character
- * is accessed, it is moved to the front of list (so its code is now 0).
- * This way we get consecutive 0's for consecutive same characters.
- *
- * Side effect: Initalize MTF structure for each bucket
+ * is accessed, it is moved to the front of list (so its code is 0).
+ * This way we get consecutive 0's for rows of same character.
  */
 vector<int> Compressor::getMTF(const string& L)
 {
@@ -106,12 +95,6 @@ vector<int> Compressor::getMTF(const string& L)
     vector<int> MTF (0); 
     for (int i = 0; i < L.length(); i++)
     {
-        // If I am at the beginning of a bucket, store current MTF state
-        if (i % bucketSize == 0) 
-        {
-            MTFStates.push_back(MTFList);    
-        }
-
         // Find position of L[i] in MTFList and encode it
         list<char>::iterator it;
         int pos;
@@ -141,8 +124,6 @@ vector<int> Compressor::getMTF(const string& L)
  *  {0', 1'} -> {10, 11}
  *  i(other) -> floor(log(i + 1)) 0's followed by binary representation of i + 1
  *  Result is defined over {0, 1}
- *
- *  Side effect: initializes structures (sbNO, sbW) and (bNO, bW)
  */
 
 void dumpVector(vector<bool> a);

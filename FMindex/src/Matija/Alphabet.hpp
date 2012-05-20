@@ -17,7 +17,7 @@ class Alphabet
          */
         Alphabet(vector<char> letters_);
 
-        /** Returns vector representation of alphabet
+        /** Returns sorted vector representation of alphabet
          */
         vector<char> toSortedVector();
         
