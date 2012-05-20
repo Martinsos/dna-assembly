@@ -1,6 +1,8 @@
 #ifndef OPP_HPP
 #define OPP_HPP
 
+#include "BitArray.hpp"
+
 #include <string>
 
 using namespace std;
@@ -46,13 +48,13 @@ class Opp
 {
   private:
     /* Data structures */
-    Z;   // Contains compressed input text
+    BitArray Z;   // Contains compressed input text
 
     /* Methods */
 
   public:
     /**
-     * Get BWT of T
+     * Get and store coded T
      */
 	Opp(const string &T);
 	

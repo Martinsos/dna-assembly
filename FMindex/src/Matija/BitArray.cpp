@@ -1,4 +1,3 @@
-
 #include "BitArray.hpp"
 #include <iostream>
 

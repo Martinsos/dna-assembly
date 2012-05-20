@@ -166,6 +166,7 @@ BitArray Compressor::getVarLengthPrefixEncoding(const vector<int>& MTF)
 }
 
 /** For testing
+ *  Prints vector to stdout
  */
 void dumpVector(vector<bool> a)
 {

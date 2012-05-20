@@ -20,6 +20,8 @@ using namespace std;
  * MTF  - Move-to-front encoding
  * RLE  - Run-length encoder
  * VLPC - Variable-length prefix code 
+ *
+ * Note: RLE and VLPC are implemented together in getVarLengthPrefixEncoding()
  */
 class Compressor
 {   

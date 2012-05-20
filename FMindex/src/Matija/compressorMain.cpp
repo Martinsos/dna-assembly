@@ -22,20 +22,10 @@ int main()
     Compressor myCompressor(eof, alpha);
 
     string T = "pipemississippi";
-   /* string L = myCompressor.getBWT(T); 
-    vector<int> MTF = myCompressor.getMTF(L);
 
-    cout << "==MTF=====================" << endl;
-    cout << MTF.size() << endl;
-    
-    cout << L << endl;
-    for (int i = 0; i < MTF.size(); i++)
-        cout << MTF[i] << " ";
-    cout << endl;
-    */
     cout << "==Variable length prefix encoding========================" << endl;
-    BitArray VLPC = myCompressor.compress(T);
-    VLPC.print();
+    BitArray compressedText = myCompressor.compress(T);
+    compressedText.print();
 
     return 0;
 }
