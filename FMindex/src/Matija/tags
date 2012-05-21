@@ -1,0 +1,31 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+Alphabet	Alphabet.cpp	/^Alphabet::Alphabet(vector<char> letters_)$/;"	f	class:Alphabet
+BitArray	BitArray.cpp	/^BitArray::BitArray(vector<bool> bits)$/;"	f	class:BitArray
+Compressor	Compressor.cpp	/^Compressor::Compressor(char eof, Alphabet alpha, int bucketSize) : alphabet(alpha)$/;"	f	class:Compressor
+Opp	Opp.cpp	/^Opp::Opp(const string& T)$/;"	f	class:Opp
+SASort	Compressor.cpp	/^        SASort(const string& T_) : T(T_) {}$/;"	f	class:SASort
+SASort	Compressor.cpp	/^class SASort $/;"	c	file:
+T	Compressor.cpp	/^        const string& T;$/;"	m	class:SASort	file:
+compress	Compressor.cpp	/^BitArray Compressor::compress(string& T)$/;"	f	class:Compressor
+dumpList	compressorMain.cpp	/^void dumpList(list<char>& a)$/;"	f
+dumpMap	compressorMain.cpp	/^void dumpMap(map<char, int>& m)$/;"	f
+dumpVector	Compressor.cpp	/^void dumpVector(vector<bool> a)$/;"	f
+findRows	Opp.cpp	/^OppRows Opp::findRows(const string &P)$/;"	f	class:Opp
+getBWT	Compressor.cpp	/^string Compressor::getBWT(string& T)$/;"	f	class:Compressor
+getMTF	Compressor.cpp	/^vector<int> Compressor::getMTF(const string& L)$/;"	f	class:Compressor
+getMTFStates	Compressor.cpp	/^vector< list<char> > Compressor::getMTFStates()$/;"	f	class:Compressor
+getSuffixArray	Compressor.cpp	/^vector<int> Compressor::getSuffixArray(const string& T)$/;"	f	class:Compressor
+getVarLengthPrefixEncoding	Compressor.cpp	/^BitArray Compressor::getVarLengthPrefixEncoding(const vector<int>& MTF)$/;"	f	class:Compressor
+initNOs	Compressor.cpp	/^void Compressor::initNOs(const string& T)$/;"	f	class:Compressor
+intToBin	Compressor.cpp	/^vector<bool> Compressor::intToBin(int a)$/;"	f	class:Compressor
+main	compressorMain.cpp	/^int main()$/;"	f
+main	oppMain.cpp	/^int main()$/;"	f
+operator ()	Compressor.cpp	/^        bool operator() (Index pos1, Index pos2)$/;"	f	class:SASort
+print	BitArray.cpp	/^void BitArray::print()$/;"	f	class:BitArray
+toSortedList	Alphabet.cpp	/^list<char> Alphabet::toSortedList()$/;"	f	class:Alphabet
+toSortedVector	Alphabet.cpp	/^vector<char> Alphabet::toSortedVector()$/;"	f	class:Alphabet

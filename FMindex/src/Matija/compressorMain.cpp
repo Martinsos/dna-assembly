@@ -5,6 +5,7 @@
 #include <iostream>
 #include <list>
 #include <vector>
+#include <map>
 
 using namespace std;
 
@@ -14,6 +15,14 @@ void dumpList(list<char>& a)
     for (it = a.begin(); it != a.end(); it++)
         cout << *it << " "; 
     cout << endl;
+}
+
+void dumpMap(map<char, int>& m)
+{
+   map<char, int>::iterator it;
+   for (it = m.begin(); it != m.end(); it++)
+        cout << it->first << " " << it->second << endl;
+   cout << "-----------------------------" << endl;
 }
 
 int main()
@@ -49,5 +58,22 @@ int main()
         cout << "Bucket " << i + 1 << ": ";
         dumpList(MTFStates[i]);
     }
+
+    cout << endl;
+    cout << "==Buckets NO=============================================" << endl;
+    for (int i = 0; i < myCompressor.bNO.size(); i++)
+    {
+        cout << "Bucket " << i + 1 << ": " << endl;
+        dumpMap(myCompressor.bNO[i]);
+    }
+
+    cout << endl;
+    cout << "==SuperBuckets NO========================================" << endl;
+    for (int i = 0; i < myCompressor.sbNO.size(); i++)
+    {
+        cout << "SuperBucket " << i + 1 << ": " << endl;
+        dumpMap(myCompressor.sbNO[i]);
+    }
+
     return 0;
 }

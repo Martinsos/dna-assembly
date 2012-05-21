@@ -51,8 +51,39 @@ class SASort
  */
 BitArray Compressor::compress(string& T)
 {
+    initNOs(T);
     return getVarLengthPrefixEncoding( getMTF(getBWT(T)) );
 }
+
+/** Initializes bNO and sbNO structures
+ *  Counts occurrences of each character and stores that in structures
+ *  in appropriate format
+ */
+void Compressor::initNOs(const string& T)
+{
+    map<char, int> currBucket;
+    map<char, int> currSuperBucket;
+
+    for (int i = 0; i < T.length(); i++)
+    {
+        currBucket[T[i]]++;
+        currSuperBucket[T[i]]++;
+
+        // Reached end of bucket
+        if (isBucketEnd(i, T.length()))
+        {
+            bNO.push_back(currBucket);
+        }
+        // Reached end of superbucket
+        if (isSuperBucketEnd(i, T.length()))
+        {
+            sbNO.push_back(currSuperBucket);
+            // Clear value of bNO - start counting from 0 again
+            currBucket.clear();
+        }
+    }
+}
+
 
 vector<int> Compressor::getSuffixArray(const string& T)
 {
@@ -142,18 +173,21 @@ vector<int> Compressor::getMTF(const string& L)
  *  i(other) -> floor(log(i + 1)) 0's followed by binary representation of i + 1
  *  Result is defined over {0, 1}
  *
- *  Side effect: initializes structures (sbNO, sbW) and (bNO, bW)
+ *  Side effect: initializes structures sbW, bW and MZ
  */
 
 void dumpVector(vector<bool> a);
 
 BitArray Compressor::getVarLengthPrefixEncoding(const vector<int>& MTF)
 {
-    vector<bool> vlpc(0);
+    int currBucketSize;
+    int currSuperBucketSize;
 
+    vector<bool> vlpc(0);
     // Iterate over MTF
     for (int i = 0; i < MTF.size(); i++)
     {
+        // If I encounter non-zero number
         if (MTF[i] != 0)
         {   
             // Add leading zeros
@@ -165,19 +199,53 @@ BitArray Compressor::getVarLengthPrefixEncoding(const vector<int>& MTF)
             vector<bool> bin = intToBin(MTF[i] + 1);
             for (int j = 0; j < bin.size(); j++)
                 vlpc.push_back(bin[j]);
+
+            // Update sizes
+            int codeLength = leadingZeros + bin.size();
+            currBucketSize += codeLength;
+            currSuperBucketSize += codeLength;
+
+            // Reached end of the bucket
+            if (isBucketEnd(i, MTF.size()))
+            {
+                bW.push_back(currBucketSize);
+                if (MZ.size() < (i + 1) / bucketSize)
+                    MZ.push_back(0);        // Inicijaliziraj nekako drugacije da vec bude sve 0 - mozda
+            }
+            // Reached end of the superBucket
+            if (isSuperBucketEnd(i, MTF.size()))
+            {
+                sbW.push_back(currSuperBucketSize);
+                // Restart bucket counter
+                currBucketSize = 0;
+            }
         }
-        else
+        else // If I encounter zero-sequence
         {
-            // Encode 0 sequence
+            // Count number of consecutive zeroes
+            int zeroSeqStart = i;
             int zeroSeqLength = 0;
             for(; MTF[i] == 0 && i < MTF.size(); zeroSeqLength++, i++); i--;
-            
+            int zeroSeqEnd = zeroSeqStart + zeroSeqLength - 1;
+
             // To binary
             vector<bool> bin = intToBin(zeroSeqLength + 1);
             for (int j = bin.size() - 1; j >= 1; j--)
             {
                 if (bin[j] == 0) { vlpc.push_back(1); vlpc.push_back(0); }
                 if (bin[j] == 1) { vlpc.push_back(1); vlpc.push_back(1); }
+            }
+
+            // Loop over zeroes
+            int zeroCount = 0;
+            for (int j = zeroSeqStart; j <= zeroSeqLength; j++)
+            {
+                // If I reach end of bucket or end of zero sequence
+                // Look how much zeroes I need
+                // Take minimal number to cover that
+                // Update bin and Ws
+
+                // Go on
             }
         }
     }
@@ -206,4 +274,22 @@ vector<bool> Compressor::intToBin(int a)
     }
     reverse (binary.begin(), binary.end());
     return binary;
+}
+
+/** Checks if end of bucket is reached
+ */
+bool Compressor::isBucketEnd(int pos, int size)
+{
+    if ((pos + 1) % bucketSize == 0 || pos == size - 1)
+        return true;
+    return false;
+}
+
+/** Checks if end of superBucket is reached
+ */
+bool Compressor::isSuperBucketEnd(int pos, int size)
+{
+    if ((pos + 1) % superBucketSize == 0 || pos == size - 1)
+        return true;
+    return false;
 }
