@@ -1,6 +1,8 @@
 #ifndef OPP_HPP
 #define OPP_HPP
 
+#include "BitArray.hpp"
+
 #include <string>
 
 using namespace std;
@@ -11,21 +13,49 @@ typedef unsigned int Index;
 class OppRows
 {
   public:
-    OppRows(Index first, Index last, bool isEmpty);
+    OppRows(Index first, Index last, bool Empty)
+    {
+        this->first = first;
+        this->last  = last;
+        this->empty = empty;
+    }
     
     /**
      * If there are no rows returns true, otherwise false.
      * If OppRows is empty, getFirst() and getLast() can return anything.
      */
-    bool isEmpty();
+    bool isEmpty()
+    {
+        return empty;
+    }
     
-    Index getFirst();
-    Index getLast();
+    Index getFirst()
+    {
+        return first;
+    }
+
+    Index getLast()
+    {
+        return last;
+    }
+
+  private:
+    Index first, last;
+    bool empty;
 };
 
 class Opp
 {
+  private:
+    /* Data structures */
+    BitArray Z;   // Contains compressed input text
+
+    /* Methods */
+
   public:
+    /**
+     * Get and store coded T
+     */
 	Opp(const string &T);
 	
 	/**

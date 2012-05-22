@@ -1,0 +1,18 @@
+VERSION = '0.0.4'
+APPNAME = 'fmindex++'
+
+srcdir = '.'
+blddir = 'build'
+
+def set_options(ctx):
+  ctx.tool_options('compiler_cxx')
+
+def configure(ctx):
+  ctx.check_tool('compiler_cxx')
+  ctx.env.CXXFLAGS += ['-O3', '-g', '-DNDEBUG', '-Wno-deprecated -pedantic', '-ansi', '-finline-functions', '-foptimize-sibling-calls', '-Wcast-qual', '-Wwrite-strings', '-Wsign-promo', '-Wcast-align', '-Wno-long-long', '-fexpensive-optimizations', '-funroll-all-loops', '-ffast-math', '-fomit-frame-pointer', '-pipe', '-I./', '-L./']
+
+import Scripting
+Scripting.dist_exts += ['.sh']
+
+def build(bld):
+  bld.recurse('src')
