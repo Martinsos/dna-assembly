@@ -1,0 +1,3 @@
+[submodule "external/swSharp"]
+	path = external/swSharp
+	url = git://github.com/mkorpar/swSharp.git
