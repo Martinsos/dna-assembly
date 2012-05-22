@@ -2,14 +2,13 @@
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
-//#include <cstdint>
 #include <algorithm>
 #include <string>
 #include <vector>
 using namespace std;
 
-const int kChunkLen = 10;
-const int kMaxLengthOffset = 10;
+const int kChunkLen = 12;
+const int kMaxLengthOffset = 3;
 
 inline int getBaseId(char a) {
   if (a == 'A') return 0;
@@ -193,34 +192,42 @@ int main(int argc, char* argv[]) {
     int combos = 0;
     
     for (int i = 0; i < forwardIndex[prefixHash].size(); ++i) {
+      if (i && forwardIndex[prefixHash][i-1] + kChunkLen >= forwardIndex[prefixHash][i]) {
+	continue;
+      }
+
       while (suffixHi < forwardIndex[suffixHash].size() &&
 	     forwardIndex[suffixHash][suffixHi] - forwardIndex[prefixHash][i] <= bufferLen+kMaxLengthOffset) {
 	++suffixHi;
       }
-      --suffixHi;
+      if (0 < suffixHi && suffixHi < forwardIndex[suffixHash].size()) {
+	--suffixHi;
+      }
       
       while (suffixLo < forwardIndex[suffixHash].size() &&
 			forwardIndex[suffixHash][suffixLo]-forwardIndex[prefixHash][i] <= bufferLen-kMaxLengthOffset) {
 	++suffixLo;
       }
-      --suffixLo;
+      if (0 < suffixLo && suffixLo < forwardIndex[suffixHash].size()) {
+	--suffixLo;
+      }
       
       assert(suffixHi >= suffixLo);
       
       bool ima = false;
       if (suffixLo+1 != bufferLen && suffixHi-suffixLo+1 > 0) {
-	combos += (suffixHi-suffixLo > 0);
+	combos += (suffixHi-suffixLo+1 > 0);
       }
       
       if (combos > maxCombos) {
 	maxCombos = combos;
 	sta = buffer;
       }
-      totalCombos += combos;
     }
-      ++total;
-      //found += (forwardIndex[prefixHash].size() > 0);
-      found += (combos > 0);
+    
+    ++total;
+    found += (combos > 0);
+    totalCombos += combos;
   }
     
     
