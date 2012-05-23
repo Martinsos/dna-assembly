@@ -6,7 +6,7 @@
 
 namespace fer { namespace util {
 
-void smithWaterman(vector<double>* score,
+void smithWaterman(std::vector<double>* score,
 		   const char* text,
 		   const char* patterns[]);
 

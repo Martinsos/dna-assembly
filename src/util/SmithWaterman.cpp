@@ -1,25 +1,27 @@
 #include "util/SmithWaterman.h"
 
 extern "C" {
-    #include "external/swSharp/include/swSharp/sw.h"
-    #include "external/swSharp/include/swSharp/sw_prefs.h"
-    #include "external/swSharp/include/swSharp/chain.h"
-    #include "external/swSharp/include/swSharp/chain_base.h"
+    #include "swSharp/include/swsharp/sw.h"
+    #include "swSharp/include/swsharp/sw_prefs.h"
+    #include "swSharp/include/swsharp/chain.h"
+    #include "swSharp/include/swsharp/chain_base.h"
 }
+
+using namespace std;
 
 namespace fer { namespace util {
 
 void smithWaterman(vector<double>* score,
-		   const char* queryStr,
-		   const char* database[],
+		   char* queryStr,
+		   char* databaseStr[],
 		   const int databaseSize) {
-  char* swPrefsInit = { NULL };
+  char* swPrefsInit[] = { NULL };
   SWPrefs* swPrefs = swPrefsCreate(swPrefsInit);
 
   Chain* query = chainCreateFromBuffer(queryStr, swPrefs);
   ChainBase* database = chainBaseCreateFromBuffer(databaseStr, databaseSize, swPrefs);
 
-  SwSharpData* swSharpData = swSharp(query, database, swPrefs);
+  SWSharpData* swSharpData = swSharp(query, database, swPrefs);
 
   for (int i = 0; i < swSharpDataGetSWDataNmr(swSharpData); ++i) {   
     SWData* swData = swSharpDataGetSWData(swSharpData, i);
