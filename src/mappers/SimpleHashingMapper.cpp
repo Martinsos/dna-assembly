@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <string>
 #include <vector>
+
+#include "external/swSharp/include/swSharp/*"
 using namespace std;
 
 const int kChunkLen = 12;
