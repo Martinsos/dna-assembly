@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-#include "external/swSharp/include/swSharp/*"
+#include "util/SmithWaterman.h"
 using namespace std;
 
 const int kChunkLen = 12;
