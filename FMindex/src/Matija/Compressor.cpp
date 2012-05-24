@@ -17,6 +17,18 @@ Compressor::Compressor(char eof, Alphabet alpha, int bucketSize) : alphabet(alph
     BWTEof   = eof;
     this->bucketSize = bucketSize;
     this->superBucketSize = bucketSize * bucketSize;
+
+    // Initialize MTFCode map for alphabet
+    for (int i = 1; i < alphabet.size(); i++)
+    {
+        vector<bool> bin = MTFToBin(i);
+        string binStr = "";
+        for (int j = 0; j < bin.size(); j++)
+            binStr += bin[j] == 0 ? '0' : '1';
+
+        alphabet.putCode(binStr, i);
+        cout << "dodao u mapu: " << binStr << " -> " << i << endl;
+    }
 }
 
 /** Getter for MTFStates
@@ -44,13 +56,13 @@ class SASort
         const string& T;
 };
 
-/** Return compressed original text
+/** Returns compressed original text
  *
  *  Main (and only) public class
- *
  */
 BitArray Compressor::compress(string& T)
 {
+    n = T.length() + 1; // Because we add EOF character
     initNOs(T);
     return getVarLengthPrefixEncoding( getMTF(getBWT(T)) );
 }
@@ -58,6 +70,8 @@ BitArray Compressor::compress(string& T)
 /** Initializes bNO and sbNO structures
  *  Counts occurrences of each character and stores that in structures
  *  in appropriate format
+ *
+ *  Side effect: initializes bNO and sbNO structures
  */
 void Compressor::initNOs(const string& T)
 {
@@ -70,12 +84,12 @@ void Compressor::initNOs(const string& T)
         currSuperBucket[T[i]]++;
 
         // Reached end of bucket
-        if (isBucketEnd(i, T.length()))
+        if (isBucketEnd(i))
         {
             bNO.push_back(currBucket);
         }
         // Reached end of superbucket
-        if (isSuperBucketEnd(i, T.length()))
+        if (isSuperBucketEnd(i))
         {
             sbNO.push_back(currSuperBucket);
             // Clear value of bNO - start counting from 0 again
@@ -83,7 +97,6 @@ void Compressor::initNOs(const string& T)
         }
     }
 }
-
 
 vector<int> Compressor::getSuffixArray(const string& T)
 {
@@ -126,7 +139,7 @@ string Compressor::getBWT(string& T)
  * is accessed, it is moved to the front of list (so its code is now 0).
  * This way we get consecutive 0's for consecutive same characters.
  *
- * Side effect: Initalize MTF structure for each bucket
+ * Side effect: Initalize MTF structure for each bucket (takes picture before encoding bucket)
  */
 vector<int> Compressor::getMTF(const string& L)
 {
@@ -155,6 +168,12 @@ vector<int> Compressor::getMTF(const string& L)
                 break;
             }
     }
+    
+    cout << "==MTF Code==================================" << endl;
+    for (int i = 0; i < MTF.size(); i++)
+        cout << MTF[i] << " ";
+    cout << endl;
+
     return MTF;
 }
 
@@ -175,13 +194,10 @@ vector<int> Compressor::getMTF(const string& L)
  *
  *  Side effect: initializes structures sbW, bW and MZ
  */
-
-void dumpVector(vector<bool> a);
-
 BitArray Compressor::getVarLengthPrefixEncoding(const vector<int>& MTF)
 {
-    int currBucketSize;
-    int currSuperBucketSize;
+    int currBucketSize = 0;
+    int currSuperBucketSize = 0;
 
     vector<bool> vlpc(0);
     // Iterate over MTF
@@ -189,31 +205,25 @@ BitArray Compressor::getVarLengthPrefixEncoding(const vector<int>& MTF)
     {
         // If I encounter non-zero number
         if (MTF[i] != 0)
-        {   
-            // Add leading zeros
-            int leadingZeros = (int)trunc(log2(MTF[i] + 1));
-            for (int j = 0; j < leadingZeros; j++)
-                vlpc.push_back(0);
-
-            // Add binary rep of MTF[i]
-            vector<bool> bin = intToBin(MTF[i] + 1);
-            for (int j = 0; j < bin.size(); j++)
+        {  
+            vector<bool> bin = MTFToBin(MTF[i]);
+            for (int j = 0; j < bin.size(); j++)    // BitArray interakcija    
                 vlpc.push_back(bin[j]);
 
             // Update sizes
-            int codeLength = leadingZeros + bin.size();
+            int codeLength = bin.size();
             currBucketSize += codeLength;
             currSuperBucketSize += codeLength;
 
             // Reached end of the bucket
-            if (isBucketEnd(i, MTF.size()))
+            if (isBucketEnd(i))
             {
                 bW.push_back(currBucketSize);
                 if (MZ.size() < (i + 1) / bucketSize)
                     MZ.push_back(0);        // Inicijaliziraj nekako drugacije da vec bude sve 0 - mozda
             }
             // Reached end of the superBucket
-            if (isSuperBucketEnd(i, MTF.size()))
+            if (isSuperBucketEnd(i))
             {
                 sbW.push_back(currSuperBucketSize);
                 // Restart bucket counter
@@ -225,71 +235,178 @@ BitArray Compressor::getVarLengthPrefixEncoding(const vector<int>& MTF)
             // Count number of consecutive zeroes
             int zeroSeqStart = i;
             int zeroSeqLength = 0;
-            for(; MTF[i] == 0 && i < MTF.size(); zeroSeqLength++, i++); i--;
+            for(; MTF[i] == 0 && i < MTF.size(); zeroSeqLength++, i++); i--; // i now points to the last 0
             int zeroSeqEnd = zeroSeqStart + zeroSeqLength - 1;
 
-            // To binary
-            vector<bool> bin = intToBin(zeroSeqLength + 1);
-            for (int j = bin.size() - 1; j >= 1; j--)
+            // Convert zero sequence to binary
+            deque<bool> bin = zeroSeqEncode(zeroSeqLength);
+            deque<bool>::iterator it;
+            for (it = bin.begin(); it != bin.end(); it++)
             {
-                if (bin[j] == 0) { vlpc.push_back(1); vlpc.push_back(0); }
-                if (bin[j] == 1) { vlpc.push_back(1); vlpc.push_back(1); }
+                if (*it == 0) { vlpc.push_back(1); vlpc.push_back(0); }
+                if (*it == 1) { vlpc.push_back(1); vlpc.push_back(1); }
             }
 
             // Loop over zeroes
-            int zeroCount = 0;
-            for (int j = zeroSeqStart; j <= zeroSeqLength; j++)
+            for (int pos = zeroSeqStart; pos <= zeroSeqEnd; pos++)
             {
                 // If I reach end of bucket or end of zero sequence
-                // Look how much zeroes I need
-                // Take minimal number to cover that
-                // Update bin and Ws
+                if (isBucketEnd(pos) || pos == zeroSeqEnd)
+                {
+                    int zeroesNeeded = pos - zeroSeqStart + 1;
 
-                // Go on
+                    // Take minimal amount of digits from bin to cover zeroesNeeded
+                    int zeroesTaken = 0;
+                    int bitPos = 0;
+                    while (zeroesTaken < zeroesNeeded && bin.size() > 0)
+                    {
+                        zeroesTaken += (bin.front() + 1) * pow(2, bitPos);
+                        bin.pop_front();
+                        bitPos++;
+                    }
+                    int zeroesMissing = min(0, zeroesNeeded - zeroesTaken);
+                    MZ.push_back(zeroesMissing);
+
+                    int bitsTaken = bitPos * 2;         // Because each bit is encoded with 2 bits in final code
+                    currBucketSize += bitsTaken;       
+                    currSuperBucketSize += bitsTaken;
+
+                    // Reached end of the bucket
+                    if (isBucketEnd(pos))
+                    {
+                        bW.push_back(currBucketSize);
+                    }
+                    // Reached end of the superBucket
+                    if (isSuperBucketEnd(pos))
+                    {
+                        sbW.push_back(currSuperBucketSize);
+                        // Restart bucket counter
+                        currBucketSize = 0;
+                    }
+                    zeroSeqStart = pos + 1;
+                }
             }
         }
     }
     return BitArray(vlpc);
 }
 
-/** For testing
- *  Prints vector to stdout
+/** Encodes zero sequence to binary
+ *  O^m - write number (m + 1) in binary, least significant bit first
+ *  discard the most significant bit
  */
-void dumpVector(vector<bool> a)
+deque<bool> Compressor::zeroSeqEncode(int m)
 {
-    for (int i = 0; i < a.size(); i++)
-        cout << a[i];
-    cout << " ";
+    m += 1;
+    deque<bool> binary;
+    while (m > 0)
+    {
+        binary.push_back(m % 2);
+        m /= 2;
+    }
+    binary.pop_back();  // Delete most significant bit
+    return binary;
 }
 
-/** Convert integer value to binary
+/** Converts non-zero MTF digit to binary prefix code
+ */
+vector<bool> Compressor::MTFToBin(int i)
+{
+    vector<bool> vlpc;
+
+    // Add leading zeros
+    int leadingZeros = (int)trunc(log2(i + 1));
+    for (int j = 0; j < leadingZeros; j++)  
+        vlpc.push_back(0);
+
+    // Add binary rep of MTF[i]
+    vector<bool> bin = intToBin(i + 1);
+    for (int j = 0; j < bin.size(); j++)       
+        vlpc.push_back(bin[j]);
+
+    return vlpc;
+}
+
+/** Returns binary representation of number
  */
 vector<bool> Compressor::intToBin(int a)
 {
-    vector<bool> binary(0);
+    vector<bool>binary;
     while (a > 0)
     {
         binary.push_back(a % 2);
         a /= 2;
     }
-    reverse (binary.begin(), binary.end());
+    reverse(binary.begin(), binary.end());
     return binary;
 }
 
 /** Checks if end of bucket is reached
  */
-bool Compressor::isBucketEnd(int pos, int size)
+bool Compressor::isBucketEnd(int pos)
 {
-    if ((pos + 1) % bucketSize == 0 || pos == size - 1)
+    if ((pos + 1) % bucketSize == 0 || pos == n - 1)
         return true;
     return false;
 }
 
 /** Checks if end of superBucket is reached
  */
-bool Compressor::isSuperBucketEnd(int pos, int size)
+bool Compressor::isSuperBucketEnd(int pos)
 {
-    if ((pos + 1) % superBucketSize == 0 || pos == size - 1)
+    if ((pos + 1) % superBucketSize == 0 || pos == n - 1)
         return true;
     return false;
+}
+
+/** Decodes given BitArray back to letters
+ *  Used for testing purposes
+ */
+vector<int> Compressor::decode(const BitArray& bits) {
+    
+    vector<int> decoded;
+    string word = "";
+    for (int i = 0; i < bits.size(); i++)
+    {
+        char bit = bits.bitCharAt(i);
+        if (bit == '0' || word != "") // Normal number
+        {
+            word += bit; 
+            if (alphabet.containsCode(word))
+            {
+                int mtfCode = alphabet.decodeToMTF(word);
+                cout << "prepoznao sam: " << word << " -> " << mtfCode << endl;
+                // Decode from MTF here and add to solution
+                decoded.push_back(mtfCode);
+                word = "";
+            }
+            continue;
+        }
+        if (word == "" && bit == '1') // Zero sequence
+        {
+            cout << "pocinje niz nula" << endl;
+
+            int j = 0;
+            int zeroNum = 0;
+            while (i < bits.size() && bits.bitCharAt(i) == '1')
+            {
+                string zeroCode = "1" + string(1, bits.bitCharAt(i + 1)); 
+                cout << "nasao: " << zeroCode << endl;
+                if (zeroCode == "11")
+                   zeroNum += (1 + 1) * pow(2, j); 
+                if (zeroCode == "10")
+                   zeroNum += (0 + 1) * pow(2, j); 
+                
+                j++;
+                i += 2; // Skip by 2
+            }
+            i--; // One back, auto ++
+
+            // Decode fom MTF here and add to solution
+            for (int k = 0; k < zeroNum; k++)
+                decoded.push_back(0);
+        }
+    }
+
+    return decoded;
 }

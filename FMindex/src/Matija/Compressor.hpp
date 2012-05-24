@@ -8,6 +8,7 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <deque>
 
 typedef int Index;
 
@@ -57,6 +58,7 @@ class Compressor
         Alphabet alphabet;      // Alphabet used in encoding
         
         // OPP data structures
+        int n;                  // Length of input text + EOF character
         int bucketSize;         // Size of a bucket (l in article)         
         int superBucketSize;    // Size of a super bucket (l^2 in article)
         
@@ -129,25 +131,47 @@ class Compressor
          */
         BitArray getVarLengthPrefixEncoding(const vector<int>& MTF);    // OPTIMIZIRATI
 
-        /** Convert integer value to binary
+        /** Encode zero sequence to binary according to algorithm in article
+         *  
+         *  @param m Length of zero sequence
+         *  @return encoded zero sequence
+         */
+        deque<bool> zeroSeqEncode(int m);
+
+        /** Converts non-zero MTF digit to binary prefix code
          *
-         *  @param a Input value
-         *  @return  binary representation     
+         *  @param i    MTF digit
+         *  @returns    Binary representation of i
+         */
+        vector<bool> MTFToBin(int i);
+
+        /** Returns binary representation of given number
+         *
+         *  @param  Input number
+         *  @return Binary representation of a
          */
         vector<bool> intToBin(int a);
 
         /** Checks if last digit in bucket is reached (0-based indexing)
          *
          *  @param pos  Position we are currently looking at
-         *  @param size Size of array we are looping through
+         *  @return     True if end of bucket is reached
          */
-        bool isBucketEnd(int pos, int size);
+        bool isBucketEnd(int pos);
 
         /** Checks if last digit in superBucket is reached (0-based indexing)
          *
          *  @param pos  Position we are currently looking at
-         *  @param size Size of array we are looping through
+         *  @return     True if end of superBucket is reached
          */
-        bool isSuperBucketEnd(int pos, int size);
+        bool isSuperBucketEnd(int pos);
+
+        /** Decodes given BitArray back to letters
+         *  Used for testing purposes
+         *
+         *  @param bits Encoded text in binary
+         *  @return     Decoded text
+         */
+        vector<int> decode(const BitArray& bits);
 };
 #endif // COMPRESSOR_HPP
