@@ -59,8 +59,8 @@ int main()
     compressedText.print();
 
     cout << "==Decoded text (for testing)=============================" << endl;
-    vector<int> backToMTF = myCompressor.decode(compressedText);
-    dumpVector(backToMTF);
+    string decodedText = myCompressor.decode(compressedText);
+    cout << decodedText << endl;
 
     cout << endl;
     cout << "==MTF States for each bucket=============================" << endl;

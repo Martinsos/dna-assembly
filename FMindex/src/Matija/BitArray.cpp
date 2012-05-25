@@ -3,6 +3,13 @@
 
 using namespace std;
 
+/** Empty constructor
+ */
+BitArray::BitArray()
+{
+    
+}
+
 /** Constructor
  */
 BitArray::BitArray(vector<bool> bits)

@@ -48,6 +48,14 @@ class Compressor
         
         /* --------------------------------- Test methods --------------------------------------- */
 
+        /** Decodes given BitArray back to letters
+         *  Used for testing purposes
+         *
+         *  @param bits Encoded text in binary
+         *  @return     Decoded text
+         */
+        string decode(const BitArray& bits);
+
         /** Getter for MTFStates
          */
         vector< list<char> > getMTFStates();
@@ -56,6 +64,7 @@ class Compressor
 
         char BWTEof;            // Character appended to T, end-of-file
         Alphabet alphabet;      // Alphabet used in encoding
+        BitArray Z;             // Encoded text
         
         // OPP data structures
         int n;                  // Length of input text + EOF character
@@ -91,6 +100,25 @@ class Compressor
         vector<int> bW;
 
         /* --------------------------------------- Methods ----------------------------------------- */ 
+
+        /** Returns how many times c appears in first q letters of L (BWT of input text)
+         *
+         *  @param c    Char whose appearance is counted
+         *  @param q    Determines how far to look in L
+         *  @returns    Number of occurrences of c in first q letters of L
+         */
+        int occ(char c, int q); 
+
+        /** Counts occurrences of c in first h letters in bucket starting at BZStart
+         *
+         *  @param c                Character whose occurrence is counted
+         *  @param h                Number of letters to look at from start of bucket
+         *  @param BZStart          Index where bucket starts in Z
+         *  @param MTFState         State of MTFList before encoding this bucket
+         *  @param missingZeroes    Missing zeroes at beginning of given bucket
+         *  @returns                Occurrences of c in first h letters of given bucket
+         */
+        int S(char c, int h, int BZStart, list<char> MTFState, int missingZeroes);
 
         /** Initializes bNO and sbNO structures
          *
@@ -165,13 +193,5 @@ class Compressor
          *  @return     True if end of superBucket is reached
          */
         bool isSuperBucketEnd(int pos);
-
-        /** Decodes given BitArray back to letters
-         *  Used for testing purposes
-         *
-         *  @param bits Encoded text in binary
-         *  @return     Decoded text
-         */
-        vector<int> decode(const BitArray& bits);
 };
 #endif // COMPRESSOR_HPP

@@ -64,7 +64,8 @@ BitArray Compressor::compress(string& T)
 {
     n = T.length() + 1; // Because we add EOF character
     initNOs(T);
-    return getVarLengthPrefixEncoding( getMTF(getBWT(T)) );
+    Z = getVarLengthPrefixEncoding( getMTF(getBWT(T)) );
+    return Z;
 }
 
 /** Initializes bNO and sbNO structures
@@ -362,7 +363,7 @@ bool Compressor::isSuperBucketEnd(int pos)
 /** Decodes given BitArray back to letters
  *  Used for testing purposes
  */
-vector<int> Compressor::decode(const BitArray& bits) {
+string Compressor::decode(const BitArray& bits) {
     
     vector<int> decoded;
     string word = "";
@@ -375,7 +376,6 @@ vector<int> Compressor::decode(const BitArray& bits) {
             if (alphabet.containsCode(word))
             {
                 int mtfCode = alphabet.decodeToMTF(word);
-                cout << "prepoznao sam: " << word << " -> " << mtfCode << endl;
                 // Decode from MTF here and add to solution
                 decoded.push_back(mtfCode);
                 word = "";
@@ -384,14 +384,11 @@ vector<int> Compressor::decode(const BitArray& bits) {
         }
         if (word == "" && bit == '1') // Zero sequence
         {
-            cout << "pocinje niz nula" << endl;
-
             int j = 0;
             int zeroNum = 0;
             while (i < bits.size() && bits.bitCharAt(i) == '1')
             {
                 string zeroCode = "1" + string(1, bits.bitCharAt(i + 1)); 
-                cout << "nasao: " << zeroCode << endl;
                 if (zeroCode == "11")
                    zeroNum += (1 + 1) * pow(2, j); 
                 if (zeroCode == "10")
@@ -407,6 +404,113 @@ vector<int> Compressor::decode(const BitArray& bits) {
                 decoded.push_back(0);
         }
     }
+    // Decode MTF to string
+    list<char> MTFState = MTFStates[0];
+    string decodedString = "";
+    for (int i = 0; i < decoded.size(); i++)
+    {
+        list<char>::iterator it;
+        int pos;
+        for (pos = 0, it = MTFState.begin(); it != MTFState.end(); it++, pos++)
+            if (pos == decoded[i])
+            {
+                decodedString += *it;
+                MTFState.push_front(*it);
+                MTFState.erase(it);
+                break;
+            }
+    }
 
-    return decoded;
+    return decodedString;
+}
+
+/** Counts number of occurrences of c in first q letters of L
+ *  
+ *  Reads occurrences of c in first left superBucket
+ *  Reads occurrences of c in first left bucket
+ *  Counts occurrences of c in first h letters in bucket in which q falls
+ *  Sums these 3 numbers and returns them - it is occ(c, q)
+ */
+int Compressor::occ(char c, int q)
+{
+    int occ = 0;
+    int BZStart = 0;
+
+    // Determine bucket containing q-th character of L
+    int BL = ((q + bucketSize - 1) / bucketSize) - 1;  // 0 - based indexing, so we substract 1
+
+    // Find character in BL to count up to (starting from 1)
+    int h = q - BL * bucketSize;
+
+    // Determine superBucket containing q-th character of L
+    int SBL = ((q + superBucketSize - 1) / superBucketSize) - 1;  // 0 - based indexing, so we substract 1
+
+    // Add previous occurrences if possible
+    if (SBL > 0)    // SuperBucket - if not first superBucket
+    {
+        occ += sbNO[SBL - 1][c];
+        BZStart += sbW[SBL - 1];
+    }
+    if (BL % bucketSize != 0)   // Bucket - if not first bucket after superBucket
+    {
+        occ += bNO[BL - 1][c];
+        BZStart += bW[BL - 1];
+    }
+
+    // Decode first h characters in BZ and count c's
+    occ += S(c, h, BZStart, MTFStates[BL], MZ[BL]);
+
+    return occ;
+}
+
+/** Counts occurrences of c in first h letters in bucket starting at BZStart
+ */
+int Compressor::S(char c, int h, int BZStart, list<char> MTFState, int missingZeroes)
+{
+    int occ = 0;
+    // Decode h letters to MTF numbers
+    vector<int> MTFNums;
+    for (int i = 0; i < missingZeroes; i++)
+        MTFNums.push_back(0);
+
+    int pos = BZStart;
+    while (MTFNums.size() < h)
+    {
+         if (Z.bitCharAt(pos) == '0') // Non-zero number
+         {
+            string word = "";
+            while (alphabet.containsCode(word) == false)
+            {
+                word += Z.bitCharAt(pos);
+                pos++;
+            }    
+            MTFNums.push_back(alphabet.decodeToMTF(word));
+         }
+         else   // Zero sequence
+         {
+            int j = 0;
+            int zeroNum = 0;
+            while (pos < Z.size() && Z.bitCharAt(pos) == '1')
+            {
+                string zeroCode = "1" + string(1, Z.bitCharAt(pos + 1)); 
+                if (zeroCode == "11")
+                   zeroNum += (1 + 1) * pow(2, j); 
+                if (zeroCode == "10")
+                   zeroNum += (0 + 1) * pow(2, j); 
+
+                j++;
+                pos += 2; // Skip by 2
+
+                if (zeroNum + MTFNums.size() >= h)
+                    break;
+            }
+            for (int k = 0; k < zeroNum; k++)
+                MTFNums.push_back(0);
+         }
+    }
+
+    // Count occurrences of c
+
+    return 5; 
+    
 }

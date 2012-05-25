@@ -32,6 +32,10 @@ class BitArray
          */
         BitArray(vector<bool> bits);
 
+        /** Empty constructor
+         */
+        BitArray();
+
     private:
         vector<bool> bits;
 };
