@@ -1,0 +1,15 @@
+#ifndef FER_SWWRAPPER
+#define FER_SWWRAPPER
+
+#include <vector>
+#include <utility>
+
+namespace fer { namespace util {
+
+void smithWaterman(std::vector<double>* score,
+		   const char* text,
+		   const char* patterns[]);
+
+}}
+
+#endif
