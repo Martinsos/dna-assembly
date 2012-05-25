@@ -8,6 +8,7 @@
 #include <vector>
 #include <list>
 #include <map>
+#include <deque>
 
 typedef int Index;
 
@@ -47,6 +48,14 @@ class Compressor
         
         /* --------------------------------- Test methods --------------------------------------- */
 
+        /** Decodes given BitArray back to letters
+         *  Used for testing purposes
+         *
+         *  @param bits Encoded text in binary
+         *  @return     Decoded text
+         */
+        string decode(const BitArray& bits);
+
         /** Getter for MTFStates
          */
         vector< list<char> > getMTFStates();
@@ -55,8 +64,10 @@ class Compressor
 
         char BWTEof;            // Character appended to T, end-of-file
         Alphabet alphabet;      // Alphabet used in encoding
+        BitArray Z;             // Encoded text
         
         // OPP data structures
+        int n;                  // Length of input text + EOF character
         int bucketSize;         // Size of a bucket (l in article)         
         int superBucketSize;    // Size of a super bucket (l^2 in article)
         
@@ -89,6 +100,25 @@ class Compressor
         vector<int> bW;
 
         /* --------------------------------------- Methods ----------------------------------------- */ 
+
+        /** Returns how many times c appears in first q letters of L (BWT of input text)
+         *
+         *  @param c    Char whose appearance is counted
+         *  @param q    Determines how far to look in L
+         *  @returns    Number of occurrences of c in first q letters of L
+         */
+        int occ(char c, int q); 
+
+        /** Counts occurrences of c in first h letters in bucket starting at BZStart
+         *
+         *  @param c                Character whose occurrence is counted
+         *  @param h                Number of letters to look at from start of bucket
+         *  @param BZStart          Index where bucket starts in Z
+         *  @param MTFState         State of MTFList before encoding this bucket
+         *  @param missingZeroes    Missing zeroes at beginning of given bucket
+         *  @returns                Occurrences of c in first h letters of given bucket
+         */
+        int S(char c, int h, int BZStart, list<char> MTFState, int missingZeroes);
 
         /** Initializes bNO and sbNO structures
          *
@@ -129,25 +159,39 @@ class Compressor
          */
         BitArray getVarLengthPrefixEncoding(const vector<int>& MTF);    // OPTIMIZIRATI
 
-        /** Convert integer value to binary
+        /** Encode zero sequence to binary according to algorithm in article
+         *  
+         *  @param m Length of zero sequence
+         *  @return encoded zero sequence
+         */
+        deque<bool> zeroSeqEncode(int m);
+
+        /** Converts non-zero MTF digit to binary prefix code
          *
-         *  @param a Input value
-         *  @return  binary representation     
+         *  @param i    MTF digit
+         *  @returns    Binary representation of i
+         */
+        vector<bool> MTFToBin(int i);
+
+        /** Returns binary representation of given number
+         *
+         *  @param  Input number
+         *  @return Binary representation of a
          */
         vector<bool> intToBin(int a);
 
         /** Checks if last digit in bucket is reached (0-based indexing)
          *
          *  @param pos  Position we are currently looking at
-         *  @param size Size of array we are looping through
+         *  @return     True if end of bucket is reached
          */
-        bool isBucketEnd(int pos, int size);
+        bool isBucketEnd(int pos);
 
         /** Checks if last digit in superBucket is reached (0-based indexing)
          *
          *  @param pos  Position we are currently looking at
-         *  @param size Size of array we are looping through
+         *  @return     True if end of superBucket is reached
          */
-        bool isSuperBucketEnd(int pos, int size);
+        bool isSuperBucketEnd(int pos);
 };
 #endif // COMPRESSOR_HPP

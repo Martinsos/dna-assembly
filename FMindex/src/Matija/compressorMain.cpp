@@ -25,6 +25,13 @@ void dumpMap(map<char, int>& m)
    cout << "-----------------------------" << endl;
 }
 
+void dumpVector(vector<int> a)
+{
+    for (int i = 0; i < a.size(); i++)
+        cout << a[i] << " ";
+    cout << endl;
+}
+
 int main()
 {   
     string T = "pipemississippi";
@@ -45,10 +52,15 @@ int main()
     
     cout << "==Input text=============================================" << endl;
     cout << T << endl << endl;
-
+    
     cout << "==Variable length prefix encoding========================" << endl;
     BitArray compressedText = myCompressor.compress(T);
+    cout << "Number of bits: " << compressedText.size() << endl;
     compressedText.print();
+
+    cout << "==Decoded text (for testing)=============================" << endl;
+    string decodedText = myCompressor.decode(compressedText);
+    cout << decodedText << endl;
 
     cout << endl;
     cout << "==MTF States for each bucket=============================" << endl;
@@ -59,6 +71,7 @@ int main()
         dumpList(MTFStates[i]);
     }
 
+    /*
     cout << endl;
     cout << "==Buckets NO=============================================" << endl;
     for (int i = 0; i < myCompressor.bNO.size(); i++)
@@ -73,6 +86,21 @@ int main()
     {
         cout << "SuperBucket " << i + 1 << ": " << endl;
         dumpMap(myCompressor.sbNO[i]);
+    }
+    */
+    
+    cout << endl;
+    cout << "==Buckets W==============================================" << endl;
+    for (int i = 0; i < myCompressor.bW.size(); i++)
+    {
+        cout << "Bucket " << i + 1 << ": " << myCompressor.bW[i] << endl;
+    }
+
+    cout << endl;
+    cout << "==Super Buckets W========================================" << endl;
+    for (int i = 0; i < myCompressor.sbW.size(); i++)
+    {
+        cout << "Super Bucket " << i + 1 << ": " << myCompressor.sbW[i] << endl;
     }
 
     return 0;

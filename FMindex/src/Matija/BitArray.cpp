@@ -3,6 +3,13 @@
 
 using namespace std;
 
+/** Empty constructor
+ */
+BitArray::BitArray()
+{
+    
+}
+
 /** Constructor
  */
 BitArray::BitArray(vector<bool> bits)
@@ -19,3 +26,17 @@ void BitArray::print()
     cout << endl;
 }
 
+/** Returns size
+ */
+int BitArray::size() const
+{
+    return bits.size();
+}
+
+/** Returns bit at given position as char
+ */ 
+char BitArray::bitCharAt(int pos) const
+{
+    if (bits[pos] == true) return '1';
+    return '0';
+}

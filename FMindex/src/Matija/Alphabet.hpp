@@ -3,6 +3,8 @@
 
 #include <vector>
 #include <list>
+#include <string>
+#include <map>
 
 using namespace std;
 
@@ -17,6 +19,12 @@ class Alphabet
          */
         Alphabet(vector<char> letters_);
 
+        /** Returns number of letters in alphabet (including EOF)
+         *  
+         *  @returns    Size of alphabet
+         */
+        int size();
+
         /** Returns sorted vector representation of alphabet
          */
         vector<char> toSortedVector();
@@ -25,8 +33,41 @@ class Alphabet
          */
         list<char> toSortedList();
 
+        /** Checks if given code exists for this alphabet
+         *
+         *  @param codedWord    Code that we check
+         *  @returns            True if code exists
+         */
+        bool containsCode(const string& codedWord);
+
+        /** Gets MTF code for given binary coded word
+         *
+         *  @params     codedWord Word to decode
+         *  @returns    MTF code of codedWord
+         */
+        int decodeToMTF(const string& codedWord);
+
+        /** Puts key and value to MTFCodes map
+         *  
+         *  @params binCode key
+         *  @params MTFCode value
+         */
+        void putCode(string binCode, int MTFCode);
+
     private:
+        /** Contains letters of alphabet
+         */
         vector<char> letters;
+        
+        /** Maps binary code to MTF code
+         *  for numbers {1, alphabet().size - 1}.
+         *
+         *  Initialized in constructor
+         */
+        map<string, int> MTFCodes;
+
+        
+
 };
 
 #endif // ALPHABET_HPP
