@@ -122,9 +122,9 @@ class Compressor
 
         /** Initializes bNO and sbNO structures
          *
-         *  @param T Input text
+         *  @param L BWT of input text
          */
-        void initNOs(const string& T);
+        void initNOs(const string& L);
 
         /** Calculate BWT of input text
          *
@@ -134,6 +134,8 @@ class Compressor
         string getBWT(string& T);
         
         /** Get suffix array of input text
+         *
+         *  Side effect: initializes sbNO and bNO structures (calls initNOs)
          *
          *  @param T Input text
          *  @return  Indices referencing on T 
@@ -193,5 +195,14 @@ class Compressor
          *  @return     True if end of superBucket is reached
          */
         bool isSuperBucketEnd(int pos);
+
+        /** Decodes MTF code back to original text
+         *  Uses given MTFState
+         *
+         *  @param MTFCode  code to decode
+         *  @param MTFState Picture of MTF table for bucket being decoded
+         *  @returns        Decoded text
+         */
+        string decodeMTF(const vector<int>& MTFCode, list<char> MTFState); // Mozda bolje ovo ubactiti on-fly u S
 };
 #endif // COMPRESSOR_HPP
