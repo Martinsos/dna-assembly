@@ -1,4 +1,9 @@
 all: SmithWaterman.o
 
 SmithWaterman.o : SmithWaterman.cpp SmithWaterman.h
-	$(GXX) -c SmithWaterman.cpp -o SmithWaterman.o $(FLAGS)
+	$(GXX) $(INCLUDES)  \
+		-L$(PREFIX)/external/swSharp/lib\
+		-lswsharp \
+		-static \
+		-o SmithWaterman.o \
+		-c SmithWaterman.cpp 

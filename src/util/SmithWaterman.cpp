@@ -15,6 +15,8 @@ void smithWaterman(vector<double>* score,
 		   char* queryStr,
 		   char* databaseStr[],
 		   const int databaseSize) {
+  score->resize(databaseSize);
+
   char* swPrefsInit[] = { NULL };
   SWPrefs* swPrefs = swPrefsCreate(swPrefsInit);
 

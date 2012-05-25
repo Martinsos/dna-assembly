@@ -8,6 +8,7 @@
 
 #include "util/SmithWaterman.h"
 using namespace std;
+using namespace fer::util;
 
 const int kChunkLen = 12;
 const int kMaxLengthOffset = 3;
@@ -192,6 +193,7 @@ int main(int argc, char* argv[]) {
     int suffixLo = 0;
     int suffixHi = 0;
     int combos = 0;
+    vector<pair<int, int> > kandidati;
     
     for (int i = 0; i < forwardIndex[prefixHash].size(); ++i) {
       if (i && forwardIndex[prefixHash][i-1] + kChunkLen >= forwardIndex[prefixHash][i]) {
@@ -225,8 +227,33 @@ int main(int argc, char* argv[]) {
 	maxCombos = combos;
 	sta = buffer;
       }
+
+      for (int j = suffixLo; j <= suffixHi; ++j) {
+	kandidati.push_back(make_pair(forwardIndex[prefixHash][i],
+				      forwardIndex[suffixHash][j]));
+      }
     }
     
+    char** kandidatiStr = new char*[(int)kandidati.size()];
+
+    for (int i = 0; i < (int)kandidati.size(); ++i) {
+      int len = kandidati[i].second - kandidati[i].first + 1;
+      kandidatiStr[i] = new char[len+1];
+      for (int j = kandidati[i].first; j <= kandidati[i].second; ++j) {
+	//	kandidatiStr[i][j-kandidati[i].first] = // jebemu sve, moram imati dna u memoriji
+      }
+      kandidatiStr[i][len] = '\0';
+    }
+    
+    vector<double> score;
+    smithWaterman(&score, buffer,
+		  kandidatiStr, (int)kandidati.size());
+
+    for (int i = 0; i < (int)kandidati.size(); ++i) {
+      delete[] kandidatiStr[i];
+    }
+    delete[] kandidatiStr;
+
     ++total;
     found += (combos > 0);
     totalCombos += combos;
