@@ -11,6 +11,8 @@
 using namespace std;
 
 /** Constructor
+ *
+ *  Initializes MTFCode map for alphabet
  */
 Compressor::Compressor(char eof, Alphabet alpha, int bucketSize) : alphabet(alpha)
 {
@@ -63,7 +65,6 @@ class SASort
 BitArray Compressor::compress(string& T)
 {
     n = T.length() + 1; // Because we add EOF character
-    initNOs(T);
     Z = getVarLengthPrefixEncoding( getMTF(getBWT(T)) );
     return Z;
 }
@@ -74,15 +75,15 @@ BitArray Compressor::compress(string& T)
  *
  *  Side effect: initializes bNO and sbNO structures
  */
-void Compressor::initNOs(const string& T)
+void Compressor::initNOs(const string& L)
 {
     map<char, int> currBucket;
     map<char, int> currSuperBucket;
 
-    for (int i = 0; i < T.length(); i++)
+    for (int i = 0; i < L.length(); i++)
     {
-        currBucket[T[i]]++;
-        currSuperBucket[T[i]]++;
+        currBucket[L[i]]++;
+        currSuperBucket[L[i]]++;
 
         // Reached end of bucket
         if (isBucketEnd(i))
@@ -114,8 +115,9 @@ vector<int> Compressor::getSuffixArray(const string& T)
 }   
 
 /** Calculates BWT for input text
- *
  *  Appends BWTEof to the end of T - that's why T is not const
+ *
+ *  Side effect: initializes sbNO and bNO structures (calls initNOs)
  */
 string Compressor::getBWT(string& T)
 {
@@ -129,7 +131,8 @@ string Compressor::getBWT(string& T)
             bwt += string(1, T[T.length() - 1]);
         else
             bwt += string(1, T[SA[i] - 1]);
-
+    
+    initNOs(bwt);
     return bwt;
 }
 
@@ -265,7 +268,7 @@ BitArray Compressor::getVarLengthPrefixEncoding(const vector<int>& MTF)
                         bin.pop_front();
                         bitPos++;
                     }
-                    int zeroesMissing = min(0, zeroesNeeded - zeroesTaken);
+                    int zeroesMissing = max(0, zeroesNeeded - zeroesTaken);
                     MZ.push_back(zeroesMissing);
 
                     int bitsTaken = bitPos * 2;         // Because each bit is encoded with 2 bits in final code
@@ -405,23 +408,7 @@ string Compressor::decode(const BitArray& bits) {
         }
     }
     // Decode MTF to string
-    list<char> MTFState = MTFStates[0];
-    string decodedString = "";
-    for (int i = 0; i < decoded.size(); i++)
-    {
-        list<char>::iterator it;
-        int pos;
-        for (pos = 0, it = MTFState.begin(); it != MTFState.end(); it++, pos++)
-            if (pos == decoded[i])
-            {
-                decodedString += *it;
-                MTFState.push_front(*it);
-                MTFState.erase(it);
-                break;
-            }
-    }
-
-    return decodedString;
+    return decodeMTF(decoded, MTFStates[0]);
 }
 
 /** Counts number of occurrences of c in first q letters of L
@@ -438,27 +425,35 @@ int Compressor::occ(char c, int q)
 
     // Determine bucket containing q-th character of L
     int BL = ((q + bucketSize - 1) / bucketSize) - 1;  // 0 - based indexing, so we substract 1
+    cout << "Bucket u kojem je q-to slovo: " << BL << endl;
 
     // Find character in BL to count up to (starting from 1)
     int h = q - BL * bucketSize;
+    cout << "U tom bucketu brojim do: " << h << endl;
 
     // Determine superBucket containing q-th character of L
     int SBL = ((q + superBucketSize - 1) / superBucketSize) - 1;  // 0 - based indexing, so we substract 1
+    cout << "superBucket u kojem je q-to slovo: " << SBL << endl;
 
     // Add previous occurrences if possible
     if (SBL > 0)    // SuperBucket - if not first superBucket
     {
+        cout << "gledam po superbucketu: " << sbNO[SBL -1][c] << endl;
         occ += sbNO[SBL - 1][c];
         BZStart += sbW[SBL - 1];
     }
     if (BL % bucketSize != 0)   // Bucket - if not first bucket after superBucket
     {
+        cout << "gledam bucket prije, u njemu pise: " << bNO[BL - 1][c] << endl;
         occ += bNO[BL - 1][c];
         BZStart += bW[BL - 1];
     }
 
     // Decode first h characters in BZ and count c's
-    occ += S(c, h, BZStart, MTFStates[BL], MZ[BL]);
+    int inBucket = S(c, h, BZStart, MTFStates[BL], MZ[BL]);
+    occ += inBucket;
+
+    cout << "U bucketu sam jos nasao: " << inBucket << endl;
 
     return occ;
 }
@@ -469,12 +464,16 @@ int Compressor::S(char c, int h, int BZStart, list<char> MTFState, int missingZe
 {
     int occ = 0;
     // Decode h letters to MTF numbers
-    vector<int> MTFNums;
-    for (int i = 0; i < missingZeroes; i++)
-        MTFNums.push_back(0);
+    vector<int> MTFCode;
+    for (int i = 0; i < missingZeroes && i < h; i++)    
+        MTFCode.push_back(0);
+
+    cout << "-------------------------" << endl;
+    cout << "missingZeroes: " << missingZeroes << endl;
+    cout << "pocinjem od: " << BZStart << endl;
 
     int pos = BZStart;
-    while (MTFNums.size() < h)
+    while (MTFCode.size() < h)
     {
          if (Z.bitCharAt(pos) == '0') // Non-zero number
          {
@@ -484,7 +483,7 @@ int Compressor::S(char c, int h, int BZStart, list<char> MTFState, int missingZe
                 word += Z.bitCharAt(pos);
                 pos++;
             }    
-            MTFNums.push_back(alphabet.decodeToMTF(word));
+            MTFCode.push_back(alphabet.decodeToMTF(word));
          }
          else   // Zero sequence
          {
@@ -499,18 +498,52 @@ int Compressor::S(char c, int h, int BZStart, list<char> MTFState, int missingZe
                    zeroNum += (0 + 1) * pow(2, j); 
 
                 j++;
-                pos += 2; // Skip by 2
+                pos += 2; // Skip by 2 (01, 11)
+                
+                cout << "nasao sam nula: " << zeroNum << endl;
 
-                if (zeroNum + MTFNums.size() >= h)
+                // If I have enough letters overal
+                if (zeroNum + MTFCode.size() >= h)
                     break;
             }
             for (int k = 0; k < zeroNum; k++)
-                MTFNums.push_back(0);
+                MTFCode.push_back(0);
          }
     }
-
-    // Count occurrences of c
-
-    return 5; 
     
+    cout << "MTF dio bucketa" << endl;
+    for (int i = 0; i < MTFCode.size(); i++)
+        cout << MTFCode[i] << " ";
+    cout << endl;
+
+    // Count occurrences of c in decoded bucket
+    string BL = decodeMTF(MTFCode, MTFState);   // I get decoded bucket of L (first h letters)
+    cout << "dekodirani dio bucketa: " << BL << endl;
+    for (int i = 0; i < h; i++) // Look only first h
+        if (BL[i] == c) occ++;
+
+
+    return occ; 
+}
+
+/** Converts MTF code back to original text using given MTF state(picture at beginning of bucket)
+ */
+string Compressor::decodeMTF(const vector<int>& MTFCode, list<char> MTFState)
+{
+    // Decode MTF to string
+    string decodedString = "";
+    for (int i = 0; i < MTFCode.size(); i++)
+    {
+        list<char>::iterator it;
+        int pos;
+        for (pos = 0, it = MTFState.begin(); it != MTFState.end(); it++, pos++)
+            if (pos == MTFCode[i])
+            {
+                decodedString += *it;
+                MTFState.push_front(*it);
+                MTFState.erase(it);
+                break;
+            }
+    }
+    return decodedString;  
 }

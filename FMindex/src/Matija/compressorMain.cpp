@@ -51,7 +51,8 @@ int main()
     Compressor myCompressor(eof, alpha, bucketSize);
     
     cout << "==Input text=============================================" << endl;
-    cout << T << endl << endl;
+    cout << T << endl;
+    cout << "velicina: " << T.length() << endl;
     
     cout << "==Variable length prefix encoding========================" << endl;
     BitArray compressedText = myCompressor.compress(T);
@@ -102,6 +103,18 @@ int main()
     {
         cout << "Super Bucket " << i + 1 << ": " << myCompressor.sbW[i] << endl;
     }
+    cout << endl;
+
+    cout << "==Missing zeroes MZ======================================" << endl;
+    for (int i = 0; i < myCompressor.MZ.size(); i++)
+        cout << "MZ " << i + 1 << ": " << myCompressor.MZ[i] << endl;
+    cout << endl;
+
+    cout << "==OCC Testing============================================" << endl;
+    int q = 7;
+    char c = 's';
+    cout << "Pojavljivanje slova " << c << " u prvih " << q << " znakova: " << myCompressor.occ(c, q) << endl;
+    cout << "-------------------------------------------------------------------------" << endl;
 
     return 0;
 }
