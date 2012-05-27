@@ -7,67 +7,13 @@
 #include <vector>
 
 #include "util/SmithWaterman.h"
+#include "util/CircularArray.h"
+#include "util/Utility.h"
 using namespace std;
 using namespace fer::util;
 
-const int kChunkLen = 12;
+const int kChunkLen = 13;
 const int kMaxLengthOffset = 3;
-
-inline int getBaseId(char a) {
-  if (a == 'A') return 0;
-  if (a == 'C') return 1;
-  if (a == 'T') return 2;
-  if (a == 'G') return 3;
-  return 0; // 'N'
-}
-
-inline char reverseBaseId(int id) {
-  if (id == 0) return 'A';
-  if (id == 1) return 'C';
-  if (id == 2) return 'T';
-  if (id == 3) return 'G';
-  return -1;
-}
-
-template<class T>
-struct CircularArray {
-  T* arr;
-  size_t begin;
-  size_t end;
-  size_t capacity;
-
-  size_t size;
-
-  CircularArray(size_t capacity_) {
-    capacity = capacity_;
-    arr = new T[capacity];
-    begin = end = size = 0;
-  }
-  ~CircularArray() {
-    delete [] arr;
-  }
-
-  T& operator[] (const size_t i) {
-    size_t t = begin + i;
-    if (t >= capacity) return arr[t-capacity];
-    return arr[t];
-  }
-
-  void push_back(const T& a) {
-    arr[end++] = a;
-    ++size;
-    if (end >= capacity) end -= capacity;
-  }
-  void pop_front() {
-    ++begin;
-    --size;
-    if (begin >= capacity) begin -= capacity;
-  }
-
-  size_t getSize() {
-    return size;
-  }
-};
 
 vector<size_t> forwardIndex[1<<(2*kChunkLen)];
 
@@ -75,6 +21,10 @@ void insert(vector<size_t>* ind, CircularArray<char>& c, const size_t pos) {
   // 0 gresaka
   size_t hash = 0;
   for (size_t i = 0; i < c.getSize(); ++i) hash = hash*4+getBaseId(c[i]);
+  if (c == "CTAAACCCTAAAC") {
+    printf("%d\n", (int)hash);
+    //    exit(1);
+  }
   ind[hash].push_back(pos);
 
   // 1 greska
@@ -91,7 +41,8 @@ void insert(vector<size_t>* ind, CircularArray<char>& c, const size_t pos) {
     }
   }
 
-  //  2 greske
+  //  2 greske, za sada onemoguceno zbog toga sto zahtijeva previse memorije
+  //
   // for (size_t i = 0; i < c.getSize(); ++i) {
   //   for (size_t j = i+1; j < c.getSize(); ++j) {
   //     char stari1 = c[i], stari2 = c[j];
@@ -125,18 +76,21 @@ void dumpajTablicu(vector<size_t>* ind, size_t n) {
   }
 }
 
-int main(int argc, char* argv[]) {
-  static char buffer[128];
+char dna[20*1024*1024];
+int dnaSize;
 
-  char* dnaPath = argv[2];
+// ucita DNA i napravi index
+void readDna(char* dnaPath) {
+  static char buffer[1024];
 
   fprintf(stderr, "Citam DNA iz %s\n", dnaPath);
   FILE* dnaInputFile = fopen(dnaPath, "rt");
 
   *buffer = '\0';
   char* p = buffer;
+  dnaSize = 0;
 
-  CircularArray<char> circPrefix(kChunkLen);
+  CircularArray<char> circPrefix(kChunkLen+1);
 
   for (size_t i = 0;; ++i, ++p) {
     if (*p == '\0') {
@@ -148,124 +102,177 @@ int main(int argc, char* argv[]) {
       circPrefix.pop_front();
     }
 
+    dna[dnaSize++] = *p;
     circPrefix.push_back(*p);
-    
+
     if (circPrefix.getSize() == kChunkLen) {
       insert(forwardIndex, circPrefix, i-kChunkLen+1);
     }
   }
 
+  dna[dnaSize] = '\0';
   fclose(dnaInputFile);
 
 
   //dumpajTablicu(forwardIndex, 1<<(2*kPrefixLen));
+
   for (int i = 0; i < (1<<(2*kChunkLen)); ++i) {
     sort(forwardIndex[i].begin(), forwardIndex[i].end());
   }
+}
 
+void processReads(char* readsPath) {
+  static char buffer[128];
 
-  char* readingPath = argv[1];
-  fprintf(stderr, "Citam readove iz %s\n", readingPath);
+  fprintf(stderr, "Citam readove iz %s\n", readsPath);
 
   int found = 0, total = 0;
   int totalCombos = 0;
   int maxCombos = 0;
   string sta;
 
-  FILE* readInputFile = fopen(readingPath, "rt");
-  for (int i = 0; fscanf(readInputFile, "%s", buffer) == 1; ++i) {
+  FILE* readsInputFile = fopen(readsPath, "rt");
+  for (int readId = 0; fscanf(readsInputFile, "%s", buffer) == 1; ++readId) {
     int bufferLen = (int)strlen(buffer);
     
     if (bufferLen < kChunkLen) { // ignore very short reads
       continue;
     }
-    
-    int prefixHash = 0;
-    for (int i = 0; i < kChunkLen; ++i) {
-      prefixHash = (prefixHash << 2) + getBaseId(buffer[i]);
-    }
-    
-    int suffixHash = 0;
-    for (int i = bufferLen-kChunkLen; i < bufferLen; ++i) {
-      suffixHash = (suffixHash << 2) + getBaseId(buffer[i]);
-    }
-    
-    int suffixLo = 0;
-    int suffixHi = 0;
-    int combos = 0;
-    vector<pair<int, int> > kandidati;
-    
-    for (int i = 0; i < forwardIndex[prefixHash].size(); ++i) {
-      if (i && forwardIndex[prefixHash][i-1] + kChunkLen >= forwardIndex[prefixHash][i]) {
-	continue;
+
+    int combos = 0; // za statistiku
+
+    for (int pass = 0; pass < 2; ++pass) {  // pass == 0 -> ocitanje, pass == 1, revers komplement
+      if (pass == 1) {
+	for (int i = 0; i < bufferLen; ++i) {
+	  buffer[i] = baseComplement(buffer[i]);
+	}
+	reverse(buffer, buffer+bufferLen);
       }
 
-      while (suffixHi < forwardIndex[suffixHash].size() &&
-	     forwardIndex[suffixHash][suffixHi] - forwardIndex[prefixHash][i] <= bufferLen+kMaxLengthOffset) {
-	++suffixHi;
-      }
-      if (0 < suffixHi && suffixHi < forwardIndex[suffixHash].size()) {
-	--suffixHi;
+      int prefixHash = 0;
+      for (int i = 0; i < kChunkLen; ++i) {
+	prefixHash = (prefixHash << 2) + getBaseId(buffer[i]);
       }
       
-      while (suffixLo < forwardIndex[suffixHash].size() &&
-			forwardIndex[suffixHash][suffixLo]-forwardIndex[prefixHash][i] <= bufferLen-kMaxLengthOffset) {
-	++suffixLo;
-      }
-      if (0 < suffixLo && suffixLo < forwardIndex[suffixHash].size()) {
-	--suffixLo;
-      }
-      
-      assert(suffixHi >= suffixLo);
-      
-      bool ima = false;
-      if (suffixLo+1 != bufferLen && suffixHi-suffixLo+1 > 0) {
-	combos += (suffixHi-suffixLo+1 > 0);
-      }
-      
-      if (combos > maxCombos) {
-	maxCombos = combos;
-	sta = buffer;
+      int suffixHash = 0;
+      for (int i = bufferLen-kChunkLen; i < bufferLen; ++i) {
+	suffixHash = (suffixHash << 2) + getBaseId(buffer[i]);
       }
 
-      for (int j = suffixLo; j <= suffixHi; ++j) {
-	kandidati.push_back(make_pair(forwardIndex[prefixHash][i],
-				      forwardIndex[suffixHash][j]));
+      int suffixLo = 0;
+      int suffixHi = 0;
+      vector<pair<int, int> > kandidati;
+
+      for (int i = 0; i < forwardIndex[prefixHash].size(); ++i) {
+	// TODO: zamijeniti ove binary searchem lijenim pomacima
+	suffixLo = lower_bound(forwardIndex[suffixHash].begin(), forwardIndex[suffixHash].end(),
+			       forwardIndex[prefixHash][i]+bufferLen-kChunkLen-kMaxLengthOffset)-forwardIndex[suffixHash].begin();
+	suffixHi = upper_bound(forwardIndex[suffixHash].begin(), forwardIndex[suffixHash].end(),
+			       forwardIndex[prefixHash][i]+bufferLen-kChunkLen+kMaxLengthOffset)-forwardIndex[suffixHash].begin();
+	
+	/*
+	  while (suffixHi < forwardIndex[suffixHash].size() &&
+	  forwardIndex[suffixHash][suffixHi] - forwardIndex[prefixHash][i] <= bufferLen+kMaxLengthOffset) {
+	  ++suffixHi;
+	  }
+	  if (0 < suffixHi && suffixHi < forwardIndex[suffixHash].size()) {
+	  --suffixHi;
+	  }
+	  
+	  while (suffixLo < forwardIndex[suffixHash].size() &&
+	  forwardIndex[suffixHash][suffixLo]-forwardIndex[prefixHash][i] <= bufferLen-kMaxLengthOffset) {
+	  ++suffixLo;
+	  }
+	  if (0 < suffixLo && suffixLo < forwardIndex[suffixHash].size()) {
+	  --suffixLo;
+	  }
+	*/
+	assert(suffixHi >= suffixLo);
+	assert(suffixHi <= forwardIndex[suffixHash].size());
+	
+	for (int j = suffixLo; j < suffixHi; ++j) {
+	  assert(forwardIndex[suffixHash][j] + kChunkLen - forwardIndex[prefixHash][i] <= 100); // TODO: makni
+	  assert(forwardIndex[suffixHash][j] + kChunkLen - forwardIndex[prefixHash][i] >= 50); // TODO: makni
+
+	  kandidati.push_back(make_pair(forwardIndex[prefixHash][i],
+					forwardIndex[suffixHash][j]+kChunkLen-1));
+	}
+	
+	combos += (kandidati.size() > 0);	
+	if (combos > maxCombos) {
+	  maxCombos = combos;
+	  sta = buffer;
+	}
       }
-    }
+      
+      char** kandidatiStr = new char*[(int)kandidati.size()];
     
-    char** kandidatiStr = new char*[(int)kandidati.size()];
+      for (int i = 0; i < (int)kandidati.size(); ++i) {
+	int len = kandidati[i].second - kandidati[i].first + 1;
 
-    for (int i = 0; i < (int)kandidati.size(); ++i) {
-      int len = kandidati[i].second - kandidati[i].first + 1;
-      kandidatiStr[i] = new char[len+1];
-      for (int j = kandidati[i].first; j <= kandidati[i].second; ++j) {
-	//	kandidatiStr[i][j-kandidati[i].first] = // jebemu sve, moram imati dna u memoriji
+	kandidatiStr[i] = new char[len+1];
+	for (int j = kandidati[i].first; j <= kandidati[i].second; ++j) {
+	  kandidatiStr[i][j-kandidati[i].first] = dna[j];
+	}
+	kandidatiStr[i][len] = '\0';
       }
-      kandidatiStr[i][len] = '\0';
-    }
     
-    vector<double> score;
-    smithWaterman(&score, buffer,
-		  kandidatiStr, (int)kandidati.size());
-
-    for (int i = 0; i < (int)kandidati.size(); ++i) {
-      delete[] kandidatiStr[i];
+      vector<double> score;
+      smithWaterman(&score, buffer,
+		    kandidatiStr, (int)kandidati.size());
+      for (int i = 0; i < (int)kandidati.size(); ++i) {
+	delete[] kandidatiStr[i];
+      }
+      delete[] kandidatiStr;
     }
-    delete[] kandidatiStr;
-
     ++total;
     found += (combos > 0);
     totalCombos += combos;
+    if (combos == 0) { // TODO: obrisi
+      printf("%s\n",  buffer);
+      printf("%s\n", reverseComplementChain(buffer).c_str());
+      exit(1);
+    }
+    printf("progress %d/%d %lf\n", found, total, 100.*found/total);
   }
     
     
- fclose(readInputFile);
+  fclose(readsInputFile);
       
- printf("found=%d/total=%d\n", found, total);
- printf("totalCombos: %d\n", totalCombos);
- printf("maxCombos: %d %s\n", maxCombos, sta.c_str());
-      
- return 0;
- }
+  printf("found=%d/total=%d\n", found, total);
+  printf("totalCombos: %d\n", totalCombos);
+  printf("maxCombos: %d %s\n", maxCombos, sta.c_str());     
+}
+
+int main(int argc, char* argv[]) {
+  /*  
+  //    koristeno za test&debug, zadrzat cu jos neko vrijeme 
+
+  char* query1 = "AGAGTAAGTCTTTGTATTTTATGCTACTGTACCTCTGGGATTAATTGCTCTTTCCCTCATTGGCCAGTCA";
+  char* database1[] = {
+    "AGAGAGGCGCGCCGCGCCGGCGCAGGCGCAGAGAGGCGCGCCGCGCCGGCGCAGGCGCAGAGAGGCGCGCCGCGCCGGCGCAGGCGCAGACA",
+    "AGAGAGGCGCGCCGCGCCGGCGCAGGCGCAGAGAGGCGCGCCGCGCCGGCGCAGGCGCAGACA"
+  };
+
+  char* query2 = "GGCTACCATATTGGACAGCACAGGTCTAAGGATTTCATTCCTGCCACAAGTCCAAACTCCTAGCTTTAAT";
+  char* database2[] = {
+  "GGCTGGGGCGGGGGGAGGGTGGCGCCGTGCACGCGCAGAAACTCACGTCACGGTGGCGCGGCGCAGAGACGGGTAGAACCTCAGTAAT"
+  };
+
+  vector<double> s;
+
+  for (int i = 0; i < 1000000; ++i) {
+    printf("%d\n", i);
+    smithWaterman(&s, query1, database1, 2);
+    smithWaterman(&s, query2, database2, 1);
+  }
+
+  return 0;
+  */
+
+  readDna(argv[2]);
+  processReads(argv[1]);
+
+  return 0;
+}
     

@@ -1,10 +1,11 @@
 all: simpleHashingMapper
 
-simpleHashingMapper: SimpleHashingMapper.cpp
-	g++ $(INCLUDES) $(OBJECTS) \
-	-L$(PREFIX)/external/swSharp/lib \
-	-lswsharp \
-	-L/usr/local/cuda/lib64 -lcuda -lcudart \
+simpleHashingMapper: SimpleHashingMapper.cpp ../util/SmithWaterman.o
+	g++ $(INCLUDES)\
+	-L/usr/local/cuda/lib64 -lcuda \
+	-L/usr/local/cuda/lib64	-lcudart \
+	-L$(PREFIX)/external/swSharp/lib -lswsharp \
 	-o simpleHashingMapper \
 		../util/SmithWaterman.o \
-		SimpleHashingMapper.cpp
+		$(PREFIX)/external/swSharp/lib/libswsharp.a \
+		SimpleHashingMapper.cpp -g -ggdb
