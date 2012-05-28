@@ -13,7 +13,7 @@ using namespace std;
 using namespace fer::util;
 
 const int kChunkLen = 13;
-const int kMaxLengthOffset = 3;
+const int kMaxLengthOffset = 0;
 
 vector<size_t> forwardIndex[1<<(2*kChunkLen)];
 
@@ -21,10 +21,6 @@ void insert(vector<size_t>* ind, CircularArray<char>& c, const size_t pos) {
   // 0 gresaka
   size_t hash = 0;
   for (size_t i = 0; i < c.getSize(); ++i) hash = hash*4+getBaseId(c[i]);
-  if (c == "CTAAACCCTAAAC") {
-    printf("%d\n", (int)hash);
-    //    exit(1);
-  }
   ind[hash].push_back(pos);
 
   // 1 greska
@@ -113,7 +109,6 @@ void readDna(char* dnaPath) {
   dna[dnaSize] = '\0';
   fclose(dnaInputFile);
 
-
   //dumpajTablicu(forwardIndex, 1<<(2*kPrefixLen));
 
   for (int i = 0; i < (1<<(2*kChunkLen)); ++i) {
@@ -129,6 +124,7 @@ void processReads(char* readsPath) {
   int found = 0, total = 0;
   int totalCombos = 0;
   int maxCombos = 0;
+  int maxReadId = 0;
   string sta;
 
   FILE* readsInputFile = fopen(readsPath, "rt");
@@ -140,8 +136,9 @@ void processReads(char* readsPath) {
     }
 
     int combos = 0; // za statistiku
+    pair<double, pair<int, int> > bestScore = make_pair(-1000000, make_pair(-1, -1));
 
-    for (int pass = 0; pass < 2; ++pass) {  // pass == 0 -> ocitanje, pass == 1, revers komplement
+    for (int pass = 0; pass < 2; ++pass) {  // pass == 0 -> ocitanje, pass == 1 -> revers komplement
       if (pass == 1) {
 	for (int i = 0; i < bufferLen; ++i) {
 	  buffer[i] = baseComplement(buffer[i]);
@@ -164,6 +161,7 @@ void processReads(char* readsPath) {
       vector<pair<int, int> > kandidati;
 
       for (int i = 0; i < forwardIndex[prefixHash].size(); ++i) {
+	printf(":: %d %d\n", forwardIndex[prefixHash][i], (int)forwardIndex[prefixHash].size());
 	// TODO: zamijeniti ove binary searchem lijenim pomacima
 	suffixLo = lower_bound(forwardIndex[suffixHash].begin(), forwardIndex[suffixHash].end(),
 			       forwardIndex[prefixHash][i]+bufferLen-kChunkLen-kMaxLengthOffset)-forwardIndex[suffixHash].begin();
@@ -193,6 +191,8 @@ void processReads(char* readsPath) {
 	for (int j = suffixLo; j < suffixHi; ++j) {
 	  assert(forwardIndex[suffixHash][j] + kChunkLen - forwardIndex[prefixHash][i] <= 100); // TODO: makni
 	  assert(forwardIndex[suffixHash][j] + kChunkLen - forwardIndex[prefixHash][i] >= 50); // TODO: makni
+	  printf("%d %d lo=%d hi=%d\n", forwardIndex[prefixHash][i], forwardIndex[suffixHash][j], suffixLo, suffixHi);
+	  assert(forwardIndex[suffixHash][j] + kChunkLen - forwardIndex[prefixHash][i] == 70);
 
 	  kandidati.push_back(make_pair(forwardIndex[prefixHash][i],
 					forwardIndex[suffixHash][j]+kChunkLen-1));
@@ -201,6 +201,7 @@ void processReads(char* readsPath) {
 	combos += (kandidati.size() > 0);	
 	if (combos > maxCombos) {
 	  maxCombos = combos;
+	  maxReadId = readId;
 	  sta = buffer;
 	}
       }
@@ -219,29 +220,33 @@ void processReads(char* readsPath) {
     
       vector<double> score;
       smithWaterman(&score, buffer,
-		    kandidatiStr, (int)kandidati.size());
+      	    kandidatiStr, (int)kandidati.size());
+
+      for (int i = 0; i < score.size(); ++i) {
+	bestScore = max(bestScore, make_pair(score[i], kandidati[i]));
+      }
+
       for (int i = 0; i < (int)kandidati.size(); ++i) {
 	delete[] kandidatiStr[i];
       }
       delete[] kandidatiStr;
+
+      printf("-- %d %s\n", strstr(dna, buffer)-dna, buffer);
     }
     ++total;
     found += (combos > 0);
     totalCombos += combos;
-    if (combos == 0) { // TODO: obrisi
-      printf("%s\n",  buffer);
-      printf("%s\n", reverseComplementChain(buffer).c_str());
-      exit(1);
-    }
+
+    printf("combos %d\n", combos);
     printf("progress %d/%d %lf\n", found, total, 100.*found/total);
+    printf("from %d to %d score %lf\n", bestScore.second.first, bestScore.second.second, bestScore.first);
   }
-    
     
   fclose(readsInputFile);
       
   printf("found=%d/total=%d\n", found, total);
   printf("totalCombos: %d\n", totalCombos);
-  printf("maxCombos: %d %s\n", maxCombos, sta.c_str());     
+  printf("maxCombos(%d): %d %s\n", maxReadId, maxCombos, sta.c_str());     
 }
 
 int main(int argc, char* argv[]) {

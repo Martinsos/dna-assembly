@@ -1,10 +1,12 @@
 #include "util/SmithWaterman.h"
 #include <cstdio>
 #include <cstring>
+#include <cassert>
 
 extern "C" {
     #include "swSharp/include/swsharp/sw.h"
     #include "swSharp/include/swsharp/sw_prefs.h"
+    #include "swSharp/include/swsharp/sw_result.h"
     #include "swSharp/include/swsharp/chain.h"
     #include "swSharp/include/swsharp/chain_base.h"
 }
@@ -35,14 +37,16 @@ void smithWaterman(vector<double>* score,
   SWSharpData* swSharpData = swSharp(query, database, swPrefs);
   //puts("uspio sw");
 
+  assert(databaseSize == swSharpDataGetSWDataNmr(swSharpData));
   for (int i = 0; i < swSharpDataGetSWDataNmr(swSharpData); ++i) {   
     SWData* swData = swSharpDataGetSWData(swSharpData, i);
-    
+
+    assert(swDataGetResultNmr(swData)==1); // za sada
     for (int j = 0; j < swDataGetResultNmr(swData); ++j) {
       SWResult* swResult = swDataGetResult(swData, j);
 
-      // TODO dodati vracanje rezultata
-      swResultPrint(swResult, stdout);
+      //swResultPrint(swResult, stdout);
+      (*score)[i] = (double)swResultGetScore(swResult);
     }
   }
 
