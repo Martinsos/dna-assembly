@@ -6,6 +6,7 @@
 #include <list>
 #include <vector>
 #include <map>
+#include <set>
 
 using namespace std;
 
@@ -38,13 +39,13 @@ int main()
 
     // Initialize compressor
     char eof = '#';
-    vector<char> letters;
-    letters.push_back('i');
-    letters.push_back('p');
-    letters.push_back('s');
-    letters.push_back('m');
-    letters.push_back('e');
-    letters.push_back(eof);
+    set<char> letters;
+    letters.insert('i');
+    letters.insert('p');
+    letters.insert('s');
+    letters.insert('m');
+    letters.insert('e');
+    letters.insert(eof);
     Alphabet alpha(letters);
     
     int bucketSize = 4;

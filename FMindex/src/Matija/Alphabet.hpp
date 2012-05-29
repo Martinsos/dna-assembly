@@ -5,6 +5,7 @@
 #include <list>
 #include <string>
 #include <map>
+#include <set>
 
 using namespace std;
 
@@ -15,19 +16,22 @@ class Alphabet
 {
     public:
         /** Constructor
+          * Initializes member letters and C from T
+          *
+          * @param T input text
+          */
+        Alphabet(string& T);
+
+        /** Constructor
          *  Sorts letters ascending
          */
-        Alphabet(vector<char> letters_);
+        Alphabet(set<char> letters_);
 
         /** Returns number of letters in alphabet (including EOF)
          *  
          *  @returns    Size of alphabet
          */
         int size();
-
-        /** Returns sorted vector representation of alphabet
-         */
-        vector<char> toSortedVector();
         
         /** Returns linked list representation of alphabet
          */
@@ -57,7 +61,7 @@ class Alphabet
     private:
         /** Contains letters of alphabet
          */
-        vector<char> letters;
+        set<char> letters;
         
         /** Maps binary code to MTF code
          *  for numbers {1, alphabet().size - 1}.
@@ -65,8 +69,6 @@ class Alphabet
          *  Initialized in constructor
          */
         map<string, int> MTFCodes;
-
-        
 
 };
 
