@@ -1,3 +1,40 @@
+/*
+ * Copyright (C) 2012 Filip Pavetic
+ *
+ * Ovaj alat poravnava ocitanja spremljena u <reads> fileu u formatu
+ * ACACAC
+ * TTTTATATC
+ * ....
+ * ACACACAG
+ * AAAAA
+ * i DNA spremljen u <dnaInput> fileu
+ *
+ * Koristenje: ./simpleHashingMapper <reads> <dna>
+ *
+ *
+ * Na izlazu se nalazi hrpa informacija, ali najvaznije su linije oblika
+ * 'from <from> to <to> score <score>' kojih se nalazi na izlazu koliko i ocitanja na ulazu.
+ * Svaka takva linija kaze gdje je najbolje matchano pojedino ocitanje unutar
+ * DNA i koliku ocjenu dobrote je vratio Smith Waterman algoritam
+ *
+ * 
+ * Opis algoritma:
+ * 1) Iz ucitane DNA prvo gradimo indeks H u kojem za svaki podstring dna duljine <kChunkLen> na poziciji <pos>
+ * nadjemo sve stringove koji su jednake duljine, a razlikuju se u <= 1 znaku od odabranog podstringa 
+ * (razlike za vise od 1 znaka ne uzimamo u obzir zbog toga sto bi nam to zahtijevalo previse memorije). 
+ * Za svaki od tih podstringova racunamo hash i dodajemo <pos> u listu H[hash] za svaki od stringova.
+ *
+ * 2) Za svaki ucitani read radimo:
+ *  2a) Izracunamo <prefixHash> od prefiksa duljine <kChunkLen> i <suffixHash> od
+ * hasha iste duljine. Neka je L = H[prefixHash] i R = H[suffixHash]. Promatrajmo sve parove l E L i 
+ * r E R tako da je <duljinaReada>-<kMaxLengthOffset> <= r+kChunkLen-1-l+1 <= <duljinaReada>+<kMaxLengthOffset>
+ * (znaci trazimo kandidatne pozicije za pocetak i kraj reada unutar cijele DNA). Za svaki takav par
+ * (nazovimo te parove dobrima) koji je zadovoljio ovaj kriterij prelazimo na korak 2b) 
+ *
+ *  2b) Za svaki dobar par pozovemo Smith Waterman koji pokusa poravnati read s DNA[l...r] i trenutni
+ * read odlucujemo smjestiti na mjesto onog para gdje smo dobili najvecu ocjenu dobrote.
+ */
+
 #include <cassert>
 #include <cstdio>
 #include <cstring>
@@ -13,7 +50,7 @@ using namespace std;
 using namespace fer::util;
 
 const int kChunkLen = 13;
-const int kMaxLengthOffset = 0;
+const int kMaxLengthOffset = 5;
 
 vector<size_t> forwardIndex[1<<(2*kChunkLen)];
 
@@ -62,7 +99,18 @@ void insert(vector<size_t>* ind, CircularArray<char>& c, const size_t pos) {
   // }
 }
 
+// pomocna funkcija koja ispisuje razne informacije
+// o indeksu
 void dumpajTablicu(vector<size_t>* ind, size_t n) {
+  vector<int> sz;
+  for (int i = 0; i < ind->size(); ++i) {
+    sz.push_back((*ind)[i]);
+  }
+  sort(sz.rbegin(), sz.rend());
+  for (int i = 0; i < sz.size(); ++i) {
+    printf("sz %d\n", sz[i]);
+  }
+
   for (size_t i = 0; i < n; ++i) {
     printf("## %d:", (int)i);
     for (int j = 0; j < ind[i].size(); ++j) {
@@ -81,11 +129,18 @@ void readDna(char* dnaPath) {
 
   fprintf(stderr, "Citam DNA iz %s\n", dnaPath);
   FILE* dnaInputFile = fopen(dnaPath, "rt");
+  
+  // read header (3 stringa)
+  fscanf(dnaInputFile, "%s", buffer);  
+  fscanf(dnaInputFile, "%s", buffer);  
+  fscanf(dnaInputFile, "%s", buffer);
 
   *buffer = '\0';
   char* p = buffer;
   dnaSize = 0;
 
+  //  CircularArray je koristen  umjesto stringa zbog efikasnog
+  // izbacivanja s kraja i ubacivanja na pocetak
   CircularArray<char> circPrefix(kChunkLen+1);
 
   for (size_t i = 0;; ++i, ++p) {
@@ -109,11 +164,12 @@ void readDna(char* dnaPath) {
   dna[dnaSize] = '\0';
   fclose(dnaInputFile);
 
-  //dumpajTablicu(forwardIndex, 1<<(2*kPrefixLen));
+  //dumpajTablicu(forwardIndex, 1<<(2*kChunkLen));
 
-  for (int i = 0; i < (1<<(2*kChunkLen)); ++i) {
-    sort(forwardIndex[i].begin(), forwardIndex[i].end());
-  }
+  // sortiranje mi ne treba jer sve umecem inkrementalno
+  //   for (int i = 0; i < (1<<(2*kChunkLen)); ++i) {
+  //   sort(forwardIndex[i].begin(), forwardIndex[i].end());
+  //}
 }
 
 void processReads(char* readsPath) {
@@ -138,7 +194,11 @@ void processReads(char* readsPath) {
     int combos = 0; // za statistiku
     pair<double, pair<int, int> > bestScore = make_pair(-1000000, make_pair(-1, -1));
 
-    for (int pass = 0; pass < 2; ++pass) {  // pass == 0 -> ocitanje, pass == 1 -> revers komplement
+    for (int pass = 0; pass < 2; ++pass) {  
+      // pass == 0 -> ocitanje, pass == 1 -> revers komplement
+      // moramo provjeriti oba slucaja jer zapravo ne znamo s koje strane fragmenta
+      // je ocitan read kojeg obradjujemo. vise o tome kako se zapravo rade
+      // ocitanja pogledati u test/testiranje
       if (pass == 1) {
 	for (int i = 0; i < bufferLen; ++i) {
 	  buffer[i] = baseComplement(buffer[i]);
@@ -160,40 +220,22 @@ void processReads(char* readsPath) {
       int suffixHi = 0;
       vector<pair<int, int> > kandidati;
 
+      // za svaku potencijalnu lijevu granicu ... 
       for (int i = 0; i < forwardIndex[prefixHash].size(); ++i) {
 	printf(":: %d %d\n", forwardIndex[prefixHash][i], (int)forwardIndex[prefixHash].size());
-	// TODO: zamijeniti ove binary searchem lijenim pomacima
+
+	// ... nadji sve one koji mogu biti desna ...
 	suffixLo = lower_bound(forwardIndex[suffixHash].begin(), forwardIndex[suffixHash].end(),
 			       forwardIndex[prefixHash][i]+bufferLen-kChunkLen-kMaxLengthOffset)-forwardIndex[suffixHash].begin();
 	suffixHi = upper_bound(forwardIndex[suffixHash].begin(), forwardIndex[suffixHash].end(),
 			       forwardIndex[prefixHash][i]+bufferLen-kChunkLen+kMaxLengthOffset)-forwardIndex[suffixHash].begin();
 	
-	/*
-	  while (suffixHi < forwardIndex[suffixHash].size() &&
-	  forwardIndex[suffixHash][suffixHi] - forwardIndex[prefixHash][i] <= bufferLen+kMaxLengthOffset) {
-	  ++suffixHi;
-	  }
-	  if (0 < suffixHi && suffixHi < forwardIndex[suffixHash].size()) {
-	  --suffixHi;
-	  }
-	  
-	  while (suffixLo < forwardIndex[suffixHash].size() &&
-	  forwardIndex[suffixHash][suffixLo]-forwardIndex[prefixHash][i] <= bufferLen-kMaxLengthOffset) {
-	  ++suffixLo;
-	  }
-	  if (0 < suffixLo && suffixLo < forwardIndex[suffixHash].size()) {
-	  --suffixLo;
-	  }
-	*/
 	assert(suffixHi >= suffixLo);
 	assert(suffixHi <= forwardIndex[suffixHash].size());
 	
 	for (int j = suffixLo; j < suffixHi; ++j) {
-	  assert(forwardIndex[suffixHash][j] + kChunkLen - forwardIndex[prefixHash][i] <= 100); // TODO: makni
-	  assert(forwardIndex[suffixHash][j] + kChunkLen - forwardIndex[prefixHash][i] >= 50); // TODO: makni
 	  printf("%d %d lo=%d hi=%d\n", forwardIndex[prefixHash][i], forwardIndex[suffixHash][j], suffixLo, suffixHi);
-	  assert(forwardIndex[suffixHash][j] + kChunkLen - forwardIndex[prefixHash][i] == 70);
-
+	  // ... i sve potencijalne parove pripremi za slanje smith watermanu
 	  kandidati.push_back(make_pair(forwardIndex[prefixHash][i],
 					forwardIndex[suffixHash][j]+kChunkLen-1));
 	}
@@ -206,6 +248,7 @@ void processReads(char* readsPath) {
 	}
       }
       
+      // fizicki kopiraj podstringove dna (zbog smith waterman API-a)
       char** kandidatiStr = new char*[(int)kandidati.size()];
     
       for (int i = 0; i < (int)kandidati.size(); ++i) {
@@ -218,12 +261,15 @@ void processReads(char* readsPath) {
 	kandidatiStr[i][len] = '\0';
       }
     
+      // iskoristi smith waterman za dohvacanje scoreova
       vector<double> score;
       smithWaterman(&score, buffer,
       	    kandidatiStr, (int)kandidati.size());
 
       for (int i = 0; i < score.size(); ++i) {
 	bestScore = max(bestScore, make_pair(score[i], kandidati[i]));
+	printf("matcham %s\nna      %s\nscore:%lf (%d %d)\n", buffer, kandidatiStr[i], 
+	       score[i], kandidati[i].first, kandidati[i].second);
       }
 
       for (int i = 0; i < (int)kandidati.size(); ++i) {
@@ -239,6 +285,8 @@ void processReads(char* readsPath) {
 
     printf("combos %d\n", combos);
     printf("progress %d/%d %lf\n", found, total, 100.*found/total);
+
+    // ova output linija je VAZNA, ispisujemo gdje smo najbolje matchali trenutni read
     printf("from %d to %d score %lf\n", bestScore.second.first, bestScore.second.second, bestScore.first);
   }
     

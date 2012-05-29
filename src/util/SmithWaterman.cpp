@@ -27,7 +27,6 @@ void smithWaterman(vector<double>* score,
   Chain* query = chainCreateFromBuffer(queryStr, swPrefs);
   ChainBase* database = chainBaseCreateFromBuffer(databaseStr, databaseSize, swPrefs);
 
-  
   //printf("query: %s\n", queryStr);
   //for (int i = 0; i < databaseSize; ++i) {
   //  printf("%s\n", databaseStr[i]);
