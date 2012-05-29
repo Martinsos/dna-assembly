@@ -115,9 +115,10 @@ vector<int> Compressor::getSuffixArray(const string& T)
 }   
 
 /** Calculates BWT for input text
- *  Appends BWTEof to the end of T - that's why T is not const
  *
- *  Side effect: initializes sbNO and bNO structures (calls initNOs)
+ *  Side effect: initializes sbNO and bNO structures (calls initNOs())
+ *               appends BWTEof to the end of T - that's why T is not const
+ *               
  */
 string Compressor::getBWT(string& T)
 {

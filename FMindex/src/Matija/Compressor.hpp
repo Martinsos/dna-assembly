@@ -45,7 +45,7 @@ class Compressor
          *  @return  Compressed T
          */
         BitArray compress(string& T);
-        
+
         /* --------------------------------- Test methods --------------------------------------- */
 
         /** Decodes given BitArray back to letters
@@ -85,6 +85,7 @@ class Compressor
          *  sbNO[i][c] - number of occurrences of character c in superbuckets 0 - i (included)
          */
         vector< map<char, int> > sbNO;
+
         /** For each superbucket stores size in bits of superbuckets 0 - i (included)
          */ 
         vector<int> sbW;
@@ -94,6 +95,7 @@ class Compressor
          *  x - first bucket in current superbucket
          */
         vector< map<char, int> > bNO;
+
         /** For each bucket stores size in bits of buckets x - i (included)
          *  x - first bucket int current superbucket
          */
