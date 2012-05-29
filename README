@@ -1,0 +1,10 @@
+Copyright (C) 2012 Filip Pavetic
+
+Poziv make-a kompajlira cijeli projekt.
+
+src/util sadrzi kodove koristene u ostalim dijelovima projekta
+src/mappers sadrzi implementacije mappera
+src/aho-corasick sadrzi implementaciju Aho Corasick stabla 
+                 (struktura koja sluzi za rjesavanje tkzv. multiple patterns
+		 string matching problem)
+external/swSharp sadrzi projekt s cuda implementacijom Smith Watermana
