@@ -9,13 +9,20 @@
 using namespace std;
 
 /** Constructor
- *
- *  Intializes MTFCodes map
+  * Initializes structure from input text T
+  */
+Alphabet::Alphabet(string& T)
+{
+    // Initialize letters
+
+    // Initialize C
+}
+
+/** Constructor
  */
-Alphabet::Alphabet(vector<char> letters_)
+Alphabet::Alphabet(set<char> letters_)
 {
     letters = letters_; 
-    sort(letters.begin(), letters.end());
 }
 
 /** Returns size of alphabet
@@ -23,11 +30,6 @@ Alphabet::Alphabet(vector<char> letters_)
 int Alphabet::size()
 {
     return letters.size();
-}
-
-vector<char> Alphabet::toSortedVector()
-{
-    return letters;
 }
 
 list<char> Alphabet::toSortedList()
