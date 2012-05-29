@@ -1,9 +1,24 @@
+# Copyright (C) 2012 Filip Pavetic
+#
+# Ovo je skripta koja sluzi za ocjenu kvalitete nasih mappera. Ispisuje broj readova koji su bili smjesteni na
+# ispravnu poziciju u dna.
+#
+# Primjer uporabe:
+# ./moj_mapper >mapper_output
+# python validate_output.py --wgsim_output_file=test/dna1000_reads_wgsim_default_verbose --mapper_output_file=mapper_output
+#
+# --wgsim_output_file je file koji se dobio kao izlaz wgsim-a (to je alat za simuliranje ocitavanja dna)
+# --mapper_output_file je izlaz mappera koji moze sadrzavati bilo sto, ali ova skripta ce uzeti u obzir samo linije oblika
+#          'from <from> to <to> score <score>'
+#          -podrazumijeva se da je redom za svaki read mapper ispisao jednu takvu liniju (cak ako nije uspio naci nikakvo mjesto
+#               gdje da smjesti read)
+#
+
 import optparse
 import sys
 
 bingo = 0
 total = 0
-#quality = # ovo ce biti neka naprednija mjera, jednom
 
 if __name__ == '__main__':
     parser = optparse.OptionParser()
@@ -45,13 +60,12 @@ if __name__ == '__main__':
         mapper_to = int(mapper_split[3])
 
         if mapper_from == wgsim_pos1 or mapper_from == wgsim_pos2-len(read)+1:
-        #if (abs(mapper_from-wgsim_pos1) < 10) or (abs(mapper_from-(wgsim_pos2-len(read)+1)) < 10):
             bingo += 1
         else:
-            print read
+            print 'Nisam uspjesno smjestio ' + read
         total += 1
 
         print str(total) + ": " + str(mapper_from) + " " + str(wgsim_pos1) + " " + str(wgsim_pos2)
 
-print bingo, total, 1.*bingo/total
+print 'Na dobru poziciju postavljeno je ' + str(bingo) + ' od ukupno ' + str(total) + ' readova. (' + str(100.*bingo/total) + '%)'
         
