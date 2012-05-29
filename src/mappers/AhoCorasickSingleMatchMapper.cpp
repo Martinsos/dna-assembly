@@ -1,3 +1,9 @@
+// Ovaj je  eksperiment koji je sluzio za provjeru isplati li se traziti egzaktne
+// matcheve prefiksa i sufiksa. 
+//
+// Zakljucio sam da ne jer u premalom broju slucajeva zaista nadjem neke kandidatne
+// parove pozicija za pocetak i kraj.
+
 #include "../aho-corasick/AhoCorasick.h"
 #include <cstdio>
 #include <algorithm>
