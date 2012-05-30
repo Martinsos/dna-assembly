@@ -13,6 +13,9 @@ int main()
 {
     // Create instance of Opp
     string T = "$o$pej$il$ej$ar$t$un$ui$l$ai$mr$g$io$r$k$o$m$e$j$i$n$a$v";
+
+    cout << "velicina ulaznog teksta: " << T.length() << endl;
+
     Opp myOpp(T);
     cout << "gotov konstruktor" << endl;
     

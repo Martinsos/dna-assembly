@@ -62,22 +62,11 @@ OppRows Opp::findRows(const string &P) const
     int first   = getCFor(c) + 1;  
     int last    = getCForNext(c);  
 
-    cout << "Za: " << c << " " << first << " " << last << endl;
-    cout << "Krecem " << endl;
     while (first <= last && i >= 2)
     {
-        cout << "Za: " << c << " " << first << " " << last << endl;
-
         c = P[i - 2]; // Because array is 0-based and here we work with base 1
 
-        int comp1 = compressor->occ(c, first - 1);
-        cout << "prvi comp: " << comp1 << endl;
-
         first = getCFor(c) + 1 + compressor->occ(c, first - 1);
-        cout << "prvi je: " << first << endl;
-
-        cout << "C[]: " << getCFor(c) << endl;
-        cout << "comp2: " << compressor->occ(c, last) << endl;
         last = getCFor(c) + compressor->occ(c, last);
 
         i--;
