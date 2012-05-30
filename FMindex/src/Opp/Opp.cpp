@@ -40,6 +40,14 @@ Opp::Opp(string& T)
     }
 }
     
+/** Destructor
+ *  Deletes compressor instance
+ */
+Opp::~Opp()
+{
+    delete compressor;
+}
+
 /** Finds rows of conceptual matrix prefixed by P
  *  If there are no matching rows, set flag in OppRows
  *   

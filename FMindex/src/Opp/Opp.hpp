@@ -45,6 +45,11 @@ class Opp
      */
 	Opp(string &T);
 	
+    /** Destructor
+     *  Deletes compressor instance
+     */
+    ~Opp();
+
 	/**
 	 * Implements backward_search algorithm.
 	 * Finds all rows in T that are prefixed by P.
