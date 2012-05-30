@@ -132,10 +132,9 @@ string Compressor::getBWT(string& T)
         else
             bwt += string(1, T[SA[i] - 1]);
     
-
     initNOs(bwt);
-
     T.erase(T.length() - 1); // Remove added eof char
+
     return bwt;
 }
 

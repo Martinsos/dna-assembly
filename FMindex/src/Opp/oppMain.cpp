@@ -12,20 +12,16 @@ using namespace std;
 int main()
 {
     // Create instance of Opp
-    string T = "mississippi";
+    string T = "aabaaabababababbabbbab";
     Opp myOpp(T);
     cout << "gotov konstruktor" << endl;
     
     // Get result
-    OppRows result = myOpp.findRows("ssi");
+    OppRows result = myOpp.findRows("baba");
     // Output result
     cout << result.getFirst() << endl;
     cout << result.getLast() << endl;
     cout << result.isEmpty() << endl;
-
-    vector<OppRows> results = myOpp.findRowsForSuffixesWithPrefix("ssi", 'm');
-    for (int i = 0; i < results.size(); i++)
-        results[i].print();
 
     cout << "gotov sam" << endl;
     return 0;

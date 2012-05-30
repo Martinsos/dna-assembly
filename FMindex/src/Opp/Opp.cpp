@@ -38,10 +38,6 @@ Opp::Opp(string& T)
             if (c < it->first)
                 it->second++;
     }
-
-    map<char, int>::iterator mapIt;
-    for (mapIt = C.begin(); mapIt != C.end(); mapIt++)
-        cout << mapIt->first << " -> " << mapIt->second << endl;
 }
     
 /** Finds rows of conceptual matrix prefixed by P
@@ -90,7 +86,6 @@ vector<OppRows> Opp::findRowsForSuffixes(const string &P) const
     while (first <= last && i >= 2)
     {
         c = P[i - 2]; // Because array is 0-based and here we work with base 1
-cout << "novi c: " << c << endl;
         
         first = getCFor(c) + 1 + compressor->occ(c, first - 1);
         last = getCFor(c) + compressor->occ(c, last);
@@ -128,7 +123,6 @@ vector<OppRows> Opp::findRowsForSuffixesWithPrefix(const string &P, char C) cons
             results.push_back(OppRows(firstC, lastC, false));
 
         c = P[i - 2]; // Because array is 0-based and here we work with base 1
-        cout << "novi c: " << c << endl;
         
         first = getCFor(c) + 1 + compressor->occ(c, first - 1);
         last = getCFor(c) + compressor->occ(c, last);
@@ -151,8 +145,8 @@ int Opp::getCFor(char c) const
 int Opp::getCForNext(char c) const
 {
     map<char, int>::const_iterator it;
-    it = C.find(c);
+    it = ++C.find(c);
     
     if (it == C.end()) return textSize;
-    return (++it)->second;
+    return (it)->second;
 }
