@@ -4,6 +4,7 @@
 #include <string>
 #include <map>
 
+#include "../StringView.hpp"
 #include "Alphabet.hpp"
 #include "Compressor.hpp"
 #include "OppRows.hpp"
@@ -43,7 +44,7 @@ class Opp
      *  Gets and stores coded T.
      *  Opp will do some manipulations on given T but when function is over it guarantees T will be same as it was when given.
      */
-	Opp(string &T);
+	Opp(string& T);
 	
     /** Destructor
      *  Deletes compressor instance
@@ -56,14 +57,14 @@ class Opp
 	 * Returns indexes of first and last row (rows are contiguous).
 	 * First row is indexed with 1.
 	 */	
-	OppRows findRows(const string &P) const;
+	OppRows findRows(const StringView& P) const;
     
     /**
      * Same as method findRows() but returns rows for all suffixes of P, not just P.
      * IMPORTANT: same time complexity as oppRows (O(p+occ), not |P| * O(oppRows) as you would expect).
      * @return vector[m] corresponds to P[p-m,p]
      */
-    vector<OppRows> findRowsForSuffixes(const string &P) const;
+    vector<OppRows> findRowsForSuffixes(const StringView& P) const;
 	
 	/**
      * Same as method findRows() but returns rows for all suffixes of P prefixed with character C.
@@ -71,7 +72,7 @@ class Opp
      * IMPORTANT: same time complexity as oppRows (O(p+occ), not |P| * O(oppRows) as you would expect).
      * @return vector[m] corresponds to C+P[p-m,p]
      */
-    vector<OppRows> findRowsForSuffixesWithPrefix(const string &P, char C) const;
+    vector<OppRows> findRowsForSuffixesWithPrefix(const StringView& P, char C) const;
 };
 
 #endif // OPP_HPP

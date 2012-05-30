@@ -54,17 +54,17 @@ Opp::~Opp()
  *  @param P Prefix we are looking for
  *  @return OppRows class. 
  */
-OppRows Opp::findRows(const string &P) const
+OppRows Opp::findRows(const StringView& P) const
 {
     // Setting initial conditions
-    int i       = P.length();       
-    char c      = P[i - 1];         
+    int i       = P.getLength();       
+    char c      = P.charAt(i - 1);         
     int first   = getCFor(c) + 1;  
     int last    = getCForNext(c);  
 
     while (first <= last && i >= 2)
     {
-        c = P[i - 2]; // Because array is 0-based and here we work with base 1
+        c = P.charAt(i - 2); // Because array is 0-based and here we work with base 1
 
         first = getCFor(c) + 1 + compressor->occ(c, first - 1);
         last = getCFor(c) + compressor->occ(c, last);
@@ -79,10 +79,10 @@ OppRows Opp::findRows(const string &P) const
 
 /** Applies findRows() for each suffix of given string
  */
-vector<OppRows> Opp::findRowsForSuffixes(const string &P) const
+vector<OppRows> Opp::findRowsForSuffixes(const StringView& P) const
 {
-    int i       = P.length();       
-    char c      = P[i - 1];        
+    int i       = P.getLength();       
+    char c      = P.charAt(i - 1);         
     int first   = getCFor(c) + 1;   
     int last    = getCForNext(c);   
 
@@ -93,7 +93,7 @@ vector<OppRows> Opp::findRowsForSuffixes(const string &P) const
         results.push_back(OppRows(first, last, false));
     while (first <= last && i >= 2)
     {
-        c = P[i - 2]; // Because array is 0-based and here we work with base 1
+        c = P.charAt(i - 2); // Because array is 0-based and here we work with base 1
         
         first = getCFor(c) + 1 + compressor->occ(c, first - 1);
         last = getCFor(c) + compressor->occ(c, last);
@@ -104,17 +104,17 @@ vector<OppRows> Opp::findRowsForSuffixes(const string &P) const
         else
             results.push_back(OppRows(first, last, false));
     }
-    while (results.size() < P.length())
+    while (results.size() < P.getLength())
         results.push_back(OppRows(0, 0, true));
     return results;
 }
 
 /** Like findRowsForSuffixes(), but adds prefix to each suffix before searching
  */
-vector<OppRows> Opp::findRowsForSuffixesWithPrefix(const string &P, char C) const
+vector<OppRows> Opp::findRowsForSuffixesWithPrefix(const StringView& P, char C) const
 {
-    int i       = P.length();       
-    char c      = P[i - 1];        
+    int i       = P.getLength();       
+    char c      = P.charAt(i - 1);         
     int first   = getCFor(c) + 1;   
     int last    = getCForNext(c);   
 
@@ -130,13 +130,13 @@ vector<OppRows> Opp::findRowsForSuffixesWithPrefix(const string &P, char C) cons
         else
             results.push_back(OppRows(firstC, lastC, false));
 
-        c = P[i - 2]; // Because array is 0-based and here we work with base 1
+        c = P.charAt(i - 2); // Because array is 0-based and here we work with base 1
         
         first = getCFor(c) + 1 + compressor->occ(c, first - 1);
         last = getCFor(c) + compressor->occ(c, last);
         i--;
     }
-    while (results.size() < P.length())
+    while (results.size() < P.getLength())
         results.push_back(OppRows(0, 0, true));
     return results;
 }
