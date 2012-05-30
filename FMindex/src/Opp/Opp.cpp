@@ -50,7 +50,7 @@ Opp::Opp(string& T)
  *  @param P Prefix we are looking for
  *  @return OppRows class. 
  */
-OppRows Opp::findRows(const string &P)
+OppRows Opp::findRows(const string &P) const
 {
     // Setting initial conditions
     int i       = P.length();       
@@ -75,7 +75,7 @@ OppRows Opp::findRows(const string &P)
 
 /** Applies findRows() for each suffix of given string
  */
-vector<OppRows> Opp::findRowsForSuffixes(const string &P)
+vector<OppRows> Opp::findRowsForSuffixes(const string &P) const
 {
     int i       = P.length();       
     char c      = P[i - 1];        
@@ -108,7 +108,7 @@ vector<OppRows> Opp::findRowsForSuffixes(const string &P)
 
 /** Like findRowsForSuffixes(), but adds prefix to each suffix before searching
  */
-vector<OppRows> Opp::findRowsForSuffixesWithPrefix(const string &P, char C)
+vector<OppRows> Opp::findRowsForSuffixesWithPrefix(const string &P, char C) const
 {
     int i       = P.length();       
     char c      = P[i - 1];        
@@ -141,18 +141,18 @@ vector<OppRows> Opp::findRowsForSuffixesWithPrefix(const string &P, char C)
 
 /** Returns C[c]
 */
-int Opp::getCFor(char c)
+int Opp::getCFor(char c) const
 {
-    return C[c];
+    return C.find(c)->second;
 }
 
 /** Returns C[c + 1]
 */
-int Opp::getCForNext(char c)
+int Opp::getCForNext(char c) const
 {
-    map<char, int>::iterator it;
+    map<char, int>::const_iterator it;
     it = C.find(c);
-
+    
     if (it == C.end()) return textSize;
     return (++it)->second;
 }

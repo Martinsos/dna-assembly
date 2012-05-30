@@ -32,11 +32,11 @@ class Opp
     // ----------------- findRows (backward_search) methods --------------------- //
     /** Returns C[c]
     */
-    int getCFor(char c);
+    int getCFor(char c) const;
 
     /** Returns C[c + 1]
     */
-    int getCForNext(char c);
+    int getCForNext(char c) const;
 
   public:
     /** Constructor
@@ -50,14 +50,14 @@ class Opp
 	 * Returns indexes of first and last row (rows are contiguous).
 	 * First row is indexed with 1.
 	 */	
-	OppRows findRows(const string &P);
+	OppRows findRows(const string &P) const;
     
     /**
      * Same as method findRows() but returns rows for all suffixes of P, not just P.
      * IMPORTANT: same time complexity as oppRows (O(p+occ), not |P| * O(oppRows) as you would expect).
      * @return vector[m] corresponds to P[p-m,p]
      */
-    vector<OppRows> findRowsForSuffixes(const string &P);
+    vector<OppRows> findRowsForSuffixes(const string &P) const;
 	
 	/**
      * Same as method findRows() but returns rows for all suffixes of P prefixed with character C.
@@ -65,7 +65,7 @@ class Opp
      * IMPORTANT: same time complexity as oppRows (O(p+occ), not |P| * O(oppRows) as you would expect).
      * @return vector[m] corresponds to C+P[p-m,p]
      */
-    vector<OppRows> findRowsForSuffixesWithPrefix(const string &P, char C);
+    vector<OppRows> findRowsForSuffixesWithPrefix(const string &P, char C) const;
 };
 
 #endif // OPP_HPP
