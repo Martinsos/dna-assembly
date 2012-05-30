@@ -9,6 +9,7 @@
 #include <cmath>
 #include <map>
 #include <utility>
+#include <ctime>
 
 using namespace std;
 
@@ -19,6 +20,11 @@ using namespace std;
  */
 FMindex::FMindex(string &T)
 {
+    clock_t begin, end;
+    begin = clock();                                                      
+    printf("Vrijeme izgradnje: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);
+    
+    
 	// Set LZ separator.
 	LZsep_ = '$';
     // Remember size of T
@@ -32,14 +38,20 @@ FMindex::FMindex(string &T)
 //cout << "gradim trie" << endl;
 	// We use LZ78 parsing to parse string T and build a trie. 
     // oppTLZR is also created.
+begin = clock();   
 	trie_ = new Trie();
 	vector<Index> wordLengths = trie_->buildTrieLZ78(T, LZsep_, oppTLZR_);  // oppTLZR_ is created!
+printf("Vrijeme izgradnje za Trie: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);
 //cout << "trie izgradjen" << endl;		
 	// create Opp(T)
+begin = clock(); 
 	oppT_ = new Opp(T);
+printf("Vrijeme izgradnje za oppT: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);
 
     // create RTQ
+begin = clock(); 
     buildRTQ(T, wordLengths);
+printf("Vrijeme izgradnje za RTQ: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);
 //cout << "RTQ gotov" << endl;    
     // create shortPatterns
     memorizeShortPatterns(T, wordLengths);
@@ -215,10 +227,11 @@ void FMindex::buildRTQ(const string& T, const vector<Index>& wordLengths)   // D
         }
         wordStart += wordLengths[i];
     }
-   
+  
     // create RTQ from Q and V
+clock_t begin = clock(); 
     this->rtQ_ = new RTQ(*Q, *V);
-                                
+printf("Vrijeme izvođenja za konstruktor od RTQ: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);                                
     // delete Q and V
     delete Q;
     delete V;

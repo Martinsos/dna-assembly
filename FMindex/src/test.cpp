@@ -23,12 +23,11 @@ int main()
         cout << "Test nije prodjen" << endl;
     */
    
-    string T2 = "vanijemokroigrmi";
-    getline(cin, T2);
+    string T2 = "abbabbabababaaababababaaabaa";
     string T = "";
-    for (int i = 0; i < 1; i++)
+    for (int i = 0; i < 150; i++)
         T += T2;
-    
+    cout << T.length() << endl;
     clock_t begin, end, begin2, end2;
     
     begin = clock();

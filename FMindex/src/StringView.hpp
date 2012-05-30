@@ -12,7 +12,7 @@ using namespace std;
 typedef int Index;
 
 /**
- * StringView slightly changed view of another string with minimum copying involved.
+ * StringView is slightly changed view of another string with minimum copying involved.
  * StringView can not affect or change viewed string.
  * We can add suffix, preffix, or limit our view to substring of viewed string.
  * When making a view of another string, no copying is done.
@@ -46,7 +46,7 @@ class StringView
     /**
      * Returns char at position i. Positions start from 0, from first character of prefix.
      */
-    const char& charAt(Index i);
+    char charAt(Index i);
     
     /**
      * Returns length of preffix, viewed string and suffix together.
