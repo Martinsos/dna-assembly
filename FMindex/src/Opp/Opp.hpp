@@ -40,7 +40,8 @@ class Opp
 
   public:
     /** Constructor
-     *  Gets and stores coded T
+     *  Gets and stores coded T.
+     *  Opp will do some manipulations on given T but when function is over it guarantees T will be same as it was when given.
      */
 	Opp(string &T);
 	

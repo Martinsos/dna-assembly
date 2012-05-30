@@ -90,7 +90,7 @@ vector<OppRows> Opp::findRowsForSuffixes(const string &P) const
     while (first <= last && i >= 2)
     {
         c = P[i - 2]; // Because array is 0-based and here we work with base 1
-        cout << "novi c: " << c << endl;
+cout << "novi c: " << c << endl;
         
         first = getCFor(c) + 1 + compressor->occ(c, first - 1);
         last = getCFor(c) + compressor->occ(c, last);

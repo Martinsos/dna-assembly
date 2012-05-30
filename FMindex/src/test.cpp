@@ -24,7 +24,7 @@ int main()
     */
     string T2 = "aabaaabababababbabbbab";
     string T = "";
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < 1; i++)
         T += T2;
     
     clock_t begin, end, begin2, end2;
@@ -50,8 +50,8 @@ int main()
                 lokacije.push_back(i+1);
         end = clock();
         cout << "lokacije:" << endl;
-//        for (Index i = 0; i < lokacije.size(); i++)
-//            cout << lokacije[i] << endl;
+        for (Index i = 0; i < lokacije.size(); i++)
+            cout << lokacije[i] << endl;
         cout << "Broj pojavljivanja(svih)" << endl;
         cout << lokacije.size() << endl;
         printf("Vrijeme lociranja: %.5lf\n", (double)(end-begin) / CLOCKS_PER_SEC);
@@ -62,8 +62,8 @@ int main()
         vector<Index> locs = fmIndex.getLocations(P);
         end = clock();                              
         sort(locs.begin(), locs.end());
-//        for (Index i = 0; i < locs.size(); i++)
-//            cout << locs[i] << endl;
+        for (Index i = 0; i < locs.size(); i++)
+            cout << locs[i] << endl;
         cout << "Broj pojavljivanja(svih)" << endl;
         Index numOcc = fmIndex.getCount(P);
         begin2 = clock();

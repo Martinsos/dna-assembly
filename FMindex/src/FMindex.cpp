@@ -17,7 +17,7 @@ using namespace std;
  * Possible problem: buildTrie() returns vector<Index>,
  * if it is very big maybe it would be better to pass reference to buildTrie().
  */
-FMindex::FMindex(const string &T)
+FMindex::FMindex(string &T)
 {
 	// Set LZ separator.
 	LZsep_ = '$';
@@ -42,11 +42,6 @@ FMindex::FMindex(const string &T)
     
     // create shortPatterns
     memorizeShortPatterns(T, wordLengths);
-}
-
-FMindex::FMindex()
-{
-    FMindex("");
 }
 
 FMindex::~FMindex()

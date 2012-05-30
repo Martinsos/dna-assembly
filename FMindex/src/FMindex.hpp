@@ -22,13 +22,9 @@ class FMindex
   public:
 	/**
 	 * Builds FMindex for string T.
+     * T will not be changed.
 	 */
-	FMindex(const string &T);
-    
-    /**
-     * Builds FMindex for string ""
-     */
-    FMindex();
+	FMindex(string &T);
 	
 	~FMindex();
 	
