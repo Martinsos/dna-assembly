@@ -12,12 +12,12 @@ using namespace std;
 int main()
 {
     // Create instance of Opp
-    string T = "aabaaabababababbabbbab";
+    string T = "$o$pej$il$ej$ar$t$un$ui$l$ai$mr$g$io$r$k$o$m$e$j$i$n$a$v";
     Opp myOpp(T);
     cout << "gotov konstruktor" << endl;
     
     // Get result
-    OppRows result = myOpp.findRows("baba");
+    OppRows result = myOpp.findRows("$v");
     // Output result
     cout << result.getFirst() << endl;
     cout << result.getLast() << endl;

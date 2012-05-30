@@ -421,35 +421,36 @@ int Compressor::occ(char c, int q)
 
     // Determine bucket containing q-th character of L
     int BL = ((q + bucketSize - 1) / bucketSize) - 1;  // 0 - based indexing, so we substract 1
-    //cout << "Bucket u kojem je q-to slovo: " << BL << endl;
+    cout << "Bucket u kojem je q-to slovo: " << BL << endl;
 
     // Find character in BL to count up to (starting from 1)
     int h = q - BL * bucketSize;
-    //cout << "U tom bucketu brojim do: " << h << endl;
+    cout << "U tom bucketu brojim do: " << h << endl;
 
     // Determine superBucket containing q-th character of L
     int SBL = ((q + superBucketSize - 1) / superBucketSize) - 1;  // 0 - based indexing, so we substract 1
-    //cout << "superBucket u kojem je q-to slovo: " << SBL << endl;
+    cout << "superBucket u kojem je q-to slovo: " << SBL << endl;
 
     // Add previous occurrences if possible
     if (SBL > 0)    // SuperBucket - if not first superBucket
     {
-     //   cout << "gledam po superbucketu: " << sbNO[SBL -1][c] << endl;
+        cout << "gledam po superbucketu: " << sbNO[SBL -1][c] << endl;
         occ += sbNO[SBL - 1][c];
         BZStart += sbW[SBL - 1];
     }
     if (BL % bucketSize != 0)   // Bucket - if not first bucket after superBucket
     {
-      //  cout << "gledam bucket prije, u njemu pise: " << bNO[BL - 1][c] << endl;
+        cout << "gledam bucket prije, u njemu pise: " << bNO[BL - 1][c] << endl;
         occ += bNO[BL - 1][c];
         BZStart += bW[BL - 1];
     }
 
     // Decode first h characters in BZ and count c's
+    cout << "idem traziti po bucketu" << endl;
     int inBucket = S(c, h, BZStart, MTFStates[BL], MZ[BL]);
     occ += inBucket;
 
-    //cout << "U bucketu sam jos nasao: " << inBucket << endl;
+    cout << "U bucketu sam jos nasao: " << inBucket << endl;
 
     return occ;
 }
@@ -463,6 +464,8 @@ int Compressor::S(char c, int h, int BZStart, list<char> MTFState, int missingZe
     vector<int> MTFCode;
     for (int i = 0; i < missingZeroes && i < h; i++)    
         MTFCode.push_back(0);
+
+    cout << "Dodao nule!" << endl;
 
     int pos = BZStart;
     while (MTFCode.size() < h)
@@ -491,7 +494,6 @@ int Compressor::S(char c, int h, int BZStart, list<char> MTFState, int missingZe
 
                 j++;
                 pos += 2; // Skip by 2 (01, 11)
-                
 
                 // If I have enough letters overal
                 if (zeroNum + MTFCode.size() >= h)
