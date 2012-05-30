@@ -213,12 +213,13 @@ void FMindex::buildRTQ(const string& T, const vector<Index>& wordLengths)   // D
 
         for (Index k = 0; k < lengthThreshold_ && k < wordLengths[i]; k++)  // for each of last log(log n) positions in word
         {
-            StringView prefix = StringView(T.substr(wordStart, wordLengths[i]-k);
-            string suffix = T.substr(wordEnd-k+1);
+            StringView prefix = StringView(T, wordStart, wordLengths[i]-k);
+            StringView suffix = StringView(T, 0, wordEnd-k+1);
 //cout << prefix << " " << suffix << endl;            
             // calculate (x,y) and add it to Q : x -> prefix, y -> suffix
-            reverse(prefix.begin(), prefix.end());
-            Index x = this->oppTLZR_->findRows(this->LZsep_+prefix).getFirst();
+            prefix.reverse();
+            prefix.addPrefix(string(1, this->LZsep_));
+            Index x = this->oppTLZR_->findRows(prefix).getFirst();
             Index y = this->oppT_->findRows(suffix).getFirst();
             Q->push_back(make_pair(x, y));
             

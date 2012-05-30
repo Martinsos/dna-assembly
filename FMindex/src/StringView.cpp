@@ -66,7 +66,7 @@ void StringView::reverse()
 }
 
 
-
+/*
 #include <iostream>
 
 int main()
@@ -83,4 +83,4 @@ int main()
         cout << view.charAt(i) << endl;
     return 0;
 }
-
+*/
