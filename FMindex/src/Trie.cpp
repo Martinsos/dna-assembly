@@ -75,13 +75,16 @@ vector<Index> Trie::buildTrieLZ78(const string &T, char LZsep, Opp* &oppTLZR)
 			wordI++;
 		}
 	}  
+//cout << TLZR << endl;
 	reverse(TLZR.begin(), TLZR.end());
+//cout << TLZR << endl;
+//cout << "gradim OppTLZR" << endl;
      // create Opp(TLZR)
     oppTLZR = new Opp(TLZR);
-     
+//cout << "izgradio sam OppTLZR" << endl;
     // Maps rows from Opp(TLZR) to nodes of Trie
     this->mapRowsToNodes(*oppTLZR);
-     
+//cout << "mapirao sam retke" << endl;     
 	return wordLengths;
 }
 
@@ -93,7 +96,9 @@ Index Trie::getSize()
 void Trie::mapRowsToNodes(const Opp &oppTLZR)
 {
     N_.resize(size_);
+//cout << "trazim retke" << endl;
     offsetN_ = oppTLZR.findRows(string(1,LZsep_)).getFirst();
+//cout << "nasao retke" << endl;
 
 	string word = ""; 
 	mapRowsToNodesRec(root_, word, oppTLZR);
@@ -108,7 +113,7 @@ void Trie::mapRowsToNodesRec(TrieNode *node, string& word, const Opp &oppTLZR)
             rowI = oppTLZR.findRows(string(1,LZsep_)+word.substr(1)).getFirst() + 1;
         else
             rowI = oppTLZR.findRows(string(1,LZsep_)+word).getFirst();
-		N_[ rowI - offsetN_ ] = node;	// map row to node;
+        N_[ rowI - offsetN_ ] = node;	// map row to node;
 	}
     map<char, TrieNode*>::iterator it;
 	for (it = node->children.begin(); it != node->children.end(); it++)  // map rows for all children

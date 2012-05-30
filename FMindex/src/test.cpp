@@ -22,7 +22,9 @@ int main()
     else
         cout << "Test nije prodjen" << endl;
     */
-    string T2 = "aabaaabababababbabbbab";
+   
+    string T2 = "vanijemokroigrmi";
+    getline(cin, T2);
     string T = "";
     for (int i = 0; i < 1; i++)
         T += T2;
@@ -72,8 +74,10 @@ int main()
         printf("Vrijeme lociranja:     %.5lf\n", (double)(end-begin) / CLOCKS_PER_SEC);
         printf("Vrijeme samo brojanja: %.5lf\n", (double)(end2-begin2) / CLOCKS_PER_SEC);
         
+        cout << "locs size: " << locs.size() << endl;
+        cout << "lokacije size: " << lokacije.size() << endl; 
         bool isto = true;
-        if (lokacije.size() != numOcc)
+        if (lokacije.size() != numOcc || lokacije.size() != locs.size())
             isto = false;
         else {
             bool isto = true;

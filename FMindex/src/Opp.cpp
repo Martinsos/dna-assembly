@@ -9,7 +9,7 @@
 
 using namespace std;
 
-Opp::Opp(const string &T)
+Opp::Opp(string &T)
 {
     string T_ = T+"#";
 	M.push_back(T_);

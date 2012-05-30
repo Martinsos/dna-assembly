@@ -24,22 +24,23 @@ FMindex::FMindex(string &T)
     // Remember size of T
     n_ = T.length();
     // calculate lengthThreshold_
-    if (n_ >= 4)
+    if (n_ >= 16)
         lengthThreshold_ = (Index) trunc(log2(log2(n_)));
     else
-        lengthThreshold_ = 4;  // if word T is shorter than 4, set lengthThreshold_ to 4 so every word P is considered short
-	
+        lengthThreshold_ = 16;  // if word T is shorter than 16, set lengthThreshold_ to 16 so every word P is considered short
+
+//cout << "gradim trie" << endl;
 	// We use LZ78 parsing to parse string T and build a trie. 
     // oppTLZR is also created.
 	trie_ = new Trie();
 	vector<Index> wordLengths = trie_->buildTrieLZ78(T, LZsep_, oppTLZR_);  // oppTLZR_ is created!
-		
+//cout << "trie izgradjen" << endl;		
 	// create Opp(T)
 	oppT_ = new Opp(T);
 
     // create RTQ
     buildRTQ(T, wordLengths);
-    
+//cout << "RTQ gotov" << endl;    
     // create shortPatterns
     memorizeShortPatterns(T, wordLengths);
 }
