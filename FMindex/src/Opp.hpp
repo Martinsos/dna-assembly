@@ -40,7 +40,7 @@ class OppRows
 class Opp
 {
   public:
-	Opp(const string &T);
+	Opp(string &T);
 	
 	/**
 	 * Implements backward_search algorithm.

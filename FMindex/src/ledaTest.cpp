@@ -1,3 +1,7 @@
+/**
+ * @author Martin Sosic (sosic.martin@gmail.com)
+ */
+
 #include <iostream>
 #include <utility>
 
