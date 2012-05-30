@@ -28,6 +28,11 @@ class OppRows
     /** Returns last row in conceptual matrix prefixed with certain string
      */
     int getLast();
+
+    /** Prints itself to stdout
+     *  For testing
+     */
+    void print();
   
   private:
     int first, last;

@@ -29,7 +29,6 @@ Compressor::Compressor(char eof, Alphabet alpha, int bucketSize) : alphabet(alph
             binStr += bin[j] == 0 ? '0' : '1';
 
         alphabet.putCode(binStr, i);
-        cout << "dodao u mapu: " << binStr << " -> " << i << endl;
     }
 }
 
@@ -58,7 +57,7 @@ class SASort
         const string& T;
 };
 
-/** Returns compressed original text
+/** Returns compressed original text (only for testing, should be void)
  *
  *  Main (and only) public class
  */
@@ -133,7 +132,10 @@ string Compressor::getBWT(string& T)
         else
             bwt += string(1, T[SA[i] - 1]);
     
+
     initNOs(bwt);
+
+    T.erase(T.length() - 1); // Remove added eof char
     return bwt;
 }
 
@@ -173,12 +175,6 @@ vector<int> Compressor::getMTF(const string& L)
                 break;
             }
     }
-    
-    cout << "==MTF Code==================================" << endl;
-    for (int i = 0; i < MTF.size(); i++)
-        cout << MTF[i] << " ";
-    cout << endl;
-
     return MTF;
 }
 
@@ -426,26 +422,26 @@ int Compressor::occ(char c, int q)
 
     // Determine bucket containing q-th character of L
     int BL = ((q + bucketSize - 1) / bucketSize) - 1;  // 0 - based indexing, so we substract 1
-    cout << "Bucket u kojem je q-to slovo: " << BL << endl;
+    //cout << "Bucket u kojem je q-to slovo: " << BL << endl;
 
     // Find character in BL to count up to (starting from 1)
     int h = q - BL * bucketSize;
-    cout << "U tom bucketu brojim do: " << h << endl;
+    //cout << "U tom bucketu brojim do: " << h << endl;
 
     // Determine superBucket containing q-th character of L
     int SBL = ((q + superBucketSize - 1) / superBucketSize) - 1;  // 0 - based indexing, so we substract 1
-    cout << "superBucket u kojem je q-to slovo: " << SBL << endl;
+    //cout << "superBucket u kojem je q-to slovo: " << SBL << endl;
 
     // Add previous occurrences if possible
     if (SBL > 0)    // SuperBucket - if not first superBucket
     {
-        cout << "gledam po superbucketu: " << sbNO[SBL -1][c] << endl;
+     //   cout << "gledam po superbucketu: " << sbNO[SBL -1][c] << endl;
         occ += sbNO[SBL - 1][c];
         BZStart += sbW[SBL - 1];
     }
     if (BL % bucketSize != 0)   // Bucket - if not first bucket after superBucket
     {
-        cout << "gledam bucket prije, u njemu pise: " << bNO[BL - 1][c] << endl;
+      //  cout << "gledam bucket prije, u njemu pise: " << bNO[BL - 1][c] << endl;
         occ += bNO[BL - 1][c];
         BZStart += bW[BL - 1];
     }
@@ -454,7 +450,7 @@ int Compressor::occ(char c, int q)
     int inBucket = S(c, h, BZStart, MTFStates[BL], MZ[BL]);
     occ += inBucket;
 
-    cout << "U bucketu sam jos nasao: " << inBucket << endl;
+    //cout << "U bucketu sam jos nasao: " << inBucket << endl;
 
     return occ;
 }
@@ -468,10 +464,6 @@ int Compressor::S(char c, int h, int BZStart, list<char> MTFState, int missingZe
     vector<int> MTFCode;
     for (int i = 0; i < missingZeroes && i < h; i++)    
         MTFCode.push_back(0);
-
-    cout << "-------------------------" << endl;
-    cout << "missingZeroes: " << missingZeroes << endl;
-    cout << "pocinjem od: " << BZStart << endl;
 
     int pos = BZStart;
     while (MTFCode.size() < h)
@@ -501,7 +493,6 @@ int Compressor::S(char c, int h, int BZStart, list<char> MTFState, int missingZe
                 j++;
                 pos += 2; // Skip by 2 (01, 11)
                 
-                cout << "nasao sam nula: " << zeroNum << endl;
 
                 // If I have enough letters overal
                 if (zeroNum + MTFCode.size() >= h)
@@ -512,14 +503,9 @@ int Compressor::S(char c, int h, int BZStart, list<char> MTFState, int missingZe
          }
     }
     
-    cout << "MTF dio bucketa" << endl;
-    for (int i = 0; i < MTFCode.size(); i++)
-        cout << MTFCode[i] << " ";
-    cout << endl;
-
     // Count occurrences of c in decoded bucket
     string BL = decodeMTF(MTFCode, MTFState);   // I get decoded bucket of L (first h letters)
-    cout << "dekodirani dio bucketa: " << BL << endl;
+    //cout << "dekodirani dio bucketa: " << BL << endl;
     for (int i = 0; i < h; i++) // Look only first h
         if (BL[i] == c) occ++;
 

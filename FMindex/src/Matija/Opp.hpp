@@ -2,7 +2,9 @@
 #define OPP_HPP
 
 #include <string>
+#include <map>
 
+#include "Alphabet.hpp"
 #include "Compressor.hpp"
 #include "OppRows.hpp"
 
@@ -12,15 +14,35 @@ class Opp
 {
   private:
     /* Data structures */
+
+    /** Size of input text
+     */
+    int textSize;
+
+    /**
+     * Inner instance of compressor
+     */
     Compressor* compressor;
 
-    /* Methods */
+    /** Keeps entry for each letter of alphabet.
+     *  C[c] stores the total number of text characters which are alphabetically smaller than c.
+     */
+    map<char, int> C;
+
+    // ----------------- findRows (backward_search) methods --------------------- //
+    /** Returns C[c]
+    */
+    int getCFor(char c);
+
+    /** Returns C[c + 1]
+    */
+    int getCForNext(char c);
 
   public:
     /** Constructor
      *  Gets and stores coded T
      */
-	Opp(const string &T);
+	Opp(string &T);
 	
 	/**
 	 * Implements backward_search algorithm.
@@ -28,14 +50,14 @@ class Opp
 	 * Returns indexes of first and last row (rows are contiguous).
 	 * First row is indexed with 1.
 	 */	
-	OppRows findRows(const string &P) const;
+	OppRows findRows(const string &P);
     
     /**
      * Same as method findRows() but returns rows for all suffixes of P, not just P.
      * IMPORTANT: same time complexity as oppRows (O(p+occ), not |P| * O(oppRows) as you would expect).
      * @return vector[m] corresponds to P[p-m,p]
      */
-    vector<OppRows> findRowsForSuffixes(const string &P) const;
+    vector<OppRows> findRowsForSuffixes(const string &P);
 	
 	/**
      * Same as method findRows() but returns rows for all suffixes of P prefixed with character C.
@@ -43,7 +65,7 @@ class Opp
      * IMPORTANT: same time complexity as oppRows (O(p+occ), not |P| * O(oppRows) as you would expect).
      * @return vector[m] corresponds to C+P[p-m,p]
      */
-    vector<OppRows> findRowsForSuffixesWithPrefix(const string &P, char C) const;
+    vector<OppRows> findRowsForSuffixesWithPrefix(const string &P, char C);
 };
 
 #endif // OPP_HPP

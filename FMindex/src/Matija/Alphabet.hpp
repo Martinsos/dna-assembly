@@ -16,11 +16,12 @@ class Alphabet
 {
     public:
         /** Constructor
-          * Initializes member letters and C from T
+          * Initializes members textSize, letters and C from T
           *
-          * @param T input text
+          * @param T    input text
+          * @param eof  EOF sign
           */
-        Alphabet(string& T);
+        Alphabet(const string& T, char eof);
 
         /** Constructor
          *  Sorts letters ascending
@@ -62,14 +63,13 @@ class Alphabet
         /** Contains letters of alphabet
          */
         set<char> letters;
-        
+
         /** Maps binary code to MTF code
          *  for numbers {1, alphabet().size - 1}.
          *
          *  Initialized in constructor
          */
         map<string, int> MTFCodes;
-
 };
 
 #endif // ALPHABET_HPP

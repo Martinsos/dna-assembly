@@ -9,13 +9,16 @@
 using namespace std;
 
 /** Constructor
-  * Initializes structure from input text T
+  * Initializes structures from input text T
   */
-Alphabet::Alphabet(string& T)
+Alphabet::Alphabet(const string& T, char eof)
 {
     // Initialize letters
-
-    // Initialize C
+    for (int i = 0; i < T.size(); i++)
+    {
+        letters.insert(T[i]);
+    }
+    letters.insert(eof);
 }
 
 /** Constructor
