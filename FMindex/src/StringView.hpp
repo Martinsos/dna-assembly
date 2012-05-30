@@ -47,13 +47,13 @@ class StringView
     /**
      * Returns char at position i. Positions start from 0, from first character of prefix.
      */
-    char charAt(Index i);
+    char charAt(Index i) const;
     
     /**
      * Returns length of preffix, viewed string and suffix together.
      * Time complexity: O(1);
      */
-    Index getLength();
+    Index getLength() const;
     
     /**
      * Reverse view. Only prefix and suffix are really reversed (and swapped).

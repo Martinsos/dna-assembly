@@ -38,7 +38,7 @@ void StringView::addSuffix(const string& suffix)
     length += suffix.length();
 } 
     
-char StringView::charAt(Index i)
+char StringView::charAt(Index i) const
 {
     if (i < prefix.length())
         return prefix[i];
@@ -50,7 +50,7 @@ char StringView::charAt(Index i)
         return viewedString[viewEnd - (i-prefix.length())];
 }
 
-Index StringView::getLength()
+Index StringView::getLength() const
 {
     return length;
 }
@@ -66,7 +66,7 @@ void StringView::reverse()
 }
 
 
-/*
+
 #include <iostream>
 
 int main()
@@ -83,4 +83,4 @@ int main()
         cout << view.charAt(i) << endl;
     return 0;
 }
-*/
+

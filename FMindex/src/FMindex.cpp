@@ -11,6 +11,8 @@
 #include <utility>
 #include <ctime>
 
+#include "StringView.hpp"
+
 using namespace std;
 
 
@@ -211,7 +213,7 @@ void FMindex::buildRTQ(const string& T, const vector<Index>& wordLengths)   // D
 
         for (Index k = 0; k < lengthThreshold_ && k < wordLengths[i]; k++)  // for each of last log(log n) positions in word
         {
-            string prefix = T.substr(wordStart, wordLengths[i]-k);
+            StringView prefix = StringView(T.substr(wordStart, wordLengths[i]-k);
             string suffix = T.substr(wordEnd-k+1);
 //cout << prefix << " " << suffix << endl;            
             // calculate (x,y) and add it to Q : x -> prefix, y -> suffix
