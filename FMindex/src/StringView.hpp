@@ -27,7 +27,8 @@ class StringView
      */
     StringView(const string& s);
     /**
-     * Create a view of given string, starting from character at position start and ending at position start+length-1, inclusive.
+     * Create a view of given string, starting from character at position
+     * start and ending at position start+length-1, inclusive.
      * Space and time complexity: O(1).
      */
     StringView(const string& s, Index start, Index length);
