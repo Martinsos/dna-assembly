@@ -5,7 +5,7 @@
 #ifndef TRIE_HPP
 #define TRIE_HPP
 
-#include "Opp.hpp"
+#include "Opp/Opp.hpp"
 
 #include <string>
 #include <vector>

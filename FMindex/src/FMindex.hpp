@@ -5,7 +5,7 @@
 #ifndef FMINDEX_HPP
 #define FMINDEX_HPP
 
-#include "Opp.hpp"
+#include "Opp/Opp.hpp"
 #include "Trie.hpp"
 #include "RTQ.hpp"
 
