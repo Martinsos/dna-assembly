@@ -1,0 +1,85 @@
+Copyright(C) 2012 Filip Pavetic
+
+Testiranje je vrseno na podskupu pravih podataka. Sa stranice 
+ftp://ftp.ensembl.org/pub/release-67/fasta/homo_sapiens/dna/
+skinut je primjerak ljudske DNA, od koje je uzet dio odredjene 
+duljine s pocetka. 
+
+Ocitanja su simulirana alatom wgsim dostupnim na 
+https://github.com/lh3/wgsim
+
+Opisat cu ovdje kako sam generirao svaki od fileova (svi se nalaze u test.tar.gz)
+i ukratko objasniti kako koristiti alate koje sam pritom koristio. 
+
+dna1000 - iz filea koji sadrzi zapis 22. kromosoma s gore spomenute
+	web stranice uzeo sam prvih 1000 linija, taj lanac se sastoji od
+	~60000 baza
+
+dna10000 - isto kao prethodni, samo 10000 linija, ~600000 baza
+
+
+
+Iz ta dva filea ocitanja sam generirao pomocu alata wgsim. Prije nego sto
+opisem komande koje ih generiraju, prvo cu malo napisati o tome kako se 
+otprilike ocitanja rade u stvarnosti, tj. sto wgsim simulira
+
+Prvo nekoliko natuknica koje je korisno znati:
+* Lanac DNA se rascjepka u fragmente (wgsim koristi duljine fragmenata oko 500)
+* Kada uzmemo neki fragment ocitanje se radi s jednog njegovog kraja do duljine koju
+  mi propisemo. U stvarnosti se dogadja da za velike duljine citanja s jednog kraja
+  fragmenta greska kod ocitanja postaje prevelika pa bismo zapravo dobili beskorisne
+  podatke.
+* Sljedece na sto treba paziti je ovo. Citanje DNA je 'orijentirano', znaci jedan od
+  lanaca mozemo citati samo u jednom smjeru (ovo se dogadja, ali ne znam bas zasto :)).
+  Medjutim komplementarni lanac mozemo citati samo u drugom smjeru. Zbog ovog fenomena
+  mi zapravo ne znamo jesmo li procitali niz nukleotida iz zeljenog 'glavnog' lanca
+  ili smo procitali njegov okrenuti komplement. To za nase mappere znaci da za svaki
+  read trebamo pokusati osim njega samog matchati i okrenuti komplement. To ce praviti
+  probleme jer se nekada okrenuti komplement bolje (a krivo) poklopi negdje u dna. 
+* Treba primijetiti da postoji razlika izmedju termina 'fragment' i termina 'ocitanje'.
+  Fragmenti su dulji i oni nastaju kada se u procesu citanja dna fizicki nasijece na
+  komade. Ocitanja se rade na rubovima fragmenata.
+
+
+
+Prvo testiranje provedeno je sa defaultnim vrijednostima wgsima (od nama trenutno zanimljivijih
+vrijednosti tu su vjerojatnost greske kod ocitanja, duljina ocitanja, vjerojatnost mutacije
+i udio nukleotida koji nestanu u procesu)
+
+Ova naredba:
+./wgsim -N 1000000 -1 70 -2 70 dna1000 dna1000_reads_wgsim_default_verbose /dev/null
+
+proizvodi 1000000 ocitanja duljine 70 iz dna1000 file-a i sprema ih u dna1000_reads_wgsim_default_verbose.
+Drugi output nam nije potreban pa ga odbacujemo slanjem u /dev/null
+
+Nadalje, proizvest cemo manje fileove s ocitanjima za lakse testiranje, npr. naredbom
+cat dna1000_reads_wgsim_default_verbose | egrep "A|T|C|G" | head -100 > dna1000_reads100_wgsim_default
+smo proizveli mali input file koji sadrzi samo ocitanja, bez dodatnih informacija koje wgsim daje.
+
+
+Sada kad znamo sto je u kojem input fileu, ostaje vidjeti koliko dobro radi nama proizveden mapper.
+Mapper za svako ocitanje izbacuje jednu liniju formata 'from <from> to <to> score <score>' koja
+kaze gdje je to ocitanje najbolje poklopljeno s DNA i kolika je ocjena dobrote. Kada imamo taj ispis
+spremljen u fileu mapper_output, koristimo skriptu validate_output za provjeru tocnosti.
+
+python validate_output.py --wgsim_output_file=dna1000_reads_wgsim_default_verbose --mapper_output_file=mapper_output
+
+ce na standardni izlaz ispisati koliko posto od ocitanja koja su obradjena mapperom je postavljeno na ispravnu poziciju
+unutar DNA. (Vazno: wgsim_output_file mora biti file koji je izlaz wgsima, a ocitanja koja obradjujemo mapperom 
+moraju biti unutar prvih nekoliko iz tog filea, istim redoslijedom. Ovo je potrebno ukoliko odlucite raditi vlastite
+primjere)
+
+
+Preciznost/vrijeme za simpleHashingMapper, po inputima:
+dna1000_reads100_wgsim_default:
+dna1000_reads1000_wgsim_default:
+dna1000_reads10000_wgsim_default:
+dna10000_reads100_wgsim_default:
+dna10000_reads1000_wgsim_default:
+dna10000_reads10000_wgsim_default:
+dna1000_reads100_wgsim_e0.01_r0.005:
+dna1000_reads1000_wgsim_e0.01_r0.005:
+dna1000_reads10000_wgsim_e0.01_r0.005:
+dna10000_reads100_wgsim_e0.01_r0.005:
+dna10000_reads1000_wgsim_e0.01_r0.005:
+dna10000_reads10000_wgsim_e0.01_r0.005:
