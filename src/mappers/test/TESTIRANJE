@@ -70,16 +70,16 @@ moraju biti unutar prvih nekoliko iz tog filea, istim redoslijedom. Ovo je potre
 primjere)
 
 
-Preciznost/vrijeme za simpleHashingMapper, po inputima:
-dna1000_reads100_wgsim_default:
-dna1000_reads1000_wgsim_default:
-dna1000_reads10000_wgsim_default:
-dna10000_reads100_wgsim_default:
-dna10000_reads1000_wgsim_default:
-dna10000_reads10000_wgsim_default:
-dna1000_reads100_wgsim_e0.01_r0.005:
-dna1000_reads1000_wgsim_e0.01_r0.005:
-dna1000_reads10000_wgsim_e0.01_r0.005:
-dna10000_reads100_wgsim_e0.01_r0.005:
-dna10000_reads1000_wgsim_e0.01_r0.005:
-dna10000_reads10000_wgsim_e0.01_r0.005:
+Preciznost/vrijeme za simpleHashingMapper (uz duljinu prefix/suffix prozora 13 i maks. odstupanje od duljine 5), po inputima:
+dna1000_reads100_wgsim_default: 94%/28s
+dna1000_reads1000_wgsim_default: 94.5%/3m20s
+dna10000_reads100_wgsim_default: 61%/1m12s
+dna10000_reads1000_wgsim_default: 71.8%/8m29s
+dna10000_reads10000_wgsim_default: 68.72%/79m56s
+dna10000_reads100_wgsim_e0.01_r0.005: 69%/1m27s
+dna10000_reads1000_wgsim_e0.01_r0.005: 70.3%/9m59s
+dna10000_reads10000_wgsim_e0.01_r0.005: 69.48%/87m56s
+
+Postoje 2 vrste gresaka koje se dogadjaju s ocitanjima koja nisu ispravno smjestena:
+1) simpleHashingMapper je uslijed mutacija netocno (ili uopce nije) kandidatne pozicije smjestanja ocitanja
+2) okrenuti komplement se bolje uklopio na krivoj poziciji od 'glavnog' ocitanja na onoj gdje treba biti
