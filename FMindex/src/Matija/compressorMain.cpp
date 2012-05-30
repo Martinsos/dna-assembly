@@ -1,6 +1,7 @@
 
 #include "Compressor.hpp"
 
+#include <cmath>
 #include <string>
 #include <iostream>
 #include <list>
@@ -35,22 +36,17 @@ void dumpVector(vector<int> a)
 
 int main()
 {   
-    string T = "pipemississippi";
+    string T = "mississippi";
 
     // Initialize compressor
     char eof = '#';
-    set<char> letters;
-    letters.insert('i');
-    letters.insert('p');
-    letters.insert('s');
-    letters.insert('m');
-    letters.insert('e');
-    letters.insert(eof);
-    Alphabet alpha(letters);
+    Alphabet alpha(T, eof);
     
-    int bucketSize = 4;
+    int bucketSize = (int)log2(T.length());
     Compressor myCompressor(eof, alpha, bucketSize);
     
+    cout << "bucket size je: " << bucketSize << endl;
+
     cout << "==Input text=============================================" << endl;
     cout << T << endl;
     cout << "velicina: " << T.length() << endl;
@@ -114,7 +110,7 @@ int main()
     cout << "==OCC Testing============================================" << endl;
     int q = 7;
     char c = 's';
-    cout << "Pojavljivanje slova " << c << " u prvih " << q << " znakova: " << myCompressor.occ(c, q) << endl;
+    cout << "Pojavljivanje slova " << c << " u prvih " << q << " znakova: " << myCompressor.occ('i', 8) << endl;
     cout << "-------------------------------------------------------------------------" << endl;
 
     return 0;
