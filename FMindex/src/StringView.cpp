@@ -26,6 +26,15 @@ StringView::StringView(const string& s, Index start, Index length) : viewedStrin
     reversed = false;
 }
 
+StringView::StringView(const string& s, Index start) : viewedString(s)
+{
+    viewBegin = start;
+    this->length = s.length()-start;
+    viewEnd = viewBegin+length-1; 
+    prefix = suffix = "";
+    reversed = false;
+}
+
 void StringView::addPrefix(const string& prefix)
 {
     this->prefix = prefix + this->prefix;

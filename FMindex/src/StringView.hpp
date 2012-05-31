@@ -32,6 +32,12 @@ class StringView
      * Space and time complexity: O(1).
      */
     StringView(const string& s, Index start, Index length);
+    /**
+     * Create a view of given string, starting from character at position start 
+     * and ending at position s.length-1, inclusive.
+     * Space and time complexity: O(1).
+     */
+    StringView(const string& s, Index start);
     
     /**
      * Add prefix. Prefix is actually copied and stored in StringView.

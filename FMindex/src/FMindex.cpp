@@ -22,10 +22,7 @@ using namespace std;
  */
 FMindex::FMindex(string &T)
 {
-    clock_t begin, end;
-    begin = clock();                                                      
-    printf("Vrijeme izgradnje: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);
-    
+    clock_t begin, end;    
     
 	// Set LZ separator.
 	LZsep_ = '$';
@@ -75,11 +72,12 @@ vector<Index> FMindex::getInternal(const string &P)
 //trie_->printTrie();	
 //cout << "Size of trie: " << trie_->getSize() << endl;
 	// reverse string P
-	string PR = P;
-	reverse(PR.begin(), PR.end());
+	StringView PR = StringView(P);
+    PR.reverse();
 	
 	// find rows of conceptual matrix that start with $PR
-	OppRows rows = oppTLZR_->findRows(LZsep_ + PR);
+    PR.addPrefix(string(1, LZsep_));
+	OppRows rows = oppTLZR_->findRows(PR);
 	
 	// if no rows were found, return empty vector
 	if (rows.isEmpty())
@@ -182,15 +180,15 @@ void FMindex::memorizeShortPatterns(const string& T, const vector<Index>& wordLe
 
 vector<OppRows> FMindex::findSuffixesOfP(const string& P) 
 {
-    vector<OppRows> oppRows = this->oppT_->findRowsForSuffixes(P);
+    vector<OppRows> oppRows = this->oppT_->findRowsForSuffixes(StringView(P));
     reverse(oppRows.begin(), oppRows.end());
     return oppRows;
 }
     
 vector<OppRows> FMindex::findPrefixesOfP(const string& P)                   
 {
-    string PR = P;
-	reverse(PR.begin(), PR.end());
+    StringView PR = StringView(P);
+	PR.reverse();
     return oppTLZR_->findRowsForSuffixesWithPrefix(PR, LZsep_);
 }
 
@@ -199,6 +197,9 @@ void FMindex::buildRTQ(const string& T, const vector<Index>& wordLengths)   // D
     // create Q and V on heap because they could be big
     vector< pair<Index, Index> >* Q = new vector< pair<Index, Index> >();
     vector< pair<Index, Index> >* V = new vector< pair<Index, Index> >();
+    
+    vector<OppRows> ys = this->oppT_->findRowsForSuffixes(T);
+    reverse(ys.begin(), ys.end());
 
 //oppT_->printOpp();
 //cout << "--------" << endl;
@@ -206,21 +207,25 @@ void FMindex::buildRTQ(const string& T, const vector<Index>& wordLengths)   // D
    
     // build Q and V
     Index wordStart = 0;    // position of first character in word
-
+int brojac = 0;
+clock_t begin, end;
+double ukupno = 0.0;
     for (Index i = 0; i < (Index)wordLengths.size()-1; i++)   // for all words except last
     { 
         Index wordEnd = wordStart + wordLengths[i] - 1;  // position in T of last character of word
-
         for (Index k = 0; k < lengthThreshold_ && k < wordLengths[i]; k++)  // for each of last log(log n) positions in word
         {
+brojac++;
             StringView prefix = StringView(T, wordStart, wordLengths[i]-k);
-            StringView suffix = StringView(T, 0, wordEnd-k+1);
-//cout << prefix << " " << suffix << endl;            
+        
             // calculate (x,y) and add it to Q : x -> prefix, y -> suffix
             prefix.reverse();
             prefix.addPrefix(string(1, this->LZsep_));
+begin = clock();
             Index x = this->oppTLZR_->findRows(prefix).getFirst();
-            Index y = this->oppT_->findRows(suffix).getFirst();
+            Index y = ys[wordEnd-k+1].getFirst();
+end = clock();
+ukupno += (double)(clock()-begin) / CLOCKS_PER_SEC;
             Q->push_back(make_pair(x, y));
             
             // calculate v and it to V
@@ -230,11 +235,11 @@ void FMindex::buildRTQ(const string& T, const vector<Index>& wordLengths)   // D
         }
         wordStart += wordLengths[i];
     }
-  
+printf("Brojac: %d\n", brojac);
+printf("Vrijeme izvođenja za findove: %.5lf\n", ukupno);                                
+
     // create RTQ from Q and V
-clock_t begin = clock(); 
     this->rtQ_ = new RTQ(*Q, *V);
-printf("Vrijeme izvođenja za konstruktor od RTQ: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);                                
     // delete Q and V
     delete Q;
     delete V;
@@ -257,7 +262,7 @@ Index FMindex::getCount(const string &P)
 {
     if (P.length() == 0)
         return 0;
-    OppRows rows = oppT_->findRows(P);
+    OppRows rows = oppT_->findRows(StringView(P));
     if (rows.isEmpty())
         return 0;
     return 1+rows.getLast()-rows.getFirst();

@@ -24,14 +24,15 @@ int main()
     */
    
     string T2 = "abbabbabababaaababababaaabaa";
+    //string T2 = "$o$pej$il$ej$ar$t$un$ui$l$ai$mr$g$io$r$k$o$m$e$j$i$n$a$v";
     string T = "";
-    for (int i = 0; i < 150; i++)
+    for (int i = 0; i < 1000; i++)
         T += T2;
     cout << T.length() << endl;
     clock_t begin, end, begin2, end2;
     
     begin = clock();
-    FMindex fmIndex = FMindex(T);                                                        
+    FMindex* fmIndex = new FMindex(T);                                                        
     end = clock();
     printf("Vrijeme izgradnje: %.5lf\n", (double)(end-begin) / CLOCKS_PER_SEC);
     
@@ -51,8 +52,8 @@ int main()
                 lokacije.push_back(i+1);
         end = clock();
         cout << "lokacije:" << endl;
-        for (Index i = 0; i < lokacije.size(); i++)
-            cout << lokacije[i] << endl;
+  //      for (Index i = 0; i < lokacije.size(); i++)
+  //          cout << lokacije[i] << endl;
         cout << "Broj pojavljivanja(svih)" << endl;
         cout << lokacije.size() << endl;
         printf("Vrijeme lociranja: %.5lf\n", (double)(end-begin) / CLOCKS_PER_SEC);
@@ -60,15 +61,15 @@ int main()
         cout << "FMindex: " << endl;
         cout << "lokacije:" << endl;
         begin = clock();
-        vector<Index> locs = fmIndex.getLocations(P);
+        vector<Index> locs = fmIndex->getLocations(P);
         end = clock();                              
         sort(locs.begin(), locs.end());
-        for (Index i = 0; i < locs.size(); i++)
-            cout << locs[i] << endl;
+  //      for (Index i = 0; i < locs.size(); i++)
+  //          cout << locs[i] << endl;
         cout << "Broj pojavljivanja(svih)" << endl;
-        Index numOcc = fmIndex.getCount(P);
+        Index numOcc = fmIndex->getCount(P);
         begin2 = clock();
-        cout << fmIndex.getCount(P) << endl;
+        cout << fmIndex->getCount(P) << endl;
         end2 = clock();
         printf("Vrijeme lociranja:     %.5lf\n", (double)(end-begin) / CLOCKS_PER_SEC);
         printf("Vrijeme samo brojanja: %.5lf\n", (double)(end2-begin2) / CLOCKS_PER_SEC);
