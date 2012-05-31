@@ -25,7 +25,7 @@ FMindex::FMindex(string &T)
     clock_t begin, end;    
     
 	// Set LZ separator.
-	LZsep_ = '$';
+	LZsep_ = 1;
     // Remember size of T
     n_ = T.length();
     // calculate lengthThreshold_
@@ -207,7 +207,6 @@ void FMindex::buildRTQ(const string& T, const vector<Index>& wordLengths)   // D
    
     // build Q and V
     Index wordStart = 0;    // position of first character in word
-int brojac = 0;
 clock_t begin, end;
 double ukupno = 0.0;
     for (Index i = 0; i < (Index)wordLengths.size()-1; i++)   // for all words except last
@@ -215,7 +214,6 @@ double ukupno = 0.0;
         Index wordEnd = wordStart + wordLengths[i] - 1;  // position in T of last character of word
         for (Index k = 0; k < lengthThreshold_ && k < wordLengths[i]; k++)  // for each of last log(log n) positions in word
         {
-brojac++;
             StringView prefix = StringView(T, wordStart, wordLengths[i]-k);
         
             // calculate (x,y) and add it to Q : x -> prefix, y -> suffix
@@ -235,7 +233,7 @@ ukupno += (double)(clock()-begin) / CLOCKS_PER_SEC;
         }
         wordStart += wordLengths[i];
     }
-printf("Brojac: %d\n", brojac);
+
 printf("Vrijeme izvođenja za findove: %.5lf\n", ukupno);                                
 
     // create RTQ from Q and V
