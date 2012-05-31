@@ -7,13 +7,14 @@
 
 #include <string>
 #include <iostream>
+#include <ctime>
 
 using namespace std;
 
 int main()
 {
     // Create instance of Opp
-    string T = "$o$pej$il$ej$ar$t$un$ui$l$ai$mr$g$io$r$k$o$m$e$j$i$n$a$v";
+    string T = "abbabbabababaaababababaaabaa";
     
     string veliki = "";
     for (int i = 0; i < 5000; i++)
@@ -21,11 +22,15 @@ int main()
 
     cout << "velicina ulaznog teksta: " << veliki.length() << endl;
 
+    clock_t begin = clock();
     Opp myOpp(veliki);
+    clock_t end = clock();
+
+    cout << (double)(end - begin) / CLOCKS_PER_SEC << endl;
     cout << "gotov konstruktor" << endl;
     
     // Get result
-    StringView sw("$v");
+    StringView sw("ab");
     OppRows result = myOpp.findRows(sw);
     // Output result
     cout << result.getFirst() << endl;
