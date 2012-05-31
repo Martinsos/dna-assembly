@@ -5,6 +5,7 @@
 
 #include <cmath>
 #include <iostream>
+#include <ctime>
 
 #include "Opp.hpp"
 
@@ -62,15 +63,22 @@ OppRows Opp::findRows(const StringView& P) const
     int first   = getCFor(c) + 1;  
     int last    = getCForNext(c);  
 
+    int brojOp = 0;
     while (first <= last && i >= 2)
     {
         c = P.charAt(i - 2); // Because array is 0-based and here we work with base 1
 
+        clock_t begin = clock();
         first = getCFor(c) + 1 + compressor->occ(c, first - 1);
         last = getCFor(c) + compressor->occ(c, last);
+        clock_t end = clock();
+
+        brojOp++;
+        cout << "occ-ovi su trajali: " << ((double)(end - begin)) / (double)CLOCKS_PER_SEC << endl;
 
         i--;
     }
+    cout << "Prosao sam puta: " << brojOp << endl;
     if (last < first)
         return OppRows(0, 0, true); // 0 means undef here
 
