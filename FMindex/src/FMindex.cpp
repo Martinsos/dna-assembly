@@ -25,7 +25,7 @@ FMindex::FMindex(string &T)
     clock_t begin, end;    
     
 	// Set LZ separator.
-	LZsep_ = '$';
+	LZsep_ = 1;
     // Remember size of T
     n_ = T.length();
     // calculate lengthThreshold_

@@ -19,9 +19,10 @@ Opp::Opp(string& T)
     textSize = T.length() + 1; // EOF
 
     // Initialize compressor
-    char eof =  '#';
-    Alphabet alphabet(T, '#');
-    compressor = new Compressor('#', alphabet, (int)log2(textSize));
+    char eof =  0;
+    double factor = 0.7;
+    Alphabet alphabet(T, eof);
+    compressor = new Compressor(eof, alphabet, (int)(factor*log2(textSize)));
     compressor->compress(T);
 
     // Initialize C
