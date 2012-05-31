@@ -26,7 +26,7 @@ int main()
     string T2 = "abbabbabababaaababababaaabaa";
     //string T2 = "$o$pej$il$ej$ar$t$un$ui$l$ai$mr$g$io$r$k$o$m$e$j$i$n$a$v";
     string T = "";
-    for (int i = 0; i < 5000; i++)
+    for (int i = 0; i < 1000; i++)
         T += T2;
     cout << T.length() << endl;
     clock_t begin, end, begin2, end2;
