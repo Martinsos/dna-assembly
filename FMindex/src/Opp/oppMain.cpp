@@ -14,9 +14,14 @@ int main()
 {
     // Create instance of Opp
     string T = "$o$pej$il$ej$ar$t$un$ui$l$ai$mr$g$io$r$k$o$m$e$j$i$n$a$v";
-    cout << "velicina ulaznog teksta: " << T.length() << endl;
+    
+    string veliki = "";
+    for (int i = 0; i < 5000; i++)
+        veliki += T;
 
-    Opp myOpp(T);
+    cout << "velicina ulaznog teksta: " << veliki.length() << endl;
+
+    Opp myOpp(veliki);
     cout << "gotov konstruktor" << endl;
     
     // Get result
