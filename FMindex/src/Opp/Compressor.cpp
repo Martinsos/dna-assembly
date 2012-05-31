@@ -7,6 +7,7 @@
 #include <iostream>
 #include <algorithm>
 #include <cmath>
+#include <ctime>
 
 using namespace std;
 
@@ -129,7 +130,11 @@ vector<int> Compressor::getSuffixArray(const string& T)
 string Compressor::getBWT(string& T)
 {
     T.append(1, BWTEof);
+    clock_t begin = clock();
     vector<Index> SA = getSuffixArray(T);
+    clock_t end = clock();
+    
+    cout << "Izgradnja SA je trajala: " << (double)(end - begin) / CLOCKS_PER_SEC << endl;
 
     // Calculate BWT from SA
     string bwt = "";
