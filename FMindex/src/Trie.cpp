@@ -6,6 +6,8 @@
 
 #include <iostream>
 #include <algorithm>
+#include <ctime>
+#include <cstdio>
 
 #include "StringView.hpp"
 
@@ -82,7 +84,9 @@ vector<Index> Trie::buildTrieLZ78(const string &T, char LZsep, Opp* &oppTLZR)
 //cout << TLZR << endl;
 //cout << "gradim OppTLZR" << endl;
      // create Opp(TLZR)
+clock_t begin = clock();
     oppTLZR = new Opp(TLZR);
+printf("Vrijeme izgradnje za OppTLZR: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);    
 //cout << "izgradio sam OppTLZR" << endl;
     // Maps rows from Opp(TLZR) to nodes of Trie
     this->mapRowsToNodes(*oppTLZR);

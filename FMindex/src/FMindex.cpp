@@ -22,10 +22,7 @@ using namespace std;
  */
 FMindex::FMindex(string &T)
 {
-    clock_t begin, end;
-    begin = clock();                                                      
-    printf("Vrijeme izgradnje: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);
-    
+    clock_t begin, end;    
     
 	// Set LZ separator.
 	LZsep_ = '$';
