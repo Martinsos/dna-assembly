@@ -134,7 +134,7 @@ string Compressor::getBWT(string& T)
     vector<Index> SA = getSuffixArray(T);
     clock_t end = clock();
     
-    cout << "Izgradnja SA je trajala: " << (double)(end - begin) / CLOCKS_PER_SEC << endl;
+    cout << "Izgradnja SA je trajala: " << (double)(end - begin) / CLOCKS_PER_SEC;
 
     // Calculate BWT from SA
     string bwt = "";
