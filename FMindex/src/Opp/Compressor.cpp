@@ -45,7 +45,7 @@ vector< list<char> > Compressor::getMTFStates()
  */
 class SASort 
 {
-    public:
+    public:    
         SASort(const string& T_) : T(T_) {}
 
         // Compare suffixes of T, starting at pos1 and pos2
@@ -117,7 +117,6 @@ vector<int> Compressor::getSuffixArray(const string& T)
     // Sort suffixes regarding T
     SASort cmpObj(T);
     sort(SA.begin(), SA.end(), cmpObj);
-     
     return SA;
 }   
 
