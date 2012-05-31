@@ -7,6 +7,8 @@
 #include <iostream>
 #include <algorithm>
 
+#include "StringView.hpp"
+
 using namespace std;
 
 const char Trie::duplicate;
@@ -97,7 +99,7 @@ void Trie::mapRowsToNodes(const Opp &oppTLZR)
 {
     N_.resize(size_);
 //cout << "trazim retke" << endl;
-    offsetN_ = oppTLZR.findRows(string(1,LZsep_)).getFirst();
+    offsetN_ = oppTLZR.findRows(StringView(string(1,LZsep_))).getFirst();
 //cout << "nasao retke" << endl;
 
 	string word = ""; 
@@ -109,10 +111,16 @@ void Trie::mapRowsToNodesRec(TrieNode *node, string& word, const Opp &oppTLZR)
 	if (node != root_)	// don't do any mapping for root
 	{		
         Index rowI;
-        if (word[0] == Trie::duplicate)       // watch out if there is an LZ word same as some other
-            rowI = oppTLZR.findRows(string(1,LZsep_)+word.substr(1)).getFirst() + 1;
-        else
-            rowI = oppTLZR.findRows(string(1,LZsep_)+word).getFirst();
+        if (word[0] == Trie::duplicate) {      // watch out if there is an LZ word same as some other
+            StringView sw = StringView(word, 1);
+            sw.addPrefix(string(1,LZsep_));
+            rowI = oppTLZR.findRows(sw).getFirst() + 1;
+        }
+        else {
+            StringView sw = StringView(word);
+            sw.addPrefix(string(1,LZsep_));
+            rowI = oppTLZR.findRows(sw).getFirst();
+        }
         N_[ rowI - offsetN_ ] = node;	// map row to node;
 	}
     map<char, TrieNode*>::iterator it;
