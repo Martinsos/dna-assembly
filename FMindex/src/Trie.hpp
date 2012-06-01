@@ -24,7 +24,8 @@ class TrieNode
   public:  
 	Index location;		// starting position of word in string T
 	Index length;		// length of word
-	map<char, TrieNode*> children;
+	map<char, TrieNode*> children;  // pointers to children
+    Index oppRow;
 	
 	TrieNode(Index loc, Index len) { location = loc; length = len; }
 };
@@ -63,6 +64,12 @@ class Trie
   	 * locations of string P in string T. Uses length of P to calculate the locations.
   	 */
   	vector<Index> getLocationsFromSubtree(Index row, Index lengthP);
+    
+    /**
+     * Finds given word in trie and returns oppRow remembered for $word.
+     * First character of word is leaf.
+     */
+    Index getOppRowForWord(string word);
     
     /**
      * Returns number of LZ words in Trie.

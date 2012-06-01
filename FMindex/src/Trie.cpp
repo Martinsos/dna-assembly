@@ -110,11 +110,13 @@ void Trie::mapRowsToNodesRec(TrieNode *node, const OppRows& prevRows, char c, co
 	{		
         Index rowI;
         if (c == Trie::duplicate) {      // watch out if there is an LZ word same as some other
-            rowI = oppTLZR.findRowsDoStep(prevRows, LZsep_).getFirst() + 1;
+            node->oppRow = oppTLZR.findRowsDoStep(prevRows, LZsep_).getFirst() + 1; // remember oppRow for this node, with $
+            rowI = node->oppRow;  
         }
         else {
             currRows = oppTLZR.findRowsDoStep(prevRows, c);
-            rowI = oppTLZR.findRowsDoStep(currRows, LZsep_).getFirst();
+            node->oppRow = oppTLZR.findRowsDoStep(currRows, LZsep_).getFirst();   // remember oppRow for this node, with $ 
+            rowI = node->oppRow;
         }
         N_[ rowI - offsetN_ ] = node;	// map row to node;
 	}
@@ -122,6 +124,16 @@ void Trie::mapRowsToNodesRec(TrieNode *node, const OppRows& prevRows, char c, co
     map<char, TrieNode*>::iterator it;
 	for (it = node->children.begin(); it != node->children.end(); it++)  // map rows for all children
         mapRowsToNodesRec(it->second, currRows, it->first, oppTLZR);
+}
+
+Index Trie::getOppRowForWord(string word)
+{
+    TrieNode* currNode = root_;
+    for (int i = word.length()-1; i >= 0; i--) {
+        currNode = currNode->children[word[i]];
+        if (!currNode) return 0;
+    }
+    return currNode->oppRow;
 }
 
 vector<Index> Trie::getLocationsFromSubtree(Index row, Index lengthP)

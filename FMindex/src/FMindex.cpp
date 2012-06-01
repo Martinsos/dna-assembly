@@ -184,9 +184,6 @@ void FMindex::buildRTQ(const string& T, const vector<Index>& wordLengths)
     
     vector<OppRows> suffixes = this->oppT_->findRowsForSuffixes(T);   // rows for all suffixes
     reverse(suffixes.begin(), suffixes.end());
-    
-    map<string, OppRows> prefixes;  // rows for all prefixes (LZ words)
-    prefixes[""] = OppRows(0,0,true);   // I am building dictionary here
 
     // build Q and V
     Index wordStart = 0;    // position of first character in word
@@ -199,14 +196,10 @@ double ukupno = 0.0;
         {
             string prefix = T.substr(wordStart, wordLengths[i]-k);
             reverse(prefix.begin(), prefix.end());
-            
-            string prevPrefix = prefix.substr(1);
-            OppRows currRows = oppTLZR_->findRowsDoStep(prefixes[prevPrefix], prefix[0]);
-            prefixes[prefix] = currRows;
         
             // calculate (x,y) and add it to Q : x -> prefix, y -> suffix
 begin = clock();
-            Index x = this->oppTLZR_->findRowsDoStep(currRows, LZsep_).getFirst();
+            Index x = trie_->getOppRowForWord(prefix);  // read index of opp row from trie
             Index y = suffixes[wordEnd-k+1].getFirst();
 end = clock();
 ukupno += (double)(clock()-begin) / CLOCKS_PER_SEC;
