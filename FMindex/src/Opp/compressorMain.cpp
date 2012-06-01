@@ -36,7 +36,7 @@ void dumpVector(vector<int> a)
 
 int main()
 {   
-    string T = "mississippi";
+    string T = "ananas";
 
     // Initialize compressor
     char eof = '#';
@@ -108,9 +108,9 @@ int main()
     cout << endl;
 
     cout << "==OCC Testing============================================" << endl;
-    int q = 7;
-    char c = 's';
-    cout << "Pojavljivanje slova " << c << " u prvih " << q << " znakova: " << myCompressor.occ('i', 8) << endl;
+    int q = 3;
+    char c = 'a';
+    cout << "Pojavljivanje slova " << c << " u prvih " << q << " znakova: " << myCompressor.occ(c, q) << endl;
     cout << "-------------------------------------------------------------------------" << endl;
 
     return 0;
