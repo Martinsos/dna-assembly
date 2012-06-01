@@ -19,20 +19,20 @@ class OppRows
      * If there are no rows returns true, otherwise false.
      * If OppRows is empty, getFirst() and getLast() can return anything.
      */
-    bool isEmpty();
+    bool isEmpty() const;
     
     /** Returns first row in conceptual matrix prefixed with certain string
      */
-    int getFirst();
+    int getFirst() const;
 
     /** Returns last row in conceptual matrix prefixed with certain string
      */
-    int getLast();
+    int getLast() const;
 
     /** Prints itself to stdout
      *  For testing
      */
-    void print();
+    void print() const;
   
   private:
     int first, last;

@@ -185,11 +185,6 @@ vector<int> Compressor::getMTF(const string& L)
                 break;
             }
     }
-    cout << "\n\n==MTF Code===================================" << endl;
-    for (int i = 0; i < MTF.size(); i++)
-        cout << MTF[i] << " ";
-    cout << "\n==============================\n" << endl;
-
     return MTF;
 }
 
@@ -260,7 +255,6 @@ BitArray Compressor::getVarLengthPrefixEncoding(const vector<int>& MTF)
                 if (*it == 0) { vlpc.push_back(1); vlpc.push_back(0); }
                 if (*it == 1) { vlpc.push_back(1); vlpc.push_back(1); }
             }
-            cout << endl;
 
             // Loop over zeroes
             for (int pos = zeroSeqStart; pos <= zeroSeqEnd; pos++)

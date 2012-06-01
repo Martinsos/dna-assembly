@@ -14,28 +14,28 @@ OppRows::OppRows(int f, int l, bool e)
 
 /** Returns true if result is initialized.
  */
-bool OppRows::isEmpty()
+bool OppRows::isEmpty() const
 {
     return empty;   
 }
 
 /** Returns first prefixed row
  */
-int OppRows::getFirst()
+int OppRows::getFirst() const
 {
    return first; 
 }
 
 /** Returns last prefixed row
  */
-int OppRows::getLast()
+int OppRows::getLast() const
 {
    return last; 
 }
 
 /** Prints to stdout
  */
-void OppRows::print()
+void OppRows::print() const
 {
     cout << "First:   " << first << endl;
     cout << "Last:    " << last << endl;

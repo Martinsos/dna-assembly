@@ -142,6 +142,28 @@ vector<OppRows> Opp::findRowsForSuffixesWithPrefix(const StringView& P, char C) 
     return results;
 }
 
+/** Does only one step of find rows
+ *  If oppRows is empty, returns first and last row of conceptual matrix
+ */
+OppRows Opp::findRowsDoStep(const OppRows& init, char c) const
+{
+    // If empty, return first and last row
+    if (init.isEmpty())
+        return OppRows(1, textSize + 1, false);
+
+    // Else do one step
+    int first = init.getFirst();
+    int last = init.getLast();
+
+    first = getCFor(c) + 1 + compressor->occ(c, first - 1);
+    last = getCFor(c) + compressor->occ(c, last);
+
+    if (last < first)
+        return OppRows(0, 0, true); // 0 means undef here
+
+    return OppRows(first, last, false);
+}
+
 /** Returns C[c]
 */
 int Opp::getCFor(char c) const
