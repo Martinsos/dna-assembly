@@ -187,8 +187,6 @@ void FMindex::buildRTQ(const string& T, const vector<Index>& wordLengths)
 
     // build Q and V
     Index wordStart = 0;    // position of first character in word
-clock_t begin, end;
-double ukupno = 0.0;
     for (Index i = 0; i < (Index)wordLengths.size()-1; i++)   // for all words except last
     { 
         Index wordEnd = wordStart + wordLengths[i] - 1;  // position in T of last character of word
@@ -198,21 +196,16 @@ double ukupno = 0.0;
             reverse(prefix.begin(), prefix.end());
         
             // calculate (x,y) and add it to Q : x -> prefix, y -> suffix
-begin = clock();
             Index x = trie_->getOppRowForWord(prefix);  // read index of opp row from trie
             Index y = suffixes[wordEnd-k+1].getFirst();
-end = clock();
-ukupno += (double)(clock()-begin) / CLOCKS_PER_SEC;
             Q->push_back(make_pair(x, y));
             
-            // calculate v and it to V
+            // calculate v and add it to V
             Index v = wordStart + wordLengths[i] + 1 - k;
             V->push_back(make_pair(v, k));
         }
         wordStart += wordLengths[i];
-    }
-
-printf("Vrijeme izvođenja za findove: %.5lf\n", ukupno);                                
+    }                               
 
     // create RTQ from Q and V
     this->rtQ_ = new RTQ(*Q, *V);

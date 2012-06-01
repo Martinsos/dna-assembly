@@ -44,8 +44,7 @@ int main(int argc, char** argv)
     }
     file.close();
     
-    cout << T << endl;
-    cout << T.length() << endl;
+    cout << "Broj ucitanih znakova: " << T.length() << endl;
     clock_t begin, end, begin2, end2;
     
     begin = clock();
