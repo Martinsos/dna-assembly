@@ -5,9 +5,10 @@
 #ifndef RTQ_HPP
 #define RTQ_HPP
 
+#include "LEDA/geo/d2_dictionary.h"
+
 #include <vector>
 #include <utility>
-#include "LEDA/geo/d2_dictionary.h"
 
 using namespace std;
 

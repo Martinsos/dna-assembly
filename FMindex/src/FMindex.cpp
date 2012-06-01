@@ -3,15 +3,15 @@
  */
 
 #include "FMindex.hpp"
+#include "StringView.hpp"
 
 #include <iostream>
+#include <ctime>
+
 #include <algorithm>
 #include <cmath>
 #include <map>
 #include <utility>
-#include <ctime>
-
-#include "StringView.hpp"
 
 using namespace std;
 
@@ -34,14 +34,13 @@ FMindex::FMindex(string &T)
     else
         lengthThreshold_ = 16;  // if word T is shorter than 16, set lengthThreshold_ to 16 so every word P is considered short
 
-//cout << "gradim trie" << endl;
 	// We use LZ78 parsing to parse string T and build a trie. 
     // oppTLZR is also created.
 begin = clock();   
 	trie_ = new Trie();
 	vector<Index> wordLengths = trie_->buildTrieLZ78(T, LZsep_, oppTLZR_);  // oppTLZR_ is created!
 printf("Vrijeme izgradnje za Trie: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);
-//cout << "trie izgradjen" << endl;		
+	
 	// create Opp(T)
 begin = clock(); 
 	oppT_ = new Opp(T);
@@ -51,7 +50,7 @@ printf("Vrijeme izgradnje za oppT: %.5lf\n", (double)(clock()-begin) / CLOCKS_PE
 begin = clock(); 
     buildRTQ(T, wordLengths);
 printf("Vrijeme izgradnje za RTQ: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);
-//cout << "RTQ gotov" << endl;    
+   
     // create shortPatterns
     memorizeShortPatterns(T, wordLengths);
 }
@@ -98,6 +97,9 @@ vector<Index> FMindex::getOverlapping(const string &P)
     else
         return getOverlappingLong(P);
 }
+
+
+
 
 vector<Index> FMindex::getOverlappingLong(const string &P)
 {

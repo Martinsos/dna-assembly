@@ -39,6 +39,7 @@ class FMindex
 	 */
 	Index getCount(const string &P);
 	
+    
   private:
     Trie* trie_;
 	Opp* oppT_;
@@ -49,8 +50,7 @@ class FMindex
 	char LZsep_;		// separator for LZ words
     Index n_;           // size of T: |T|
     Index lengthThreshold_;   // if P is longer than threshold then it is considered long, otherwise short
-	
-  public:                                                                           // PUBLIC BECAUSE I NEED IT TO TEST, SHOULD BE PRIVATE
+	                                                                           
 	/**
 	 * Finds internal occurrences of string P in string T.
 	 * Internal means that whole P is inside one LZ78 word of TLZ (TLZ: T parsed using LZ78).
@@ -104,7 +104,6 @@ class FMindex
     Index min (Index a, Index b);
     /**---------------**/
     
-  private:
     void operator = (const FMindex&); // there is no implementation: assignment can not be used
 };
 

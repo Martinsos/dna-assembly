@@ -3,13 +3,13 @@
  */
 
 #include "Trie.hpp"
+#include "StringView.hpp"
 
 #include <iostream>
-#include <algorithm>
 #include <ctime>
-#include <cstdio>
 
-#include "StringView.hpp"
+#include <algorithm>
+#include <cstdio>
 
 using namespace std;
 
@@ -84,7 +84,8 @@ vector<Index> Trie::buildTrieLZ78(const string &T, char LZsep, Opp* &oppTLZR)
      // create Opp(TLZR)
 clock_t begin = clock();
     oppTLZR = new Opp(TLZR);
-printf("Vrijeme izgradnje za OppTLZR: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);    
+printf("Vrijeme izgradnje za OppTLZR: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);   
+ 
     // Maps rows from Opp(TLZR) to nodes of Trie
     this->mapRowsToNodes(*oppTLZR);
         
@@ -180,7 +181,7 @@ void Trie::printTrie()
 
 void Trie::printTrieRec(TrieNode* node)
 {
-    cout << "Cvor " << node << " (" << node->location << "," << node->length << ")" << endl;
+    cout << "Node " << node << " (" << node->location << "," << node->length << ")" << endl;
     map<char, TrieNode*>::iterator it;
 	for (it = node->children.begin(); it != node->children.end(); it++)
         cout << " (" << it->first << ", " << it->second << ")" << endl;

@@ -6,8 +6,6 @@
 
 using namespace std;
 
-#include <iostream>
-
 RTQ::RTQ (const vector< pair<Index,Index> >& Q, const vector< pair<Index,Index> >& V)
 {
     // insert all points in dictionary

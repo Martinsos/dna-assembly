@@ -16,22 +16,10 @@ using namespace std;
 typedef int Index;
 
 
-/**
- * Each node represents one word.
- */
-class TrieNode
-{
-  public:  
-	Index location;		// starting position of word in string T
-	Index length;		// length of word
-	map<char, TrieNode*> children;  // pointers to children
-    Index oppRow;
-	
-	TrieNode(Index loc, Index len) { location = loc; length = len; }
-};
+class TrieNode; // implementation at bottom
 
 /**
- * Trie used for finding internal occurences of string P in string T.
+ * Trie is used for finding internal occurences of string P in string T.
  * Trie parses T using LZ78 algorithm, and then stores LZ78 words in suffix tree (trie).
  * Parsed T is called TLZ.
  * It also builds Opp(TLZR) and returns it.
@@ -120,8 +108,22 @@ class Trie
     /**
      * Prints Trie, used for testing.
      */
-    public: void printTrie();                       // FOR TESTING
-    private: void printTrieRec(TrieNode* node);     // FOR TESTING
+    public: void printTrie();                       
+    private: void printTrieRec(TrieNode* node);     
 };
 
+
+/**
+ * Each node represents one word.
+ */
+class TrieNode
+{
+  public:  
+	Index location;		// starting position of word in string T
+	Index length;		// length of word
+	map<char, TrieNode*> children;  // pointers to children
+    Index oppRow;   // index of row in conceptual matrix that corresponds to this node
+	
+	TrieNode(Index loc, Index len) { location = loc; length = len; }
+};
 #endif // TRIE_HPP
