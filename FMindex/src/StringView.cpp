@@ -73,23 +73,3 @@ void StringView::reverse()
     std::reverse(prefix.begin(), prefix.end());
     std::reverse(suffix.begin(), suffix.end());
 }
-
-
-/*
-#include <iostream>
-
-int main()
-{
-    string s = "012345";
-    StringView view = StringView(s, 1, s.length()-1);
-    
-    view.addPrefix("abcd");
-    view.addPrefix("z");
-    view.addSuffix("efg");
-    view.reverse();
-    
-    for (int i = 0; i < view.getLength(); i++)
-        cout << view.charAt(i) << endl;
-    return 0;
-}
-*/

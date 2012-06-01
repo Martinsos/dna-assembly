@@ -79,18 +79,15 @@ vector<Index> Trie::buildTrieLZ78(const string &T, char LZsep, Opp* &oppTLZR)
 			wordI++;
 		}
 	}  
-//cout << TLZR << endl;
 	reverse(TLZR.begin(), TLZR.end());
-//cout << TLZR << endl;
-//cout << "gradim OppTLZR" << endl;
+
      // create Opp(TLZR)
 clock_t begin = clock();
     oppTLZR = new Opp(TLZR);
 printf("Vrijeme izgradnje za OppTLZR: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);    
-//cout << "izgradio sam OppTLZR" << endl;
     // Maps rows from Opp(TLZR) to nodes of Trie
     this->mapRowsToNodes(*oppTLZR);
-//cout << "mapirao sam retke" << endl;     
+        
 	return wordLengths;
 }
 
@@ -102,10 +99,7 @@ Index Trie::getSize()
 void Trie::mapRowsToNodes(const Opp &oppTLZR)
 {
     N_.resize(size_);
-//cout << "trazim retke" << endl;
     offsetN_ = oppTLZR.findRows(StringView(string(1,LZsep_))).getFirst();
-//cout << "nasao retke" << endl;
-
 	mapRowsToNodesRec(root_, OppRows(0,0,true), ' ', oppTLZR);
 }
 
@@ -134,15 +128,13 @@ vector<Index> Trie::getLocationsFromSubtree(Index row, Index lengthP)
 {
 	vector<Index> locations;	// solution goes here
 	TrieNode* node = getNodeAtRow(row);
-//cout << "Sada cu poceti gledati podstablo sa korijenom " << node << endl;
-//cout << "Row: " << row << ", Location: " << node->location << ", length: " << node->length << endl;
+
 	getLocationsFromSubtreeRec(node, node->length, lengthP, locations);		// recursion that iterates through tree
 	return locations;
 }
 
 void Trie::getLocationsFromSubtreeRec(TrieNode* node, Index rootLength, Index lengthP, vector<Index> &locations)
 {
-//cout << "Gledam cvor " << node << endl;
 	 locations.push_back(node->location + rootLength - lengthP);	// add location
 	 
 	 map<char, TrieNode*>::iterator it;
