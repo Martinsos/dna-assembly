@@ -62,7 +62,7 @@ class Trie
   	 * a subtree using array N, goes through that subtree and returns
   	 * locations of string P in string T. Uses length of P to calculate the locations.
   	 */
-  	vector<Index> getLocationsFromSubtree(Index row, Index lengthP);		
+  	vector<Index> getLocationsFromSubtree(Index row, Index lengthP);
     
     /**
      * Returns number of LZ words in Trie.
@@ -88,7 +88,7 @@ class Trie
 	/**
 	 * Function that does recursive job for mapRowsToNodes
 	 */
-	void mapRowsToNodesRec(TrieNode *node, string& word, const Opp &oppTLZR); 	
+	void mapRowsToNodesRec(TrieNode *node, const OppRows& prevRows, char c, const Opp &oppTLZR); 	
 	
 	/**
 	 * Function that does recursive job for getLocationsFromSubtree.

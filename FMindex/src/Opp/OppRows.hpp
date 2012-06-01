@@ -11,6 +11,10 @@ class OppRows
 {
   public:
 
+    /**
+     * is set to empty
+     */
+    OppRows();
     /** Constructor, initializes class members
      */
     OppRows(int f, int l, bool e);

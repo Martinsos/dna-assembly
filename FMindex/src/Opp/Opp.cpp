@@ -148,16 +148,16 @@ vector<OppRows> Opp::findRowsForSuffixesWithPrefix(const StringView& P, char C) 
 OppRows Opp::findRowsDoStep(const OppRows& init, char c) const
 {
     // If empty, return first and last row
-    if (init.isEmpty())
-        return OppRows(1, textSize + 1, false);
-
-    // If init is invalid
-    if (last < first)
-        return OppRows(0, 0, true); // 0 means undef here
+    if (init.isEmpty()) 
+        return OppRows(getCFor(c) + 1, getCForNext(c), false);  
 
     // Else do one step
     int first = init.getFirst();
     int last = init.getLast();
+
+    // If init is invalid
+    if (last < first)
+        return OppRows(0, 0, true); // 0 means undef here
 
     first = getCFor(c) + 1 + compressor->occ(c, first - 1);
     last = getCFor(c) + compressor->occ(c, last);

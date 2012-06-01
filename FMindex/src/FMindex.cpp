@@ -68,9 +68,7 @@ FMindex::~FMindex()
 vector<Index> FMindex::getInternal(const string &P)                                      
 {
 	vector<Index> locations;
-//cout << endl;
-//trie_->printTrie();	
-//cout << "Size of trie: " << trie_->getSize() << endl;
+
 	// reverse string P
 	StringView PR = StringView(P);
     PR.reverse();
@@ -83,9 +81,6 @@ vector<Index> FMindex::getInternal(const string &P)
 	if (rows.isEmpty())
 		return locations;
 	
-//cout << LZsep_ + P << endl;
-//cout << rows.getFirst() << endl;
-//cout << rows.getLast() << endl;
 	// for each row find subtree in trie, read all locations and add them to solution.
 	for (Index rowI = rows.getFirst(); rowI <= rows.getLast(); rowI++)
 	{
@@ -110,25 +105,14 @@ vector<Index> FMindex::getOverlappingLong(const string &P)
     
     // create suffixesOfP
     vector<OppRows> suffixesOfP = findSuffixesOfP(P);   // suffixesOfP[i] -> indexes of rows in OppT that start with P[1,p]
-//oppT_->printOpp(); 
-//cout << "suffixesOfP:";
-//for (int i = 0; i < suffixesOfP.size(); i++)
-//    cout << " [" << suffixesOfP[i].getFirst() << ", " << suffixesOfP[i].getLast() << "]";
-//cout << endl;
     // create prefixesOfP
     vector<OppRows> prefixesOfP = findPrefixesOfP(P);   // prefixesOfP[i] -> indexes of rows in OppTLZR that start with P[1,p]
-//oppTLZR_->printOpp();
-//cout << "prefixesOfP:";
-//for (int i = 0; i < prefixesOfP.size(); i++)
-//    cout << " [" << prefixesOfP[i].getFirst() << ", " << prefixesOfP[i].getLast() << "]";
-//cout << endl;
     
     // for each h = i*log(log n)+1, i from 0 to trunc(p/log(log n)), do query on RTQ
     Index iMax = (Index)trunc(P.length() / (double)this->lengthThreshold_); 
     Index hMax = iMax * lengthThreshold_ + 1;                        
     for (Index h = 1; h <= hMax && h < suffixesOfP.size(); h+=lengthThreshold_)     // is condition h < suffixesOfP.size() neccesary? I think it is.
     {
-//cout << "h: " << h << endl;
         OppRows prefixRows = prefixesOfP[h-1];  // h-1 instead of h because vector prefixesOfP starts from 0 while P starts from 1
         OppRows suffixRows = suffixesOfP[h];    // h instead of h+1 because vector suffixesOfP starts from 0 while P starts from 1
             
@@ -192,19 +176,18 @@ vector<OppRows> FMindex::findPrefixesOfP(const string& P)
     return oppTLZR_->findRowsForSuffixesWithPrefix(PR, LZsep_);
 }
 
-void FMindex::buildRTQ(const string& T, const vector<Index>& wordLengths)   // DANGEROUS: I MAKE MANY COPIES OF STRING -> WE COULD FASTEN THAT UP
+void FMindex::buildRTQ(const string& T, const vector<Index>& wordLengths)
 {
     // create Q and V on heap because they could be big
     vector< pair<Index, Index> >* Q = new vector< pair<Index, Index> >();
     vector< pair<Index, Index> >* V = new vector< pair<Index, Index> >();
     
-    vector<OppRows> ys = this->oppT_->findRowsForSuffixes(T);
-    reverse(ys.begin(), ys.end());
+    vector<OppRows> suffixes = this->oppT_->findRowsForSuffixes(T);   // rows for all suffixes
+    reverse(suffixes.begin(), suffixes.end());
+    
+    map<string, OppRows> prefixes;  // rows for all prefixes (LZ words)
+    prefixes[""] = OppRows(0,0,true);   // I am building dictionary here
 
-//oppT_->printOpp();
-//cout << "--------" << endl;
-//oppTLZR_->printOpp();
-   
     // build Q and V
     Index wordStart = 0;    // position of first character in word
 clock_t begin, end;
@@ -214,14 +197,17 @@ double ukupno = 0.0;
         Index wordEnd = wordStart + wordLengths[i] - 1;  // position in T of last character of word
         for (Index k = 0; k < lengthThreshold_ && k < wordLengths[i]; k++)  // for each of last log(log n) positions in word
         {
-            StringView prefix = StringView(T, wordStart, wordLengths[i]-k);
+            string prefix = T.substr(wordStart, wordLengths[i]-k);
+            reverse(prefix.begin(), prefix.end());
+            
+            string prevPrefix = prefix.substr(1);
+            OppRows currRows = oppTLZR_->findRowsDoStep(prefixes[prevPrefix], prefix[0]);
+            prefixes[prefix] = currRows;
         
             // calculate (x,y) and add it to Q : x -> prefix, y -> suffix
-            prefix.reverse();
-            prefix.addPrefix(string(1, this->LZsep_));
 begin = clock();
-            Index x = this->oppTLZR_->findRows(prefix).getFirst();
-            Index y = ys[wordEnd-k+1].getFirst();
+            Index x = this->oppTLZR_->findRowsDoStep(currRows, LZsep_).getFirst();
+            Index y = suffixes[wordEnd-k+1].getFirst();
 end = clock();
 ukupno += (double)(clock()-begin) / CLOCKS_PER_SEC;
             Q->push_back(make_pair(x, y));
@@ -229,7 +215,6 @@ ukupno += (double)(clock()-begin) / CLOCKS_PER_SEC;
             // calculate v and it to V
             Index v = wordStart + wordLengths[i] + 1 - k;
             V->push_back(make_pair(v, k));
-//cout << "(" << x << ", " << y << ")" << " -> " << v << endl;
         }
         wordStart += wordLengths[i];
     }

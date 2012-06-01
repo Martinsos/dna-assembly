@@ -106,34 +106,28 @@ void Trie::mapRowsToNodes(const Opp &oppTLZR)
     offsetN_ = oppTLZR.findRows(StringView(string(1,LZsep_))).getFirst();
 //cout << "nasao retke" << endl;
 
-	string word = ""; 
-	mapRowsToNodesRec(root_, word, oppTLZR);
+	mapRowsToNodesRec(root_, OppRows(0,0,true), ' ', oppTLZR);
 }
 
-void Trie::mapRowsToNodesRec(TrieNode *node, string& word, const Opp &oppTLZR) 
+void Trie::mapRowsToNodesRec(TrieNode *node, const OppRows& prevRows, char c, const Opp &oppTLZR) 
 {
+    OppRows currRows = prevRows;   // rows for this node, first should be same as last
 	if (node != root_)	// don't do any mapping for root
 	{		
         Index rowI;
-        if (word[0] == Trie::duplicate) {      // watch out if there is an LZ word same as some other
-            StringView sw = StringView(word, 1);
-            sw.addPrefix(string(1,LZsep_));
-            rowI = oppTLZR.findRows(sw).getFirst() + 1;
+        if (c == Trie::duplicate) {      // watch out if there is an LZ word same as some other
+            rowI = oppTLZR.findRowsDoStep(prevRows, LZsep_).getFirst() + 1;
         }
         else {
-            StringView sw = StringView(word);
-            sw.addPrefix(string(1,LZsep_));
-            rowI = oppTLZR.findRows(sw).getFirst();
+            currRows = oppTLZR.findRowsDoStep(prevRows, c);
+            rowI = oppTLZR.findRowsDoStep(currRows, LZsep_).getFirst();
         }
         N_[ rowI - offsetN_ ] = node;	// map row to node;
 	}
+        
     map<char, TrieNode*>::iterator it;
 	for (it = node->children.begin(); it != node->children.end(); it++)  // map rows for all children
-    {
-        word = string(1,it->first)+word;
-        mapRowsToNodesRec(it->second, word, oppTLZR);
-        word = word.substr(1);	
-    }
+        mapRowsToNodesRec(it->second, currRows, it->first, oppTLZR);
 }
 
 vector<Index> Trie::getLocationsFromSubtree(Index row, Index lengthP)

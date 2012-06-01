@@ -3,6 +3,12 @@
 
 #include "OppRows.hpp"
 
+OppRows::OppRows()
+{
+    first = last = 0;
+    empty = true;
+}
+
 /** Constructor
  */
 OppRows::OppRows(int f, int l, bool e)
