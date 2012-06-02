@@ -17,7 +17,7 @@ using namespace std;
 int main(int argc, char** argv)
 {   
     if (argc != 5) {
-        cout << "Usage: " << argv[0] << " <filename> <num_characters> <pattern_length> <num_patterns" << endl;
+        cout << "Usage: " << argv[0] << " <filename> <num_characters> <pattern_length> <num_patterns>" << endl;
         exit(1);
     }
     string filename = string(argv[1]);
@@ -98,6 +98,10 @@ int main(int argc, char** argv)
     printf("Ukupno vrijeme brojanja  za %d uzoraka duljine %ld: %.8lf\n", (int)patterns.size(), p, counting);
     printf("Prosjecno vrijeme lociranja po uzorku: %.8lf\n", locating / patterns.size());
     printf("Prosjecno vrijeme brojanja  po uzorku: %.8lf\n", counting / patterns.size());
+    
+    
+    int i;
+    cin >> i;
     
     delete fmIndex;
     return 0;

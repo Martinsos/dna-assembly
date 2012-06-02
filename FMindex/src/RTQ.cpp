@@ -11,6 +11,7 @@ RTQ::RTQ (const vector< pair<Index,Index> >& Q, const vector< pair<Index,Index> 
     // insert all points in dictionary
     for (int i = 0; i < Q.size(); i++)
         D.insert(Q[i].first, Q[i].second, Information(V[i].first, V[i].second));
+    cout << "velicina rtq: " << D.size() << endl;
 }
 
 vector< pair<Index,Index> > RTQ::query(Index xMin, Index xMax, Index yMin, Index yMax)

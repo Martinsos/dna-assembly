@@ -1,0 +1,10 @@
+Program se kompajlira pozivanjem skripte ./compile.sh .
+NE KORISTITI MAKEFILE (ima neku gresku)
+Stvara se izvodivi program FMindex koji sluzi za testiranje FMindeksa.
+Argumenti za FMindex:
+    1. put do tekstualne datoteke
+    2. broj znakova koji ce se procitati s pocetka tekstualne datoteke
+    3. duljina uzorka
+    4. broj uzoraka
+FMindex ce ucitati zadani broj znakova iz tekstualne datoteke, 
+iz njega izvaditi zadani broj uzoraka zadane duljine i testirati indeks.

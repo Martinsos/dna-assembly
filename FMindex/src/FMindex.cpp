@@ -53,6 +53,7 @@ printf("Vrijeme izgradnje za RTQ: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER
    
     // create shortPatterns
     memorizeShortPatterns(T, wordLengths);
+cout << "Velicina Ts tablice: " << shortPatterns_->size() << endl;
 }
 
 FMindex::~FMindex()
@@ -188,6 +189,8 @@ void FMindex::buildRTQ(const string& T, const vector<Index>& wordLengths)
     reverse(suffixes.begin(), suffixes.end());
 
     // build Q and V
+cout << "broj LZ rijeci: " << wordLengths.size() << endl;
+cout << "length threshold: " << lengthThreshold_ << endl;
     Index wordStart = 0;    // position of first character in word
     for (Index i = 0; i < (Index)wordLengths.size()-1; i++)   // for all words except last
     { 
@@ -209,6 +212,8 @@ void FMindex::buildRTQ(const string& T, const vector<Index>& wordLengths)
         wordStart += wordLengths[i];
     }                               
 
+cout << "Velicina vectora Q: " << Q->size() << endl;
+cout << "Velicina vectora V: " << V->size() << endl;
     // create RTQ from Q and V
     this->rtQ_ = new RTQ(*Q, *V);
     // delete Q and V
