@@ -18,6 +18,7 @@ int main(int argc, char** argv)
 {   
     if (argc != 5) {
         cout << "Usage: " << argv[0] << " <filename> <num_characters> <pattern_length> <num_patterns" << endl;
+        exit(1);
     }
     string filename = string(argv[1]);
     string patternFile = string(argv[3]);
