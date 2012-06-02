@@ -18,6 +18,7 @@ int main(int argc, char** argv)
 {   
     if (argc != 3) {
         cout << "Usage: " << argv[0] << " <filename> <num_characters>" << endl;
+        exit(1);
     }
     string filename = string(argv[1]);
     
