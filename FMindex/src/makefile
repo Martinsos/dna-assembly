@@ -11,9 +11,9 @@ OPP_OBJ = Opp/Opp.o Opp/OppRows.o Opp/Compressor.o Opp/Alphabet.o Opp/BitArray.o
 all: testFromFile
 
 
-# executables
+# executables - $(LEDA_L) must be last!
 testFromFile: $(FMINDEX_OBJ) $(OPP_OBJ) testFromFile.cpp
-	$(CPP) $(FLAGS) $(FMINDEX_OBJ) $(OPP_OBJ) testFromFile.cpp -o testFromFile $(LEDA_I) $(LEDA_L)  # Bitno je da je $(LEDA_L) zadnje, inace ne radi!
+	$(CPP) $(FLAGS) $(FMINDEX_OBJ) $(OPP_OBJ) testFromFile.cpp -o testFromFile $(LEDA_I) $(LEDA_L)
 
 
 # FMindex
