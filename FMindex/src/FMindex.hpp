@@ -99,6 +99,11 @@ class FMindex
      */
     void buildRTQ(const string& T, const vector<Index>& wordLengths);  
     
+    /**
+     * Returns approximate amount of bytes used to store short patterns.
+     */
+    Index getShortPatternsSize();
+    
     /**--- UTILITY ---**/
     Index max (Index a, Index b);
     Index min (Index a, Index b);

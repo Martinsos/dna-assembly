@@ -22,7 +22,7 @@ vector< pair<Index,Index> > RTQ::query(Index xMin, Index xMax, Index yMin, Index
     leda::list<leda::dic2_item> L = D.range_search(xMin, xMax, yMin, yMax);
     leda::dic2_item item;
     forall(item, L) {   // extract information and add it to vector
-        Information inf = leda::LEDA_ACCESS(Information, item->inf());
+        Information inf = D.inf(item);      // OTHER WAY: Information inf = leda::LEDA_ACCESS(Information, item->inf());
         result.push_back(make_pair(inf.v, inf.k));
     }
     

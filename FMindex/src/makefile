@@ -7,17 +7,21 @@ LEDA_L = -L./LEDA -lleda -lX11
 FMINDEX_OBJ = FMindex.o RTQ.o Trie.o StringView.o
 OPP_OBJ = Opp/Opp.o Opp/OppRows.o Opp/Compressor.o Opp/Alphabet.o Opp/BitArray.o
 
+
 all: testFromFile
 
+
+# executables - $(LEDA_L) must be last!
 testFromFile: $(FMINDEX_OBJ) $(OPP_OBJ) testFromFile.cpp
-	$(CPP) $(FLAGS) $(LEDA_I) $(LEDA_L) $(FMINDEX_OBJ) $(OPP_OBJ) testFromFile.cpp -o testFromFile
+	$(CPP) $(FLAGS) $(FMINDEX_OBJ) $(OPP_OBJ) testFromFile.cpp -o testFromFile $(LEDA_I) $(LEDA_L)
+
 
 # FMindex
 FMindex.o: FMindex.cpp FMindex.hpp StringView.hpp
-	$(CPP) -c $(FLAGS) $(LEDA_I) FMindex.cpp -o FMindex.o
+	$(CPP) -c $(FLAGS) FMindex.cpp -o FMindex.o $(LEDA_I)
 
 RTQ.o: RTQ.cpp RTQ.hpp
-	$(CPP) -c $(FLAGS) $(LEDA_I) RTQ.cpp -o RTQ.o
+	$(CPP) -c $(FLAGS) RTQ.cpp -o RTQ.o $(LEDA_I)
 
 Trie.o: Trie.cpp Trie.hpp StringView.hpp
 	$(CPP) -c $(FLAGS) Trie.cpp -o Trie.o
@@ -51,5 +55,6 @@ Opp/Opp.hpp: StringView.hpp Opp/Alphabet.hpp Opp/Compressor.hpp Opp/OppRows.hpp
 Opp/Compressor.hpp: Opp/Alphabet.hpp Opp/BitArray.hpp
 
 
+# utility
 clean:
 	\rm $(FMINDEX_OBJ) $(OPP_OBJ)

@@ -188,3 +188,19 @@ void Trie::printTrieRec(TrieNode* node)
     for (it = node->children.begin(); it != node->children.end(); it++)
         printTrieRec(it->second);
 }
+
+Index Trie::getTrieSize() { 
+    Index size = 0;
+    size += N_.size()*sizeof(TrieNode*);
+    size += getSubtreeSize(root_);
+    return size;        
+}
+    
+Index Trie::getSubtreeSize(TrieNode* node) {
+    Index size = 0;
+    size += sizeof(TrieNode);
+    map<char, TrieNode*>::iterator it;
+	for (it = node->children.begin(); it != node->children.end(); it++)
+        size += getSubtreeSize(it->second) + sizeof(TrieNode*);
+    return size;
+}

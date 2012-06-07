@@ -116,7 +116,7 @@ class Compressor
          *  @param c                Character whose occurrence is counted
          *  @param h                Number of letters to look at from start of bucket
          *  @param BZStart          Index where bucket starts in Z
-         *  @param MTFState         State of MTFList before encoding this bucket
+         *  @param MTFState         State of MTFList just before encoding of given bucket
          *  @param missingZeroes    Missing zeroes at beginning of given bucket
          *  @returns                Occurrences of c in first h letters of given bucket
          */
