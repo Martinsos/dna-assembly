@@ -108,8 +108,14 @@ class Trie
     /**
      * Prints Trie, used for testing.
      */
-    public: void printTrie();                       
+    public:  void printTrie();                       
     private: void printTrieRec(TrieNode* node);     
+    
+    /**
+     * Returns approximate size of trie in bytes.
+     */
+    public:  Index getTrieSize();
+    private: Index getSubtreeSize(TrieNode* node);
 };
 
 

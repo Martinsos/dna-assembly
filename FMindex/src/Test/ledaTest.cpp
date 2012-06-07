@@ -26,21 +26,13 @@ class Information {
 
 int main()
 {
-    d2_dictionary<int, int, Information> D;
-    D.insert(1, 2, Information(1,-1));
-    D.insert(2, 5, Information(2,-2));
-    D.insert(4, 7, Information(3,-3));
-    D.insert(0, 0, Information(4,-4));
-    D.insert(2, 6, Information(5,-5));
-    D.insert(-1, 2, Information(6,-6));
+    d2_dictionary<int, int, int> D;
     
-    list<dic2_item> L = D.range_search(1,3,2,7);
+    for (int i = 0; i < 100000; i++)
+        D.insert(i, i, i);
     
-    dic2_item x;
-    forall(x, L) {
-        Information inf = leda::LEDA_ACCESS(Information, x->inf());
-        cout << inf.k << " " << inf.v << endl;
-    }
+    int bzvz;
+    cin >> bzvz;
     
     cout << "kraj" << endl;
     return 0;

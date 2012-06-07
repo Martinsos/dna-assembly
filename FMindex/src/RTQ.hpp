@@ -5,6 +5,7 @@
 #ifndef RTQ_HPP
 #define RTQ_HPP
 
+// http://www.algorithmic-solutions.info/leda_manual/d2_dictionary.html
 #include "LEDA/geo/d2_dictionary.h"
 
 #include <vector>
@@ -19,8 +20,9 @@ class Information; /* implementation is at bottom */
 /**
  * Geometric data structure that contains set of 2D-grid points Q
  * and set of values (v, k) where each value (v,k) corresponds to one point from Q.
- * Supports orthogonal range queries in O(log(log |Q|) + q) 
+ * Supports orthogonal range queries in Q in O(log(log |Q|) + q) 
  * where q is the number of points retrieved by a query.
+ * Memory usage: O(|Q| * log(|Q|)).
  */
 class RTQ
 {
