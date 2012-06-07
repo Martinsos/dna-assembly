@@ -48,7 +48,7 @@ printf("Vrijeme izgradnje za oppT: %.5lf\n", (double)(clock()-begin) / CLOCKS_PE
 
     // create RTQ
 begin = clock(); 
-    buildRTQ(T, wordLengths);
+//    buildRTQ(T, wordLengths);
 printf("Vrijeme izgradnje za RTQ: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);
    
     // create shortPatterns
