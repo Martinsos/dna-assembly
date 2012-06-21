@@ -1,0 +1,165 @@
+<HTML>
+<HEAD>
+   <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+   <META NAME="GENERATOR" CONTENT="Mozilla/4.02 [en] (WinNT; I) [Netscape]">
+   <TITLE>libgist v.1.0 Installation Notes</TITLE>
+</HEAD>
+<BODY>
+
+<H1>
+libgist v.1.0 Installation Notes</H1>
+
+<CENTER>
+<HR WIDTH="100%"></CENTER>
+
+<H2>
+Portability</H2>
+Libgist was developed under Digital Unix with the g++ compiler and was
+ported to Windows NT with the Microsoft Visual C++ 5.0 compiler and to
+Solaris (both x86 and Sparc) and HP/UX with g++. Since these platforms
+are quite different, we expect the code to be somewhat portable, but have
+not done extensive porting ourselves. Before you port libgist to other
+platforms, please check the <A HREF="http://s2k-ftp.cs.berkeley.edu:8000/gist/libgist/">libgist
+home page</A> and see if anybody has done it for you already. If not, and
+you succeed in porting, contact us at <A HREF="mailto:gist@postgres.berkeley.edu">gist@postgres.berkeley.edu</A>!
+<CENTER>
+<HR WIDTH="100%"></CENTER>
+
+<H2>
+NT Installation Notes</H2>
+
+<H3>
+Requirements</H3>
+
+<UL>
+<LI>
+Either an unzip package, or tar and gunzip. All of these are widely available
+on the web.</LI>
+
+<LI>
+Microsoft Visual C++ version 5.0; earlier versions may work, but we make
+no guarantees</LI>
+
+<LI>
+Microsoft Developer Studio: not strictly necessary, but you will have to
+create your own NMAKE files if you don't have Developer Studio and want
+to build the demonstration executables.</LI>
+
+<LI>
+Bison &amp; flex: not actually required for libgist, but necessary to use
+the demonstration code. Bison and flex for Windows are freely available
+on the Web from a variety of sources.</LI>
+</UL>
+
+<H3>
+Procedure</H3>
+
+<OL>
+<LI>
+Run the <TT>make.bat</TT> script in the <TT>src</TT> directory; this will
+create the libraries and the parsers for the demo executables.</LI>
+
+<LI>
+There are two demo projects (in src/examples/btree and src/examples/rtree);
+in order to build the executables, load their workspaces into Developer
+Studio.</LI>
+
+<LI>
+Libraries and executables will be left with their sources.&nbsp; If you
+wish to install them elsewhere, you will need to do so by hand.</LI>
+</OL>
+
+<CENTER>
+<HR WIDTH="100%"></CENTER>
+
+<H2>
+UNIX Installation Notes</H2>
+
+<H3>
+Requirements</H3>
+
+<UL>
+<LI>
+Either an unzip package, or tar and gunzip. All of these should be somewhere
+on your system; if not, they are widely available on the Web.</LI>
+
+<LI>
+G++ version 2.7.2: other versions may work, as may other C++ compilers,
+but we have not tested any.</LI>
+
+<LI>
+Gmake: you may substitute make, but will need to rewrite the (simple) Makefiles
+to suit.</LI>
+
+<LI>
+Bison &amp; flex: not actually required for libgist, but necessary in order
+to compile the demonstration code. Bison and flex are freely available
+on the Web from a variety of sources. It is possible that yacc and lex
+may be substituted, but we have not tested them.</LI>
+</UL>
+
+<H3>
+Procedure</H3>
+
+<OL>
+<LI>
+Edit the top-level Makefile, and set paths for the various tools and the
+g++ include directory.</LI>
+
+<LI>
+Run <TT>gmake</TT> from the <TT>src</TT> directory -- it will recursively
+make libgist, the B-tree and R-tree extensions and all the examples.</LI>
+
+<LI>
+If you want to run some test scripts to make sure everything is working,
+cd to ../tests and type ./runtests. If nothing suspicious comes up on the
+screen, your installation has passed the tests.</LI>
+
+<LI>
+Libraries and executables will be left with their sources.&nbsp; If you
+wish to install them elsewhere, you will need to do so by hand.</LI>
+</OL>
+
+<CENTER>
+<HR WIDTH="100%"></CENTER>
+
+<H2>
+SHORE Patch Installation Notes <br>
+(Warning: This patch has not been tested!)</H2>
+
+<H3>
+Requirements</H3>
+
+<UL>
+<LI>
+Either an unzip package, or tar and gunzip. All of these should be somewhere
+on your system; if not, they are widely available on the Web.</LI>
+
+<LI>
+GNU patch.
+</LI>
+
+</UL>
+
+<H3>
+Procedure</H3>
+
+<OL>
+<LI>
+Untar <tt>shorepatch.tar</tt> in the <tt>src</tt> directory of your SHORE
+installation; this  will install the new source files in the directories
+<tt>sm</tt> and <tt>sm/ssh</tt>.
+
+<LI>
+From the <tt>src</tt> directory, run <tt>patch &lt patchfile</tt>. 
+</LI>
+
+</OL>
+
+<CENTER>
+<HR WIDTH="100%"></CENTER>
+
+
+<P>Comments, questions and suggestions may be directed to <I><A HREF="mailto:gist@postgres.berkeley.edu">gist@postgres.berkeley.edu</A></I>
+</BODY>
+</HTML>

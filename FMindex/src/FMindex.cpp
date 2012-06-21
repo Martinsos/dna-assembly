@@ -40,6 +40,7 @@ begin = clock();
 	trie_ = new Trie();
 	vector<Index> wordLengths = trie_->buildTrieLZ78(T, LZsep_, oppTLZR_);  // oppTLZR_ is created!
 printf("Vrijeme izgradnje za Trie: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);
+cout << "Velicina Trie u byteovima: " << trie_->getTrieSize() << endl;
 	
 	// create Opp(T)
 begin = clock(); 
@@ -48,12 +49,15 @@ printf("Vrijeme izgradnje za oppT: %.5lf\n", (double)(clock()-begin) / CLOCKS_PE
 
     // create RTQ
 begin = clock(); 
-    buildRTQ(T, wordLengths);
+//    buildRTQ(T, wordLengths);
 printf("Vrijeme izgradnje za RTQ: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);
    
     // create shortPatterns
     memorizeShortPatterns(T, wordLengths);
-cout << "Velicina Ts tablice: " << shortPatterns_->size() << endl;
+cout << "Velicina Ts tablice u bajtovima: " << getShortPatternsSize() << endl;
+
+int bzvz;
+cin >> bzvz;
 }
 
 FMindex::~FMindex()
@@ -184,7 +188,7 @@ void FMindex::buildRTQ(const string& T, const vector<Index>& wordLengths)
     // create Q and V on heap because they could be big
     vector< pair<Index, Index> >* Q = new vector< pair<Index, Index> >();
     vector< pair<Index, Index> >* V = new vector< pair<Index, Index> >();
-    
+
     vector<OppRows> suffixes = this->oppT_->findRowsForSuffixes(T);   // rows for all suffixes
     reverse(suffixes.begin(), suffixes.end());
 
@@ -242,6 +246,15 @@ Index FMindex::getCount(const string &P)
     if (rows.isEmpty())
         return 0;
     return 1+rows.getLast()-rows.getFirst();
+}
+
+Index FMindex::getShortPatternsSize() {
+    Index size = 0;
+    map< string, vector<Index> >::iterator it;
+    for (it = shortPatterns_->begin(); it != shortPatterns_->end(); it++) {
+        size += it->second.capacity()*sizeof(Index) + it->first.length();
+    }
+    return size;
 }
 
 Index FMindex::max (Index a, Index b)
