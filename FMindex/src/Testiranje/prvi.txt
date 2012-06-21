@@ -1,0 +1,28 @@
+matija@matija-ubuntu:~/Documents/FER/6.semestar/dna-assembly/FMindex/src$ ./FMindex ~/dna.50MB 1000000 30 1000
+Broj ucitanih znakova: 1000000
+Izgradnja SA je trajala: 1.4
+Vrijeme izgradnje za OppTLZR: 5.32000
+Vrijeme izgradnje za Trie: 12.81000
+Izgradnja SA je trajala: 1.23
+Vrijeme izgradnje za oppT: 4.59000
+Vrijeme izgradnje za RTQ: 50.91000
+Vrijeme izgradnje: 68.70000
+Ukupno vrijeme lociranja za 1000 uzoraka duljine 30: 1.60000000
+Ukupno vrijeme brojanja  za 1000 uzoraka duljine 30: 0.82000000
+Prosjecno vrijeme lociranja po uzorku: 0.00160000
+Prosjecno vrijeme brojanja  po uzorku: 0.00082000
+
+
+Broj ucitanih znakova: 5000000
+Izgradnja SA je trajala: 7.92
+Vrijeme izgradnje za OppTLZR: 26.75000
+Vrijeme izgradnje za Trie: 61.13000
+Izgradnja SA je trajala: 7.36
+Vrijeme izgradnje za oppT: 23.59000
+Vrijeme izgradnje za RTQ: 294.93000
+Vrijeme izgradnje: 381.34000
+Ukupno vrijeme lociranja za 1000 uzoraka duljine 30: 1.92000000
+Ukupno vrijeme brojanja  za 1000 uzoraka duljine 30: 0.87000000
+Prosjecno vrijeme lociranja po uzorku: 0.00192000
+Prosjecno vrijeme brojanja  po uzorku: 0.00087000
+
