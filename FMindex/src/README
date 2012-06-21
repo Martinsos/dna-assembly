@@ -1,11 +1,13 @@
-Program se kompajlira pozivajnem makefilea.
-Stvara se izvodivi program testFromFile koji sluzi za testiranje FMindeksa.
-Argumenti za testFromFile:
-    1. put do tekstualne datoteke
-    2. broj znakova koji ce se procitati s pocetka tekstualne datoteke
-    3. duljina uzorka
-    4. broj uzoraka
-testFromFile ce ucitati zadani broj znakova iz tekstualne datoteke, 
-iz njega izvaditi zadani broj uzoraka zadane duljine i testirati indeks.
+Use makefile to build program.
+Executable testFromFile will be created and you can use it to test on a file how does FMindex work.
+Arguments of testFromFile:
+    1. path to file containing text.
+    2. number of characters that will be taken from the beginning of file, rest is not used.
+    3. length of random pattern that is going to be queried for.
+    4. number of random patterns.
+testFromFile will read given number of characters from given file,
+build FMindex upon them, then it will extract given number of random patterns(substrings) from indexed part of file
+where each pattern is of given length and it will query them using FMindex.
 
-TODO: primjer pozivanja
+example of usage:
+./testFromFile english.50MB 100000 30 1000

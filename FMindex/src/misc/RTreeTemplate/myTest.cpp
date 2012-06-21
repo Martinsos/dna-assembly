@@ -49,7 +49,7 @@ int main() {
     RTree<Data*, int, 2, float> rtree;
     
     vector<int*> points;
-    for (int i = 0; i < 100000; i++) {
+    for (int i = 0; i < 500000; i++) {
         int* a = new int[2];
         a[0] = a[1] = i;
         points.push_back(a);

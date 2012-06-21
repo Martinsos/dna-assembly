@@ -8,7 +8,7 @@ using namespace std;
 
 RTQRTree::~RTQRTree() {
     for (int i = 0; i < Q.size(); i++)
-        delete Q[i];
+        delete[] Q[i];
 }
 
 void RTQRTree::build (const vector< pair<Index,Index> >& Q, const vector< pair<Index,Index> >& V)
@@ -19,13 +19,14 @@ void RTQRTree::build (const vector< pair<Index,Index> >& Q, const vector< pair<I
     
     // copy Q and V to local copies
     for (int i = 0; i < Q.size(); i++) {
-        this->Q.push_back(new Point(Q[i].first, Q[i].second));
-        this->V.push_back(V[i]);
+        this->Q.push_back(new Index[2]);
+        this->Q[i][0] = Q[i].first;  this->Q[i][1] = Q[i].second;
     }
+    this->V = V;
     
     // insert points into RTree
     for (int i = 0; i < Q.size(); i++)    
-        this->rTree.Insert(this->Q[i]->xy, this->Q[i]->xy, i);
+        this->rTree.Insert(this->Q[i], this->Q[i], i);
 }
 
 /**

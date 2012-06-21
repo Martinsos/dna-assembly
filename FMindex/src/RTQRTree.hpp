@@ -10,8 +10,6 @@
 
 using namespace std;
 
-class Point; /* implementation is at bottom */
-
 /**
  * Implementation of RTQ using RTreeTemplate. // https://github.com/nushoin/RTree
  * Memory usage: O(|Q| * log(|Q|)).
@@ -35,21 +33,9 @@ class RTQRTree : public RTQ
     
   private:
     RTree<Index, Index, 2, float> rTree;
-    vector<Point*> Q;   // memory is deleted in destructor. I put Points on heap because if on stack than I have risk that they could move.
+    vector<Index*> Q;   // memory is deleted in destructor. Each entry is array of size 2, where first element is x and second element is y
     vector< pair<Index,Index> > V;
 };
 
-/**
- * Data structure used for storing point from Q.
- */
-class Point {
-  public:
-    Index xy[2];
-    
-    Point(Index x, Index y) {
-        xy[0] = x;
-        xy[1] = y;
-    }
-};
 
 #endif // RTQRTREE_HPP
