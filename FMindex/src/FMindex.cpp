@@ -4,6 +4,7 @@
 
 #include "FMindex.hpp"
 #include "StringView.hpp"
+#include "RTQRTree.hpp"
 
 #include <iostream>
 #include <ctime>
@@ -49,7 +50,7 @@ printf("Vrijeme izgradnje za oppT: %.5lf\n", (double)(clock()-begin) / CLOCKS_PE
 
     // create RTQ
 begin = clock(); 
-//    buildRTQ(T, wordLengths);
+    buildRTQ(T, wordLengths);
 printf("Vrijeme izgradnje za RTQ: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);
    
     // create shortPatterns
@@ -219,7 +220,9 @@ cout << "length threshold: " << lengthThreshold_ << endl;
 cout << "Velicina vectora Q: " << Q->size() << endl;
 cout << "Velicina vectora V: " << V->size() << endl;
     // create RTQ from Q and V
-    this->rtQ_ = new RTQ(*Q, *V);
+    this->rtQ_ = new RTQRTree();
+    this->rtQ_->build(*Q, *V);
+    
     // delete Q and V
     delete Q;
     delete V;

@@ -45,7 +45,7 @@ class FMindex
 	Opp* oppT_;
     Opp* oppTLZR_;
     map< string, vector<Index> >* shortPatterns_;    // contains locations in T for each existing short pattern that overlaps
-    RTQ* rtQ_;  // geometric structure that offers fast orthogonal queries
+    RTQ* rtQ_;  // interface to RTQ, geometric structure that offers fast orthogonal queries
 	
 	char LZsep_;		// separator for LZ words
     Index n_;           // size of T: |T|

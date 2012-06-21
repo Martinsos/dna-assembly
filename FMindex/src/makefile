@@ -1,27 +1,28 @@
 CPP = g++
 FLAGS = 
 
-LEDA_I = -I./LEDA/incl
-LEDA_L = -L./LEDA -lleda -lX11
-
-FMINDEX_OBJ = FMindex.o RTQ.o Trie.o StringView.o
+FMINDEX_OBJ = FMindex.o RTQRTree.o Trie.o StringView.o
 OPP_OBJ = Opp/Opp.o Opp/OppRows.o Opp/Compressor.o Opp/Alphabet.o Opp/BitArray.o
 
 
 all: testFromFile
 
+test: test.cpp
 
-# executables - $(LEDA_L) must be last!
+
+# executables
 testFromFile: $(FMINDEX_OBJ) $(OPP_OBJ) testFromFile.cpp
-	$(CPP) $(FLAGS) $(FMINDEX_OBJ) $(OPP_OBJ) testFromFile.cpp -o testFromFile $(LEDA_I) $(LEDA_L)
+	$(CPP) $(FLAGS) $(FMINDEX_OBJ) $(OPP_OBJ) testFromFile.cpp -o testFromFile
 
+test: $(FMINDEX_OBJ) $(OPP_OBJ) test.cpp
+	$(CPP) $(FLAGS) $(FMINDEX_OBJ) $(OPP_OBJ) test.cpp -o test
 
 # FMindex
 FMindex.o: FMindex.cpp FMindex.hpp StringView.hpp
-	$(CPP) -c $(FLAGS) FMindex.cpp -o FMindex.o $(LEDA_I)
+	$(CPP) -c $(FLAGS) FMindex.cpp -o FMindex.o
 
-RTQ.o: RTQ.cpp RTQ.hpp
-	$(CPP) -c $(FLAGS) RTQ.cpp -o RTQ.o $(LEDA_I)
+RTQRTree.o: RTQRTree.cpp RTQRTree.hpp
+	$(CPP) -c $(FLAGS) RTQRTree.cpp -o RTQRTree.o
 
 Trie.o: Trie.cpp Trie.hpp StringView.hpp
 	$(CPP) -c $(FLAGS) Trie.cpp -o Trie.o
@@ -29,9 +30,11 @@ Trie.o: Trie.cpp Trie.hpp StringView.hpp
 StringView.o: StringView.cpp StringView.hpp
 	$(CPP) -c $(FLAGS) StringView.cpp -o StringView.o
 
+RTQRTree.hpp: RTQ.hpp RTree.hpp
+
 Trie.hpp: Opp/Opp.hpp
 
-FMindex.hpp: Opp/Opp.hpp Trie.hpp RTQ.hpp
+FMindex.hpp: Opp/Opp.hpp Trie.hpp RTQ.hpp RTQRTree.hpp
 
 
 # Opp
