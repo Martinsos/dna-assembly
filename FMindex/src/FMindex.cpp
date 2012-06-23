@@ -187,6 +187,8 @@ vector<OppRows> FMindex::findPrefixesOfP(const string& P)
 void FMindex::buildRTQ(const string& T, const vector<Index>& wordLengths)
 {
     // create Q and V on heap because they could be big
+    // Q is set of points that we are going to store in RTQ
+    // V[i] is data about point Q[i]
     vector< pair<Index, Index> >* Q = new vector< pair<Index, Index> >();
     vector< pair<Index, Index> >* V = new vector< pair<Index, Index> >();
 
