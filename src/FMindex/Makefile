@@ -5,9 +5,7 @@ FMINDEX_OBJ = FMindex.o RTQRTree.o Trie.o StringView.o
 OPP_OBJ = Opp/Opp.o Opp/OppRows.o Opp/Compressor.o Opp/Alphabet.o Opp/BitArray.o
 
 
-all: testFromFile
-
-test: test.cpp
+all: $(FMINDEX_OBJ) $(OPP_OBJ)
 
 
 # executables
