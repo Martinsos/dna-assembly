@@ -10,12 +10,19 @@
 #include <algorithm>
 #include <fstream>
 #include <ctime>
+#include <cstdint>
 
 using namespace std;
 
 // FOR TESTING
 int main(int argc, char** argv)
 {   
+    /*
+    uint32_t probnaVar;
+    cout << "velicina tipa je: " << sizeof(uint32_t) << endl;
+    cout << "velicina varijable je: " << sizeof(probnaVar) << endl;
+    */
+
     if (argc != 3) {
         cout << "Usage: " << argv[0] << " <filename> <num_characters>" << endl;
         exit(1);

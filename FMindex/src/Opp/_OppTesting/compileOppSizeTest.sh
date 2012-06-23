@@ -5,15 +5,15 @@
 if [ "$1" == "--debug-mode=yes" ]
 then
     echo "compiling in debug mode..."
-    cd Opp/
-    g++ -O0 -g -o oppSizeTest.exe Alphabet.cpp BitArray.cpp Compressor.cpp Opp.cpp OppRows.cpp ../StringView.cpp ../compressorSizeTest.cpp
-    mv oppSizeTest.exe ../
     cd ../
+    g++ -O0 -g -o oppSizeTest.exe Alphabet.cpp BitArray.cpp Compressor.cpp Opp.cpp OppRows.cpp ../StringView.cpp ../compressorSizeTest.cpp
+    mv oppSizeTest.exe _OppTesting/
+    cd _OppTesting/
 else
     echo "compiling in normal mode..."
-    cd Opp/
-    g++ -O0 -o oppSizeTest.exe Alphabet.cpp BitArray.cpp Compressor.cpp Opp.cpp OppRows.cpp ../StringView.cpp ../compressorSizeTest.cpp
-    mv oppSizeTest.exe ../
     cd ../
+    g++ -O0 -std=c++0x -o oppSizeTest.exe Alphabet.cpp BitArray.cpp Compressor.cpp Opp.cpp OppRows.cpp ../StringView.cpp ../compressorSizeTest.cpp
+    mv oppSizeTest.exe _OppTesting/
+    cd _OppTesting/
 fi
 echo "oppSizeTest.exe successfully created."
