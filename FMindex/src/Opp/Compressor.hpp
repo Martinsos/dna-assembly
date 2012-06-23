@@ -1,3 +1,10 @@
+/** 
+ *  author: Matija Sosic
+ *  e-mail: matija.sosic@gmail.com
+ *
+ *  class Compressor
+ */
+
 #ifndef COMPRESSOR_HPP
 #define COMPRESSOR_HPP
 
@@ -46,6 +53,14 @@ class Compressor
          */
         BitArray compress(string& T);
 
+        /** Returns how many times c appears in first q letters of L (BWT of input text)
+         *
+         *  @param c    Char whose appearance is counted
+         *  @param q    Determines how far to look in L
+         *  @returns    Number of occurrences of c in first q letters of L
+         */
+        int occ(char c, int q); 
+
         /* --------------------------------- Test methods --------------------------------------- */
 
         /** Decodes given BitArray back to letters
@@ -58,8 +73,8 @@ class Compressor
 
         /** Getter for MTFStates
          */
-        vector< list<char> > getMTFStates();
-    public:
+        vector< vector<char> > getMTFStates();
+    public:// mora biti private
         /* -------------------------------- Data structures -------------------------------------- */
 
         char BWTEof;            // Character appended to T, end-of-file
@@ -74,7 +89,7 @@ class Compressor
         /** For bucket i, MTFStates[i] keeps the state of MTF table just before encoding it
          *  getMTF() initializes it
          */
-        vector< list<char> > MTFStates;
+        vector< vector<char> > MTFStates;
 
         /** MZ[i] - number of zeroes missing at the beginning of bucket i
          *  Important to know when decoding particular bucket
@@ -84,7 +99,7 @@ class Compressor
         /** Number of occurrences - superbucket
          *  sbNO[i][c] - number of occurrences of character c in superbuckets 0 - i (included)
          */
-        vector< map<char, int> > sbNO;
+        vector< vector<int> > sbNO;
 
         /** For each superbucket stores size in bits of superbuckets 0 - i (included)
          */ 
@@ -94,7 +109,7 @@ class Compressor
          *  bNO[i][c] - number of occurrences of character c in buckets x - i (included)
          *  x - first bucket in current superbucket
          */
-        vector< map<char, int> > bNO;
+        vector< vector<int> > bNO;
 
         /** For each bucket stores size in bits of buckets x - i (included)
          *  x - first bucket int current superbucket
@@ -102,14 +117,6 @@ class Compressor
         vector<int> bW;
 
         /* --------------------------------------- Methods ----------------------------------------- */ 
-
-        /** Returns how many times c appears in first q letters of L (BWT of input text)
-         *
-         *  @param c    Char whose appearance is counted
-         *  @param q    Determines how far to look in L
-         *  @returns    Number of occurrences of c in first q letters of L
-         */
-        int occ(char c, int q); 
 
         /** Counts occurrences of c in first h letters in bucket starting at BZStart
          *
@@ -120,7 +127,7 @@ class Compressor
          *  @param missingZeroes    Missing zeroes at beginning of given bucket
          *  @returns                Occurrences of c in first h letters of given bucket
          */
-        int S(char c, int h, int BZStart, list<char> MTFState, int missingZeroes);
+        int S(char c, int h, int BZStart, vector<char> MTFState, int missingZeroes);
 
         /** Initializes bNO and sbNO structures
          *
@@ -146,10 +153,10 @@ class Compressor
 
         /** Apply move-to-front encoding to input text
          *
-         *  Side effect: Initialize MTFStates structure for each bucket
+         *  Side effect: Initializes MTFStates structure for each bucket
          *
-         *  @param T Input text
-         *  @return  MTF of T
+         *  @param L Input text
+         *  @return  MTF(L)
          */
         vector<int> getMTF(const string& L);
 
@@ -205,6 +212,6 @@ class Compressor
          *  @param MTFState Picture of MTF table for bucket being decoded
          *  @returns        Decoded text
          */
-        string decodeMTF(const vector<int>& MTFCode, list<char> MTFState); // Mozda bolje ovo ubactiti on-fly u S
+        string decodeMTF(const vector<int>& MTFCode, vector<char>& MTFState); // Mozda bolje ovo ubaciti on-fly u S
 };
 #endif // COMPRESSOR_HPP

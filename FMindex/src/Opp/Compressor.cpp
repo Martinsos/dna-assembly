@@ -1,5 +1,8 @@
-/**
- * Class Compressor
+/** 
+ *  author: Matija Sosic
+ *  e-mail: matija.sosic@gmail.com
+ *
+ *  class Compressor
  */
 
 #include "Compressor.hpp"
@@ -34,8 +37,9 @@ Compressor::Compressor(char eof, Alphabet alpha, int bucketSize) : alphabet(alph
 }
 
 /** Getter for MTFStates
+ *  Used for testing purposes
  */
-vector< list<char> > Compressor::getMTFStates()
+vector< vector<char> > Compressor::getMTFStates()
 {
     return MTFStates;    
 }
@@ -72,7 +76,6 @@ BitArray Compressor::compress(string& T)
 
     Z = getVarLengthPrefixEncoding( getMTF(getBWT(T)) );
 
-
     return Z;
 }
 
@@ -84,13 +87,14 @@ BitArray Compressor::compress(string& T)
  */
 void Compressor::initNOs(const string& L)
 {
-    map<char, int> currBucket;
-    map<char, int> currSuperBucket;
+    vector<int> currBucket(alphabet.size(), 0);
+    vector<int> currSuperBucket(alphabet.size(), 0);
 
     for (int i = 0; i < L.length(); i++)
     {
-        currBucket[L[i]]++;
-        currSuperBucket[L[i]]++;
+        int letterIdx = alphabet.getLetterIdx(L[i]); // Get char-idx mapping
+        currBucket[letterIdx]++;
+        currSuperBucket[letterIdx]++;
 
         // Reached end of bucket
         if (isBucketEnd(i))
@@ -102,7 +106,7 @@ void Compressor::initNOs(const string& L)
         {
             sbNO.push_back(currSuperBucket);
             // Clear value of bNO - start counting from 0 again
-            currBucket.clear();
+            currBucket = vector<int>(alphabet.size(), 0);
         }
     }
 }
@@ -156,7 +160,8 @@ string Compressor::getBWT(string& T)
  * is accessed, it is moved to the front of list (so its code is now 0).
  * This way we get consecutive 0's for consecutive same characters.
  *
- * Side effect: Initalize MTF structure for each bucket (takes picture before encoding bucket)
+ * Side effect: Initalize MTFStates structure for each bucket 
+ *              (takes picture of MTFlist just beforeencoding bucket)
  */
 vector<int> Compressor::getMTF(const string& L)
 {
@@ -164,18 +169,17 @@ vector<int> Compressor::getMTF(const string& L)
     list<char> MTFList = alphabet.toSortedList();
     
     // Generate MTF code for L
-    vector<int> MTF (0); 
+    vector<int> MTF; 
     for (int i = 0; i < L.length(); i++)
     {
         // If I am at the beginning of a bucket, store current MTF state
         if (i % bucketSize == 0) 
         {
-            MTFStates.push_back(MTFList);    
+            MTFStates.push_back( vector<char>(MTFList.begin(), MTFList.end()) );
         }
 
         // Find position of L[i] in MTFList and encode it
-        list<char>::iterator it;
-        int pos;
+        long pos; list<char>::iterator it;
         for (pos = 0, it = MTFList.begin(); it != MTFList.end(); it++, pos++)
             if (*it == L[i])
             {
@@ -201,7 +205,7 @@ vector<int> Compressor::getMTF(const string& L)
  *  Variable-length prefix coding:
  *  {0', 1'} -> {10, 11}
  *  i(other) -> floor(log(i + 1)) 0's followed by binary representation of i + 1
- *  Result is defined over {0, 1}
+ *  Result is defined over {0, 1} alphabet
  *
  *  Side effect: initializes structures sbW, bW and MZ
  */
@@ -405,7 +409,7 @@ string Compressor::decode(const BitArray& bits) {
                 j++;
                 i += 2; // Skip by 2
             }
-            i--; // One back, auto ++
+            i--; // One back, auto ++ from for loop
 
             // Decode fom MTF here and add to solution
             for (int k = 0; k < zeroNum; k++)
@@ -421,37 +425,32 @@ string Compressor::decode(const BitArray& bits) {
  *  Reads occurrences of c in first left superBucket
  *  Reads occurrences of c in first left bucket
  *  Counts occurrences of c in first h letters in bucket in which q falls
- *  Sums these 3 numbers and returns them - it is occ(c, q)
+ *  Sums those 3 numbers and returns result - it is occ(c, q)
  */
 int Compressor::occ(char c, int q)
 {
     int occ = 0;
     int BZStart = 0;
+    int letterIdx = alphabet.getLetterIdx(c);   // Get char - index mapping
 
     // Determine bucket containing q-th character of L
     int BL = ((q + bucketSize - 1) / bucketSize) - 1;  // 0 - based indexing, so we substract 1
-    //cout << "Bucket u kojem je q-to slovo, a q je: " << q << " " << BL << endl;
-    //cout << "velicina bucketa: " << bucketSize << endl;
 
     // Find character in BL to count up to (starting from 1)
     int h = q - BL * bucketSize;
-    //cout << "U tom bucketu brojim do: " << h << endl;
 
     // Determine superBucket containing q-th character of L
     int SBL = ((q + superBucketSize - 1) / superBucketSize) - 1;  // 0 - based indexing, so we substract 1
-    //cout << "superBucket u kojem je q-to slovo: " << SBL << endl;
 
     // Add previous occurrences if possible
     if (SBL > 0)    // SuperBucket - if not first superBucket
     {
-     //   cout << "gledam po superbucketu: " << sbNO[SBL -1][c] << endl;
-        occ += sbNO[SBL - 1][c];
+        occ += sbNO[SBL - 1][letterIdx];
         BZStart += sbW[SBL - 1];
     }
     if (BL % bucketSize != 0)   // Bucket - if not first bucket after superBucket
     {
-    //    cout << "gledam bucket prije, u njemu pise: " << bNO[BL - 1][c] << endl;
-        occ += bNO[BL - 1][c];
+        occ += bNO[BL - 1][letterIdx];
         BZStart += bW[BL - 1];
     }
 
@@ -464,7 +463,7 @@ int Compressor::occ(char c, int q)
 
 /** Counts occurrences of c in first h letters in bucket starting at BZStart
  */
-int Compressor::S(char c, int h, int BZStart, list<char> MTFState, int missingZeroes)
+int Compressor::S(char c, int h, int BZStart, vector<char> MTFState, int missingZeroes)
 {
     int occ = 0;
     // Decode h letters to MTF numbers
@@ -515,26 +514,27 @@ int Compressor::S(char c, int h, int BZStart, list<char> MTFState, int missingZe
     for (int i = 0; i < h; i++) // Look only first h
         if (BL[i] == c) occ++;
 
-
     return occ; 
 }
 
 /** Converts MTF code back to original text using given MTF state(picture at beginning of bucket)
  */
-string Compressor::decodeMTF(const vector<int>& MTFCode, list<char> MTFState)
+string Compressor::decodeMTF(const vector<int>& MTFCode, vector<char>& MTFState)
 {
-    // Decode MTF to string
+    // Make MTFList from MTFState for local use
+    list<char>MTFList(MTFState.begin(), MTFState.end());
+
     string decodedString = "";
     for (int i = 0; i < MTFCode.size(); i++)
     {
         list<char>::iterator it;
         int pos;
-        for (pos = 0, it = MTFState.begin(); it != MTFState.end(); it++, pos++)
+        for (pos = 0, it = MTFList.begin(); it != MTFList.end(); it++, pos++)
             if (pos == MTFCode[i])
             {
                 decodedString += *it;
-                MTFState.push_front(*it);
-                MTFState.erase(it);
+                MTFList.push_front(*it);
+                MTFList.erase(it);
                 break;
             }
     }

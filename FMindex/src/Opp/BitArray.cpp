@@ -1,3 +1,10 @@
+/** 
+ *  author: Matija Sosic
+ *  e-mail: matija.sosic@gmail.com
+ *
+ *  class BitArray
+ */
+
 #include "BitArray.hpp"
 #include <iostream>
 
@@ -24,6 +31,11 @@ void BitArray::print()
     for (int i = 0; i < bits.size(); i++)
         cout << bits[i];
     cout << endl;
+}
+
+void BitArray::empty() 
+{
+    bits.clear();    
 }
 
 /** Returns size

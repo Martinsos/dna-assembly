@@ -1,6 +1,8 @@
 /** 
  *  author: Matija Sosic
- *  class Opp  
+ *  e-mail: matija.sosic@gmail.com
+ *
+ *  class Opp
  */
 
 #include <cmath>

@@ -1,3 +1,10 @@
+/** 
+ *  author: Matija Sosic
+ *  e-mail: matija.sosic@gmail.com
+ *
+ *  class Opp
+ */
+
 #ifndef OPP_HPP
 #define OPP_HPP
 
@@ -13,15 +20,14 @@ using namespace std;
 
 class Opp
 {
-  private:
-    /* Data structures */
+  public://private mora biti
+    // ----------------------------- Data structures ------------------------------- //
 
     /** Size of input text
      */
     int textSize;
 
-    /**
-     * Inner instance of compressor
+    /** Inner instance of compressor
      */
     Compressor* compressor;
 
@@ -42,7 +48,8 @@ class Opp
   public:
     /** Constructor
      *  Gets and stores coded T.
-     *  Opp will do some manipulations on given T but when function is over it guarantees T will be same as it was when given.
+     *  Opp will do some manipulations on given T but when function 
+     *      is over it guarantees T will be same as it was when given.
      */
 	Opp(string& T);
 	

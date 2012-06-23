@@ -1,3 +1,10 @@
+/** 
+ *  author: Matija Sosic
+ *  e-mail: matija.sosic@gmail.com
+ *
+ *  class BitArray
+ */
+
 #ifndef BITARRAY_HPP
 #define BITARRAY_HPP
 
@@ -14,6 +21,11 @@ class BitArray
         /** Output bits to stdout
          */
         void print();
+
+        /** Empty BitArray container
+         *  Used for testing purposes to determine memory usage of BitArray
+         */
+        void empty();
     
         /** Returns number of bits in BitArray
          */

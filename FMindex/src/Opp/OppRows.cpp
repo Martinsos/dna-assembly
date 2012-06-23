@@ -1,3 +1,9 @@
+/** 
+ *  author: Matija Sosic
+ *  e-mail: matija.sosic@gmail.com
+ *
+ *  class OppRows
+ */
 
 #include <iostream>
 

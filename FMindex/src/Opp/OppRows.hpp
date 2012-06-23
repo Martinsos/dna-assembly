@@ -1,3 +1,10 @@
+/** 
+ *  author: Matija Sosic
+ *  e-mail: matija.sosic@gmail.com
+ *
+ *  class OppRows
+ */
+
 #ifndef OPP_ROWS_HPP
 #define OPP_ROWS_HPP
 
@@ -11,8 +18,8 @@ class OppRows
 {
   public:
 
-    /**
-     * is set to empty
+    /** Constructor
+     *  Sets empty to true
      */
     OppRows();
     /** Constructor, initializes class members
