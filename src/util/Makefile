@@ -7,3 +7,6 @@ SmithWaterman.o : SmithWaterman.cpp SmithWaterman.h
 		-c \
 		$(PREFIX)/external/swSharp/lib/libswsharp.a \
 		SmithWaterman.cpp 
+
+clean:
+	\rm SmithWaterman.o

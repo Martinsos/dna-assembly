@@ -1,5 +1,5 @@
 /**
- * @author Martin Sosic (sosic.martin@gmail.com)
+ * @author Martin Sosic (sosic.martin@gmail.com) & Matija Sosic (matija.sosic@gmail.com)
  */
 
 #include "FMindex/FMindex.hpp"
@@ -50,7 +50,6 @@ int main(int argc, char** argv)
             continue;
         if (!dnaFile) break;
         T.append(1, c);    
-        n--;
     }
     dnaFile.close();
     
@@ -62,14 +61,20 @@ int main(int argc, char** argv)
   //-- --//
      
      
-  //-- open and read patterns, do locate for each pattern --//
+  //-- open and read patterns, do locate for each pattern, write result to output file --//
   begin2 = clock();
-    // open file
+    // open patterns file
     ifstream patternsFile(patternsFilepath.c_str());
     if (!patternsFile.is_open()) {
         cout << patternsFilepath << " could not be opened!" << endl;
         exit(0);
-    }    
+    }
+    // open output file
+    ofstream outputFile(outputFilepath.c_str());
+    if (!outputFile.is_open()) {
+        cout << outputFilepath << " could not be opened!" << endl;
+        exit(0);
+    }        
     
     // read from file
     while (patternsFile.good()) {    // loop while extraction from file is possible
@@ -84,6 +89,7 @@ int main(int argc, char** argv)
         locatingTime += (double)(end-begin) / CLOCKS_PER_SEC; 
     }
     
+    outputFile.close();
     patternsFile.close();
   end2 = clock();
   fullTime += (double)(end2-begin2) / CLOCKS_PER_SEC; 

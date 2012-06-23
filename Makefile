@@ -26,3 +26,18 @@ $(fm_index):
 	$(MAKE) --directory=$@
 
 $(src_mappers): $(src_util)
+
+
+clean: clean_fm_index clean_external_swSharp clean_mappers clean_util
+		
+clean_fm_index:
+	$(MAKE) clean --directory=$(fm_index)
+	
+clean_external_swSharp:
+	$(MAKE) clean --directory=$(external_swSharp)
+
+clean_mappers:
+	$(MAKE) clean --directory=$(src_mappers)
+
+clean_util:
+	$(MAKE) clean --directory=$(src_util)

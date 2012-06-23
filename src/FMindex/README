@@ -1,4 +1,5 @@
-Use makefile to build program.
+Use makefile to create executable like this:
+    make testFromFile
 Executable testFromFile will be created and you can use it to test on a file how does FMindex work.
 Arguments of testFromFile:
     1. path to file containing text.

@@ -21,3 +21,6 @@ FMindexMapper: FMindexMapper.cpp ../util/SmithWaterman.o
 		../FMindex/Opp/*.o \
 		$(PREFIX)/external/swSharp/lib/libswsharp.a \
 		FMindexMapper.cpp -g -ggdb
+
+clean:
+	\rm simpleHashingMapper FMindexMapper
