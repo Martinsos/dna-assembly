@@ -1,3 +1,5 @@
+LD = -pthread -lstdc++
+
 all: simpleHashingMapper FMindexMapper
 
 simpleHashingMapper: SimpleHashingMapper.cpp ../util/SmithWaterman.o
@@ -8,7 +10,8 @@ simpleHashingMapper: SimpleHashingMapper.cpp ../util/SmithWaterman.o
 	-o simpleHashingMapper \
 		../util/SmithWaterman.o \
 		$(PREFIX)/external/swSharp/lib/libswsharp.a \
-		SimpleHashingMapper.cpp -g -ggdb
+		SimpleHashingMapper.cpp -g -ggdb \
+		$(LD)
 
 FMindexMapper: FMindexMapper.cpp ../util/SmithWaterman.o
 	g++ $(INCLUDES)\
@@ -20,7 +23,8 @@ FMindexMapper: FMindexMapper.cpp ../util/SmithWaterman.o
 		../FMindex/*.o \
 		../FMindex/Opp/*.o \
 		$(PREFIX)/external/swSharp/lib/libswsharp.a \
-		FMindexMapper.cpp -g -ggdb
+		FMindexMapper.cpp -g -ggdb \
+		$(LD)
 
 clean:
 	\rm simpleHashingMapper FMindexMapper
