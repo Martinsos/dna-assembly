@@ -14,6 +14,18 @@
 
 using namespace std;
 
+string reversedComplement(const string& S) {
+    string R = S;
+    reverse(R.begin(), R.end());
+    for (int i = 0; i < R.length(); i++) {
+        if      (R[i] == 'A') R[i] = 'T';
+        else if (R[i] == 'T') R[i] = 'A';
+        else if (R[i] == 'G') R[i] = 'C';
+        else if (R[i] == 'C') R[i] = 'G';
+    }
+    return R;
+}
+
 int main(int argc, char** argv)
 {   
     FMindex* fmIndex;
@@ -78,15 +90,20 @@ int main(int argc, char** argv)
     
     // read from file
     while (patternsFile.good()) {    // loop while extraction from file is possible
-        string P;
+        string P, Prc;
         // read pattern
         getline (patternsFile, P);
+        // get reversed complement
+        Prc = reversedComplement(P); 
         
         // locate pattern
         begin = clock();
         vector<Index> locs = fmIndex->getLocations(P);
         end = clock();
         locatingTime += (double)(end-begin) / CLOCKS_PER_SEC; 
+        for (int i = 0; i < locs.size(); i++)
+            cout << locs[i] << endl;
+        cout << "-----------------------------------" << endl;
     }
     
     outputFile.close();
