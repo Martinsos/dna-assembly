@@ -20,6 +20,7 @@ using namespace std;
 /**
  * Possible problem: buildTrie() returns vector<Index>,
  * if it is very big maybe it would be better to pass reference to buildTrie().
+ * TODO: change buildTrie so it doesnt return anything?
  */
 FMindex::FMindex(string &T)
 {
@@ -40,25 +41,20 @@ FMindex::FMindex(string &T)
 begin = clock();   
 	trie_ = new Trie();
 	vector<Index> wordLengths = trie_->buildTrieLZ78(T, LZsep_, oppTLZR_);  // oppTLZR_ is created!
-printf("Vrijeme izgradnje za Trie: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);
-cout << "Velicina Trie u byteovima: " << trie_->getTrieSize() << endl;
+printf("Building time for Trie: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);
 	
 	// create Opp(T)
 begin = clock(); 
 	oppT_ = new Opp(T);
-printf("Vrijeme izgradnje za oppT: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);
+printf("Building time for oppT: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);
 
     // create RTQ
 begin = clock(); 
     buildRTQ(T, wordLengths);
-printf("Vrijeme izgradnje za RTQ: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);
+printf("Building time for RTQ: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);
    
     // create shortPatterns
     memorizeShortPatterns(T, wordLengths);
-cout << "Velicina Ts tablice u bajtovima: " << getShortPatternsSize() << endl;
-
-int bzvz;
-cin >> bzvz;
 }
 
 FMindex::~FMindex()
@@ -196,8 +192,6 @@ void FMindex::buildRTQ(const string& T, const vector<Index>& wordLengths)
     reverse(suffixes.begin(), suffixes.end());
 
     // build Q and V
-cout << "broj LZ rijeci: " << wordLengths.size() << endl;
-cout << "length threshold: " << lengthThreshold_ << endl;
     Index wordStart = 0;    // position of first character in word
     for (Index i = 0; i < (Index)wordLengths.size()-1; i++)   // for all words except last
     { 
@@ -219,8 +213,6 @@ cout << "length threshold: " << lengthThreshold_ << endl;
         wordStart += wordLengths[i];
     }                               
 
-cout << "Velicina vectora Q: " << Q->size() << endl;
-cout << "Velicina vectora V: " << V->size() << endl;
     // create RTQ from Q and V
     this->rtQ_ = new RTQRTree();
     this->rtQ_->build(*Q, *V);

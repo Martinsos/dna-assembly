@@ -84,7 +84,7 @@ vector<Index> Trie::buildTrieLZ78(const string &T, char LZsep, Opp* &oppTLZR)
      // create Opp(TLZR)
 clock_t begin = clock();
     oppTLZR = new Opp(TLZR);
-printf("Vrijeme izgradnje za OppTLZR: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);   
+printf("Building time for OppTLZR: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);   
  
     // Maps rows from Opp(TLZR) to nodes of Trie
     this->mapRowsToNodes(*oppTLZR);
