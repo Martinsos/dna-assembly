@@ -1,0 +1,8 @@
+dna1000_reads100_wgsim_default: 99%/9.5s        0.83s
+dna1000_reads1000_wgsim_default: 98.4%/1m40s    0.83s
+dna10000_reads100_wgsim_default: 68%/38s        23.0s
+dna10000_reads1000_wgsim_default: 72.9%/6m40s   23.0s
+dna10000_reads10000_wgsim_default: 71.25%/72m22s 
+dna10000_reads100_wgsim_e0.01_r0.005: 71%/39s   23.0s
+dna10000_reads1000_wgsim_e0.01_r0.005: 70.5%/7m40s 
+dna10000_reads10000_wgsim_e0.01_r0.005: 70.3%/78m37s
