@@ -13,8 +13,6 @@
 
 using namespace std;
 
-bool testFMIndex(); // FOR TESTING
-
 // FOR TESTING
 int main()
 {   

@@ -27,7 +27,9 @@ void removeUnique(vector<T>& v) {
 }
 
 string getReversedComplement(const string& S);
-pair<double, pair<int, int> > getBestCandidate(const vector< pair<int, int> >& candidates, const string& P, const string& dna);
+pair<double, pair<int, int> > getBestCandidate(const vector< pair<int, int> >& candidates, 
+                                               const vector< pair<int, int> >& candidatesRc, 
+                                               const string& P, const string& dna);
 void getCandidatesStrict(string P, FMindex* fmIndex, vector< pair<int, int> >& candidates);
 void getCandidatesFast(string P, FMindex* fmIndex, vector< pair<int, int> >& candidates);
 void getCandidatesFastRecursive(string P, FMindex* fmIndex, vector< pair<int, int> >& candidates);
@@ -131,10 +133,7 @@ int main(int argc, char** argv)
         
         
         // find best candidate and store it into variable bestCandidate
-        pair<double, pair<int, int> > bestCandidate   = getBestCandidate(candidates, P, dna);
-        pair<double, pair<int, int> > bestCandidateRc = getBestCandidate(candidatesRc, Prc, dna);
-        if (bestCandidateRc.second.first != -1 && bestCandidateRc.first > bestCandidate.first)
-            bestCandidate = bestCandidateRc;
+        pair<double, pair<int, int> > bestCandidate   = getBestCandidate(candidates, candidatesRc, P, dna);
         if (bestCandidate.second.first != -1)
             numFound++;
         
@@ -143,11 +142,8 @@ int main(int argc, char** argv)
         sprintf(buffer, "from %d to %d score %lf", bestCandidate.second.first, bestCandidate.second.second, bestCandidate.first);
         outputFile << buffer << endl;
         
-        int perc = num * 80 / numPatterns;
-        printf("\r|");
-        for (int i = 0; i < perc; i++) printf("=");
-        for (int i = perc; i < 80; i++) printf(" ");
-        printf("|");
+        printf("\r%d/%d", num, numPatterns);
+        fflush(stdout);
     }
     printf("\n");
 
@@ -158,10 +154,8 @@ int main(int argc, char** argv)
   //-- --//
     
     printf("Number of patterns found: %d\n", numFound);
-    printf("Time spent only locating: %.8lf\n", locatingTime);
-    printf("Time spent on second part (all except building): %.8lf\n", fullTime);
-    
-    cin >> dummy;
+    printf("Time spent finding candidates: %.8lf\n", locatingTime);
+    printf("Time spent on second part (finding candidates + SW): %.8lf\n", fullTime);
     
     delete fmIndex;
     return 0;
@@ -186,14 +180,15 @@ string getReversedComplement(const string& S) {
 /**
  * Uses SW to pick best candidate, returns score and candidate: (score, (from, to))
  */
-pair<double, pair<int, int> > getBestCandidate(const vector< pair<int, int> >& candidates, const string& P, const string& dna) {
+pair<double, pair<int, int> > getBestCandidate(const vector< pair<int, int> >& candidates, const vector< pair<int, int> >& candidatesRc, const string& P, const string& dna) {
     pair<double, pair<int, int> > bestCandidate = make_pair(-1.0, make_pair(-1, -1));
-    if (candidates.size() == 0) 
+    if (candidates.size() == 0 && candidatesRc.size() == 0) 
         return bestCandidate;
 
     // use SW to get scores for candidates, take the best one
      // convert vector of pairs to char**
-    char* candidatesStr[candidates.size()];
+    int candidatesStrLen = candidates.size()+candidatesRc.size();
+    char* candidatesStr[candidatesStrLen];
     for (int i = 0; i < candidates.size(); i++) {
         int start = candidates[i].first;
         int len = candidates[i].second - candidates[i].first + 1;
@@ -204,20 +199,35 @@ pair<double, pair<int, int> > getBestCandidate(const vector< pair<int, int> >& c
         candidate[len] = '\0';
         candidatesStr[i] = candidate;
     }
+    for (int i = 0; i < candidatesRc.size(); i++) {
+        int start = candidatesRc[i].first;
+        int len = candidatesRc[i].second - candidatesRc[i].first + 1;
+        string candRcStr = dna.substr(start, len);
+        string candStr = getReversedComplement(candRcStr);
+        
+        char* candidate = new char[len+1];
+        for (int j = 0; j < len; j++)
+            candidate[j] = candStr[j];
+        candidate[len] = '\0';
+        candidatesStr[i+candidates.size()] = candidate;
+    }
     
     // calculate scores
     vector<double> scores;
     char pattern[P.length()+1]; for (int i = 0; i < P.length(); i++) pattern[i] = P[i]; pattern[P.length()]='\0';
-    smithWaterman(&scores, pattern, candidatesStr, (int)candidates.size());
+    smithWaterman(&scores, pattern, candidatesStr, (int)candidatesStrLen);
     
     // find best score ergo best candidate
     for (int i = 0; i < scores.size(); i++) {
         if (bestCandidate.second.first == -1 || scores[i] > bestCandidate.first)
-            bestCandidate = make_pair(scores[i], candidates[i]);
+            if (i < candidates.size())
+                bestCandidate = make_pair(scores[i], candidates[i]);
+            else
+                bestCandidate = make_pair(scores[i], candidatesRc[i-candidates.size()]);
     }
     
     // cleanup    
-    for (int i = 0; i < candidates.size(); i++)
+    for (int i = 0; i < candidatesStrLen; i++)
         delete[] candidatesStr[i];
     
     return bestCandidate;

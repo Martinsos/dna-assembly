@@ -1,5 +1,11 @@
 Use makefile to create executable like this:
     make testFromFile
+    or
+    make simpleDemo
+
+
+## testFromFile ##
+Create executable like this: make testFromFile
 Executable testFromFile will be created and you can use it to test on a file how does FMindex work.
 Arguments of testFromFile:
     1. path to file containing text.
@@ -12,3 +18,12 @@ where each pattern is of given length and it will query them using FMindex.
 
 example of usage:
 ./testFromFile english.50MB 100000 30 1000
+
+
+## simpleDemo ##
+Create executable like this: make simpleDemo
+Executable simpleDemo will be created and you can use it for quick demonstration of FMindex.
+simpleDemo takes no arguments.
+
+example of usage:
+./simpleDemo
