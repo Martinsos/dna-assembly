@@ -59,89 +59,99 @@ Opp::~Opp()
  */
 OppRows Opp::findRows(const StringView& P) const
 {
-    // Setting initial conditions
-    int i       = P.getLength();       
-    char c      = P.charAt(i - 1);         
-    int first   = getCFor(c) + 1;  
-    int last    = getCForNext(c);  
+    try {
+        // Setting initial conditions
+        int i       = P.getLength();       
+        char c      = P.charAt(i - 1);         
+        int first   = getCFor(c) + 1;  
+        int last    = getCForNext(c);  
 
-    while (first <= last && i >= 2)
-    {
-        c = P.charAt(i - 2); // Because array is 0-based and here we work with base 1
+        while (first <= last && i >= 2)
+        {
+            c = P.charAt(i - 2); // Because array is 0-based and here we work with base 1
+            first = getCFor(c) + 1 + compressor->occ(c, first - 1);
+            last = getCFor(c) + compressor->occ(c, last);
+            i--;
+        }
+        if (last < first)
+            return OppRows(0, 0, true); // 0 means undef here
 
-        first = getCFor(c) + 1 + compressor->occ(c, first - 1);
-        last = getCFor(c) + compressor->occ(c, last);
+        return OppRows(first, last, false);
 
-        i--;
+    } catch (char *str) {
+        return OppRows(0, 0, true);
     }
-    if (last < first)
-        return OppRows(0, 0, true); // 0 means undef here
-
-    return OppRows(first, last, false);
 }
 
 /** Applies findRows() for each suffix of given string
  */
 vector<OppRows> Opp::findRowsForSuffixes(const StringView& P) const
 {
-    int i       = P.getLength();       
-    char c      = P.charAt(i - 1);         
-    int first   = getCFor(c) + 1;   
-    int last    = getCForNext(c);   
+    try {
+        int i       = P.getLength();       
+        char c      = P.charAt(i - 1);         
+        int first   = getCFor(c) + 1;   
+        int last    = getCForNext(c);   
 
-    vector<OppRows> results;
-    if (last < first)
-        results.push_back(OppRows(0, 0, true));
-    else
-        results.push_back(OppRows(first, last, false));
-    while (first <= last && i >= 2)
-    {
-        c = P.charAt(i - 2); // Because array is 0-based and here we work with base 1
-        
-        first = getCFor(c) + 1 + compressor->occ(c, first - 1);
-        last = getCFor(c) + compressor->occ(c, last);
-        i--;
-
+        vector<OppRows> results;
         if (last < first)
             results.push_back(OppRows(0, 0, true));
         else
             results.push_back(OppRows(first, last, false));
+        while (first <= last && i >= 2)
+        {
+            c = P.charAt(i - 2); // Because array is 0-based and here we work with base 1
+            first = getCFor(c) + 1 + compressor->occ(c, first - 1);
+            last = getCFor(c) + compressor->occ(c, last);
+            i--;
+
+            if (last < first)
+                results.push_back(OppRows(0, 0, true));
+            else
+                results.push_back(OppRows(first, last, false));
+        }
+        while (results.size() < P.getLength())
+            results.push_back(OppRows(0, 0, true));
+        return results;
+    } catch (char *str) {
+        return vector<OppRows>(P.getLength(), OppRows(0, 0, true));
     }
-    while (results.size() < P.getLength())
-        results.push_back(OppRows(0, 0, true));
-    return results;
 }
 
 /** Like findRowsForSuffixes(), but adds prefix to each suffix before searching
  */
 vector<OppRows> Opp::findRowsForSuffixesWithPrefix(const StringView& P, char C) const
 {
-    int i       = P.getLength();       
-    char c      = P.charAt(i - 1);         
-    int first   = getCFor(c) + 1;   
-    int last    = getCForNext(c);   
+    try {
+        int i       = P.getLength();       
+        char c      = P.charAt(i - 1);         
+        int first   = getCFor(c) + 1;   
+        int last    = getCForNext(c);   
 
-    vector<OppRows> results;
-    while (first <= last && i >= 2)
-    {
-        // Add special character
-        c = C;
-        int firstC = getCFor(c) + 1 + compressor->occ(c, first - 1);
-        int lastC = getCFor(c) + compressor->occ(c, last);
-        if (lastC < firstC)
+        vector<OppRows> results;
+        while (first <= last && i >= 2)
+        {
+            // Add special character
+            c = C;
+            int firstC = getCFor(c) + 1 + compressor->occ(c, first - 1);
+            int lastC = getCFor(c) + compressor->occ(c, last);
+            if (lastC < firstC)
+                results.push_back(OppRows(0, 0, true));
+            else
+                results.push_back(OppRows(firstC, lastC, false));
+
+            c = P.charAt(i - 2); // Because array is 0-based and here we work with base 1
+            
+            first = getCFor(c) + 1 + compressor->occ(c, first - 1);
+            last = getCFor(c) + compressor->occ(c, last);
+            i--;
+        }
+        while (results.size() < P.getLength())
             results.push_back(OppRows(0, 0, true));
-        else
-            results.push_back(OppRows(firstC, lastC, false));
-
-        c = P.charAt(i - 2); // Because array is 0-based and here we work with base 1
-        
-        first = getCFor(c) + 1 + compressor->occ(c, first - 1);
-        last = getCFor(c) + compressor->occ(c, last);
-        i--;
+        return results;
+    } catch (char *str) {
+        return vector<OppRows>(P.getLength(), OppRows(0, 0, true));
     }
-    while (results.size() < P.getLength())
-        results.push_back(OppRows(0, 0, true));
-    return results;
 }
 
 /** Does only one step of find rows
@@ -149,31 +159,43 @@ vector<OppRows> Opp::findRowsForSuffixesWithPrefix(const StringView& P, char C) 
  */
 OppRows Opp::findRowsDoStep(const OppRows& init, char c) const
 {
-    // If empty, return first and last row
-    if (init.isEmpty()) 
-        return OppRows(getCFor(c) + 1, getCForNext(c), false);  
+    try {
+        // If empty, return first and last row
+        if (init.isEmpty()) 
+            return OppRows(getCFor(c) + 1, getCForNext(c), false);  
 
-    // Else do one step
-    int first = init.getFirst();
-    int last = init.getLast();
+        // Else do one step
+        int first = init.getFirst();
+        int last = init.getLast();
 
-    // If init is invalid
-    if (last < first)
-        return OppRows(0, 0, true); // 0 means undef here
+        // If init is invalid
+        if (last < first)
+            return OppRows(0, 0, true); // 0 means undef here
 
-    first = getCFor(c) + 1 + compressor->occ(c, first - 1);
-    last = getCFor(c) + compressor->occ(c, last);
+        first = getCFor(c) + 1 + compressor->occ(c, first - 1);
+        last = getCFor(c) + compressor->occ(c, last);
 
-    if (last < first)
-        return OppRows(0, 0, true); // 0 means undef here
+        if (last < first)
+            return OppRows(0, 0, true); // 0 means undef here
 
-    return OppRows(first, last, false);
+        return OppRows(first, last, false);
+    } catch (char *str) {
+        return OppRows(0, 0, true);
+    }
 }
 
 /** Returns C[c]
-*/
+ *  Throws error if c is not in alphabet
+ */
 int Opp::getCFor(char c) const
 {
+    // If letter is not in alphabet - throw error and exit
+    map<char, int>::const_iterator it = C.find(c);
+    if (it == C.end())
+    {
+        throw "This letter is not in alphabet!";
+    }
+
     return C.find(c)->second;
 }
 
