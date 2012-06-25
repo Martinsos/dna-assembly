@@ -1,0 +1,91 @@
+\hypertarget{class_bit_array}{\section{\-Bit\-Array \-Class \-Reference}
+\label{class_bit_array}\index{\-Bit\-Array@{\-Bit\-Array}}
+}
+
+
+\-Class representing array of bits \-Here used for storing \-B\-W\-\_\-\-R\-L\-X compression of original text.  
+
+
+
+
+{\ttfamily \#include $<$\-Bit\-Array.\-hpp$>$}
+
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_bit_array_a905dfc982d3ec1d74da3cacc400fae66}{void \hyperlink{class_bit_array_a905dfc982d3ec1d74da3cacc400fae66}{print} ()}\label{class_bit_array_a905dfc982d3ec1d74da3cacc400fae66}
+
+\begin{DoxyCompactList}\small\item\em \-Output bits to stdout. \end{DoxyCompactList}\item 
+\hypertarget{class_bit_array_aaa3d47e9bb289983cc7ceaf5cba1d1ce}{void \hyperlink{class_bit_array_aaa3d47e9bb289983cc7ceaf5cba1d1ce}{empty} ()}\label{class_bit_array_aaa3d47e9bb289983cc7ceaf5cba1d1ce}
+
+\begin{DoxyCompactList}\small\item\em \-Empty \hyperlink{class_bit_array}{\-Bit\-Array} container \-Used for testing purposes to determine memory usage of \hyperlink{class_bit_array}{\-Bit\-Array}. \end{DoxyCompactList}\item 
+int \hyperlink{class_bit_array_afd81139b833385a286c129f9735c37db}{size} () const 
+\begin{DoxyCompactList}\small\item\em \-Returns number of bits in \hyperlink{class_bit_array}{\-Bit\-Array}. \end{DoxyCompactList}\item 
+char \hyperlink{class_bit_array_a167ad4b389c875b1c3aa35fcf592f8ec}{bit\-Char\-At} (int pos) const 
+\begin{DoxyCompactList}\small\item\em \-Returns bit at given position as char. \end{DoxyCompactList}\item 
+\hyperlink{class_bit_array_a2dad7e141bc6e0e1c40844b508892e61}{\-Bit\-Array} (vector$<$ bool $>$ bits)
+\begin{DoxyCompactList}\small\item\em \-Constructor. \end{DoxyCompactList}\item 
+\hypertarget{class_bit_array_a611f4d891d6f6db51468448da73d3f1e}{\hyperlink{class_bit_array_a611f4d891d6f6db51468448da73d3f1e}{\-Bit\-Array} ()}\label{class_bit_array_a611f4d891d6f6db51468448da73d3f1e}
+
+\begin{DoxyCompactList}\small\item\em \-Empty constructor. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Class representing array of bits \-Here used for storing \-B\-W\-\_\-\-R\-L\-X compression of original text. 
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{class_bit_array_a2dad7e141bc6e0e1c40844b508892e61}{\index{\-Bit\-Array@{\-Bit\-Array}!\-Bit\-Array@{\-Bit\-Array}}
+\index{\-Bit\-Array@{\-Bit\-Array}!BitArray@{\-Bit\-Array}}
+\subsubsection[{\-Bit\-Array}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Bit\-Array\-::\-Bit\-Array} (
+\begin{DoxyParamCaption}
+\item[{vector$<$ bool $>$}]{bits}
+\end{DoxyParamCaption}
+)}}\label{class_bit_array_a2dad7e141bc6e0e1c40844b508892e61}
+
+
+\-Constructor. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em bits} & \-Bits to be stored \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{class_bit_array_a167ad4b389c875b1c3aa35fcf592f8ec}{\index{\-Bit\-Array@{\-Bit\-Array}!bit\-Char\-At@{bit\-Char\-At}}
+\index{bit\-Char\-At@{bit\-Char\-At}!BitArray@{\-Bit\-Array}}
+\subsubsection[{bit\-Char\-At}]{\setlength{\rightskip}{0pt plus 5cm}char {\bf \-Bit\-Array\-::bit\-Char\-At} (
+\begin{DoxyParamCaption}
+\item[{int}]{pos}
+\end{DoxyParamCaption}
+) const}}\label{class_bit_array_a167ad4b389c875b1c3aa35fcf592f8ec}
+
+
+\-Returns bit at given position as char. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em position} & in bit array \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+bit at given position 
+\end{DoxyReturn}
+\hypertarget{class_bit_array_afd81139b833385a286c129f9735c37db}{\index{\-Bit\-Array@{\-Bit\-Array}!size@{size}}
+\index{size@{size}!BitArray@{\-Bit\-Array}}
+\subsubsection[{size}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-Bit\-Array\-::size} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_bit_array_afd81139b833385a286c129f9735c37db}
+
+
+\-Returns number of bits in \hyperlink{class_bit_array}{\-Bit\-Array}. 
+
+\-Returns size. 
+
+\-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+\-Opp/\-Bit\-Array.\-hpp\item 
+\-Opp/\-Bit\-Array.\-cpp\end{DoxyCompactItemize}

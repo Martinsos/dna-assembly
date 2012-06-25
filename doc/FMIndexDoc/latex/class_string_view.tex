@@ -1,0 +1,139 @@
+\hypertarget{class_string_view}{\section{\-String\-View \-Class \-Reference}
+\label{class_string_view}\index{\-String\-View@{\-String\-View}}
+}
+
+
+\hyperlink{class_string_view}{\-String\-View} is slightly changed view of another string with minimum copying involved.  
+
+
+
+
+{\ttfamily \#include $<$\-String\-View.\-hpp$>$}
+
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_string_view_a522ccbcc302cd1abd01d680cac12ab8e}{\-String\-View} (const string \&s)
+\begin{DoxyCompactList}\small\item\em \-Create a view of given string. \end{DoxyCompactList}\item 
+\hyperlink{class_string_view_aa931db04bde219d3ab4352bd4e7152f1}{\-String\-View} (const string \&s, \-Index start, \-Index length)
+\begin{DoxyCompactList}\small\item\em \-Create a view of given string, starting from character at position start and ending at position start+length-\/1, inclusive. \end{DoxyCompactList}\item 
+\hyperlink{class_string_view_ae455a514d2b78e5f8922761aab432bce}{\-String\-View} (const string \&s, \-Index start)
+\begin{DoxyCompactList}\small\item\em \-Create a view of given string, starting from character at position start and ending at position s.\-length-\/1, inclusive. \end{DoxyCompactList}\item 
+void \hyperlink{class_string_view_af1005934a166e1a3939f48835a3b6533}{add\-Prefix} (const string \&prefix)
+\begin{DoxyCompactList}\small\item\em \-Add prefix. \end{DoxyCompactList}\item 
+void \hyperlink{class_string_view_aeb2d536a71c4c0851db6c302718d18ac}{add\-Suffix} (const string \&suffix)
+\begin{DoxyCompactList}\small\item\em \-Add suffix. \end{DoxyCompactList}\item 
+char \hyperlink{class_string_view_a6507eb2f61220c86a405a9df0f557fe7}{char\-At} (\-Index i) const 
+\begin{DoxyCompactList}\small\item\em \-Returns char at position i. \end{DoxyCompactList}\item 
+\-Index \hyperlink{class_string_view_af0857afdaefc0a484d525bfd455855d4}{get\-Length} () const 
+\begin{DoxyCompactList}\small\item\em \-Returns length of preffix, viewed string and suffix together. \end{DoxyCompactList}\item 
+void \hyperlink{class_string_view_a12e97255dbedce202866e0ba872a1a56}{reverse} ()
+\begin{DoxyCompactList}\small\item\em \-Reverse view. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\hyperlink{class_string_view}{\-String\-View} is slightly changed view of another string with minimum copying involved. 
+
+\hyperlink{class_string_view}{\-String\-View} can not affect or change viewed string. \-We can add suffix, preffix, or limit our view to substring of viewed string. \-When making a view of another string, no copying is done. \-When adding prefix or suffix they are actually stored, so prefix and suffix should not be big. 
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{class_string_view_a522ccbcc302cd1abd01d680cac12ab8e}{\index{\-String\-View@{\-String\-View}!\-String\-View@{\-String\-View}}
+\index{\-String\-View@{\-String\-View}!StringView@{\-String\-View}}
+\subsubsection[{\-String\-View}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-String\-View\-::\-String\-View} (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{s}
+\end{DoxyParamCaption}
+)}}\label{class_string_view_a522ccbcc302cd1abd01d680cac12ab8e}
+
+
+\-Create a view of given string. 
+
+\-Space and time complexity\-: \-O(1). \hypertarget{class_string_view_aa931db04bde219d3ab4352bd4e7152f1}{\index{\-String\-View@{\-String\-View}!\-String\-View@{\-String\-View}}
+\index{\-String\-View@{\-String\-View}!StringView@{\-String\-View}}
+\subsubsection[{\-String\-View}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-String\-View\-::\-String\-View} (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{s, }
+\item[{\-Index}]{start, }
+\item[{\-Index}]{length}
+\end{DoxyParamCaption}
+)}}\label{class_string_view_aa931db04bde219d3ab4352bd4e7152f1}
+
+
+\-Create a view of given string, starting from character at position start and ending at position start+length-\/1, inclusive. 
+
+\-Space and time complexity\-: \-O(1). \hypertarget{class_string_view_ae455a514d2b78e5f8922761aab432bce}{\index{\-String\-View@{\-String\-View}!\-String\-View@{\-String\-View}}
+\index{\-String\-View@{\-String\-View}!StringView@{\-String\-View}}
+\subsubsection[{\-String\-View}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-String\-View\-::\-String\-View} (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{s, }
+\item[{\-Index}]{start}
+\end{DoxyParamCaption}
+)}}\label{class_string_view_ae455a514d2b78e5f8922761aab432bce}
+
+
+\-Create a view of given string, starting from character at position start and ending at position s.\-length-\/1, inclusive. 
+
+\-Space and time complexity\-: \-O(1). 
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{class_string_view_af1005934a166e1a3939f48835a3b6533}{\index{\-String\-View@{\-String\-View}!add\-Prefix@{add\-Prefix}}
+\index{add\-Prefix@{add\-Prefix}!StringView@{\-String\-View}}
+\subsubsection[{add\-Prefix}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-String\-View\-::add\-Prefix} (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{prefix}
+\end{DoxyParamCaption}
+)}}\label{class_string_view_af1005934a166e1a3939f48835a3b6533}
+
+
+\-Add prefix. 
+
+\-Prefix is actually copied and stored in \hyperlink{class_string_view}{\-String\-View}. \-After prefix is added, rewind is automatically called. \hypertarget{class_string_view_aeb2d536a71c4c0851db6c302718d18ac}{\index{\-String\-View@{\-String\-View}!add\-Suffix@{add\-Suffix}}
+\index{add\-Suffix@{add\-Suffix}!StringView@{\-String\-View}}
+\subsubsection[{add\-Suffix}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-String\-View\-::add\-Suffix} (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{suffix}
+\end{DoxyParamCaption}
+)}}\label{class_string_view_aeb2d536a71c4c0851db6c302718d18ac}
+
+
+\-Add suffix. 
+
+\-Suffix is actually copied and stored in \hyperlink{class_string_view}{\-String\-View}. \-After prefix is added, rewind is automatically called. \hypertarget{class_string_view_a6507eb2f61220c86a405a9df0f557fe7}{\index{\-String\-View@{\-String\-View}!char\-At@{char\-At}}
+\index{char\-At@{char\-At}!StringView@{\-String\-View}}
+\subsubsection[{char\-At}]{\setlength{\rightskip}{0pt plus 5cm}char {\bf \-String\-View\-::char\-At} (
+\begin{DoxyParamCaption}
+\item[{\-Index}]{i}
+\end{DoxyParamCaption}
+) const}}\label{class_string_view_a6507eb2f61220c86a405a9df0f557fe7}
+
+
+\-Returns char at position i. 
+
+\-Positions start from 0, from first character of prefix. \hypertarget{class_string_view_af0857afdaefc0a484d525bfd455855d4}{\index{\-String\-View@{\-String\-View}!get\-Length@{get\-Length}}
+\index{get\-Length@{get\-Length}!StringView@{\-String\-View}}
+\subsubsection[{get\-Length}]{\setlength{\rightskip}{0pt plus 5cm}\-Index {\bf \-String\-View\-::get\-Length} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+) const}}\label{class_string_view_af0857afdaefc0a484d525bfd455855d4}
+
+
+\-Returns length of preffix, viewed string and suffix together. 
+
+\-Time complexity\-: \-O(1); \hypertarget{class_string_view_a12e97255dbedce202866e0ba872a1a56}{\index{\-String\-View@{\-String\-View}!reverse@{reverse}}
+\index{reverse@{reverse}!StringView@{\-String\-View}}
+\subsubsection[{reverse}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-String\-View\-::reverse} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_string_view_a12e97255dbedce202866e0ba872a1a56}
+
+
+\-Reverse view. 
+
+\-Only prefix and suffix are really reversed (and swapped). 
+
+\-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+\-String\-View.\-hpp\item 
+\-String\-View.\-cpp\end{DoxyCompactItemize}

@@ -1,0 +1,124 @@
+\hypertarget{class_opp}{\section{\-Opp \-Class \-Reference}
+\label{class_opp}\index{\-Opp@{\-Opp}}
+}
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_opp_a0ef321478752cb991a3774adcf78c7b2}{\-Opp} (string \&\-T)
+\begin{DoxyCompactList}\small\item\em \-Constructor \-Gets and stores coded \-T. \end{DoxyCompactList}\item 
+\hypertarget{class_opp_ae81125439d70890bb333140f123b244e}{\hyperlink{class_opp_ae81125439d70890bb333140f123b244e}{$\sim$\-Opp} ()}\label{class_opp_ae81125439d70890bb333140f123b244e}
+
+\begin{DoxyCompactList}\small\item\em \-Destructor \-Deletes compressor instance. \end{DoxyCompactList}\item 
+\hyperlink{class_opp_rows}{\-Opp\-Rows} \hyperlink{class_opp_ad832848ca2af3d126e289df1f8e1c65d}{find\-Rows} (const \hyperlink{class_string_view}{\-String\-View} \&\-P) const 
+\begin{DoxyCompactList}\small\item\em \-Implements backward\-\_\-search algorithm. \end{DoxyCompactList}\item 
+vector$<$ \hyperlink{class_opp_rows}{\-Opp\-Rows} $>$ \hyperlink{class_opp_abf6d666966131f2dd737ac6ff6c1ea0e}{find\-Rows\-For\-Suffixes} (const \hyperlink{class_string_view}{\-String\-View} \&\-P) const 
+\begin{DoxyCompactList}\small\item\em \-Same as method \hyperlink{class_opp_ad832848ca2af3d126e289df1f8e1c65d}{find\-Rows()} but returns rows for all suffixes of \-P, not just \-P. \end{DoxyCompactList}\item 
+vector$<$ \hyperlink{class_opp_rows}{\-Opp\-Rows} $>$ \hyperlink{class_opp_a0ddbf31bae4785ee68551c389ffd7a19}{find\-Rows\-For\-Suffixes\-With\-Prefix} (const \hyperlink{class_string_view}{\-String\-View} \&\-P, char \-C) const 
+\begin{DoxyCompactList}\small\item\em \-Same as method \hyperlink{class_opp_ad832848ca2af3d126e289df1f8e1c65d}{find\-Rows()} but returns rows for all suffixes of \-P prefixed with character \-C. \end{DoxyCompactList}\item 
+\hyperlink{class_opp_rows}{\-Opp\-Rows} \hyperlink{class_opp_a04b122b2ad82ac260733aa9ad7751234}{find\-Rows\-Do\-Step} (const \hyperlink{class_opp_rows}{\-Opp\-Rows} \&init, char c) const 
+\begin{DoxyCompactList}\small\item\em \-Does only on step of function find\-Rows for only one character \-Starts from given first and last (opp\-Rows) \-If opp\-Rows is empty, returns first and last row of conceptual matrix. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{class_opp_a0ef321478752cb991a3774adcf78c7b2}{\index{\-Opp@{\-Opp}!\-Opp@{\-Opp}}
+\index{\-Opp@{\-Opp}!Opp@{\-Opp}}
+\subsubsection[{\-Opp}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Opp\-::\-Opp} (
+\begin{DoxyParamCaption}
+\item[{string \&}]{\-T}
+\end{DoxyParamCaption}
+)}}\label{class_opp_a0ef321478752cb991a3774adcf78c7b2}
+
+
+\-Constructor \-Gets and stores coded \-T. 
+
+\-Constructor \-Initializes inner \hyperlink{class_compressor}{\-Compressor} instance.
+
+\hyperlink{class_opp}{\-Opp} will do some manipulations on given \-T but when function is over it guarantees \-T will be same as it was when given. 
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{class_opp_ad832848ca2af3d126e289df1f8e1c65d}{\index{\-Opp@{\-Opp}!find\-Rows@{find\-Rows}}
+\index{find\-Rows@{find\-Rows}!Opp@{\-Opp}}
+\subsubsection[{find\-Rows}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Opp\-Rows} {\bf \-Opp\-::find\-Rows} (
+\begin{DoxyParamCaption}
+\item[{const {\bf \-String\-View} \&}]{\-P}
+\end{DoxyParamCaption}
+) const}}\label{class_opp_ad832848ca2af3d126e289df1f8e1c65d}
+
+
+\-Implements backward\-\_\-search algorithm. 
+
+\-Finds rows of conceptual matrix prefixed by \-P \-If there are no matching rows, set flag in \hyperlink{class_opp_rows}{\-Opp\-Rows}.
+
+\-Finds all rows in \-T that are prefixed by \-P. \-Returns indexes of first and last row (rows are contiguous). \-First row is indexed with 1.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em \-P} & \-Prefix we are looking for \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\hyperlink{class_opp_rows}{\-Opp\-Rows} class. 
+\end{DoxyReturn}
+\hypertarget{class_opp_a04b122b2ad82ac260733aa9ad7751234}{\index{\-Opp@{\-Opp}!find\-Rows\-Do\-Step@{find\-Rows\-Do\-Step}}
+\index{find\-Rows\-Do\-Step@{find\-Rows\-Do\-Step}!Opp@{\-Opp}}
+\subsubsection[{find\-Rows\-Do\-Step}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Opp\-Rows} {\bf \-Opp\-::find\-Rows\-Do\-Step} (
+\begin{DoxyParamCaption}
+\item[{const {\bf \-Opp\-Rows} \&}]{init, }
+\item[{char}]{c}
+\end{DoxyParamCaption}
+) const}}\label{class_opp_a04b122b2ad82ac260733aa9ad7751234}
+
+
+\-Does only on step of function find\-Rows for only one character \-Starts from given first and last (opp\-Rows) \-If opp\-Rows is empty, returns first and last row of conceptual matrix. 
+
+\-Does only one step of find rows \-If opp\-Rows is empty, returns first and last row of conceptual matrix.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em init} & define initial first and last row \\
+\hline
+{\em c} & char for which step is done \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+calculated first and last 
+\end{DoxyReturn}
+\hypertarget{class_opp_abf6d666966131f2dd737ac6ff6c1ea0e}{\index{\-Opp@{\-Opp}!find\-Rows\-For\-Suffixes@{find\-Rows\-For\-Suffixes}}
+\index{find\-Rows\-For\-Suffixes@{find\-Rows\-For\-Suffixes}!Opp@{\-Opp}}
+\subsubsection[{find\-Rows\-For\-Suffixes}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ {\bf \-Opp\-Rows} $>$ {\bf \-Opp\-::find\-Rows\-For\-Suffixes} (
+\begin{DoxyParamCaption}
+\item[{const {\bf \-String\-View} \&}]{\-P}
+\end{DoxyParamCaption}
+) const}}\label{class_opp_abf6d666966131f2dd737ac6ff6c1ea0e}
+
+
+\-Same as method \hyperlink{class_opp_ad832848ca2af3d126e289df1f8e1c65d}{find\-Rows()} but returns rows for all suffixes of \-P, not just \-P. 
+
+\-Applies \hyperlink{class_opp_ad832848ca2af3d126e289df1f8e1c65d}{find\-Rows()} for each suffix of given string.
+
+\-I\-M\-P\-O\-R\-T\-A\-N\-T\-: same time complexity as opp\-Rows (\-O(p+occ), not $|$\-P$|$ $\ast$ \-O(opp\-Rows) as you would expect). \begin{DoxyReturn}{\-Returns}
+vector\mbox{[}m\mbox{]} corresponds to \-P\mbox{[}p-\/m,p\mbox{]} 
+\end{DoxyReturn}
+\hypertarget{class_opp_a0ddbf31bae4785ee68551c389ffd7a19}{\index{\-Opp@{\-Opp}!find\-Rows\-For\-Suffixes\-With\-Prefix@{find\-Rows\-For\-Suffixes\-With\-Prefix}}
+\index{find\-Rows\-For\-Suffixes\-With\-Prefix@{find\-Rows\-For\-Suffixes\-With\-Prefix}!Opp@{\-Opp}}
+\subsubsection[{find\-Rows\-For\-Suffixes\-With\-Prefix}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ {\bf \-Opp\-Rows} $>$ {\bf \-Opp\-::find\-Rows\-For\-Suffixes\-With\-Prefix} (
+\begin{DoxyParamCaption}
+\item[{const {\bf \-String\-View} \&}]{\-P, }
+\item[{char}]{\-C}
+\end{DoxyParamCaption}
+) const}}\label{class_opp_a0ddbf31bae4785ee68551c389ffd7a19}
+
+
+\-Same as method \hyperlink{class_opp_ad832848ca2af3d126e289df1f8e1c65d}{find\-Rows()} but returns rows for all suffixes of \-P prefixed with character \-C. 
+
+\-Like \hyperlink{class_opp_abf6d666966131f2dd737ac6ff6c1ea0e}{find\-Rows\-For\-Suffixes()}, but adds prefix to each suffix before searching.
+
+\-Example\-: \-C = '\$', \-P = \char`\"{}abcd\char`\"{}, returns rows for\-: \$d, \$cd, \$bcd, \$abcd \-I\-M\-P\-O\-R\-T\-A\-N\-T\-: same time complexity as opp\-Rows (\-O(p+occ), not $|$\-P$|$ $\ast$ \-O(opp\-Rows) as you would expect). \begin{DoxyReturn}{\-Returns}
+vector\mbox{[}m\mbox{]} corresponds to \-C+\-P\mbox{[}p-\/m,p\mbox{]} 
+\end{DoxyReturn}
+
+
+\-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+\-Opp/\-Opp.\-hpp\item 
+\-Opp/\-Opp.\-cpp\end{DoxyCompactItemize}

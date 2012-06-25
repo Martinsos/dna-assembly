@@ -1,0 +1,191 @@
+\hypertarget{class_compressor}{\section{\-Compressor \-Class \-Reference}
+\label{class_compressor}\index{\-Compressor@{\-Compressor}}
+}
+
+
+\-Compresses input text for use by \-F\-M\-Index \-Pipeline\-: \-T $|$ \-B\-W\-T $|$ \-M\-T\-F $|$ \-R\-L\-E $|$ \-V\-L\-P\-C.  
+
+
+
+
+{\ttfamily \#include $<$\-Compressor.\-hpp$>$}
+
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_compressor_a5bb2db003d123bb6214b329f6603da00}{\-Compressor} (char eof, \hyperlink{class_alphabet}{\-Alphabet} alpha)
+\begin{DoxyCompactList}\small\item\em \-Constructor \-Sets eof character used in compression \-Sets alphabet of input text. \end{DoxyCompactList}\item 
+\hyperlink{class_bit_array}{\-Bit\-Array} \hyperlink{class_compressor_a5ffe1a80b2ad17f7709c62c0f00b5bd9}{compress} (string \&\-T)
+\begin{DoxyCompactList}\small\item\em \-Compresses input text to binary format \-Pipeline\-: \-T $|$ \-B\-W\-T $|$ \-M\-T\-F $|$ \-R\-L\-E $|$ \-V\-L\-P\-C. \end{DoxyCompactList}\item 
+\hyperlink{class_compressor_a09683910e8b5facb19d79ee4d1d79e19}{\-Compressor} (char eof, \hyperlink{class_alphabet}{\-Alphabet} alpha, int bucket\-Size)
+\begin{DoxyCompactList}\small\item\em \-Constructor \-Initializes stuff. \end{DoxyCompactList}\item 
+\hyperlink{class_bit_array}{\-Bit\-Array} \hyperlink{class_compressor_a5ffe1a80b2ad17f7709c62c0f00b5bd9}{compress} (string \&\-T)
+\begin{DoxyCompactList}\small\item\em \-Compresses input text to binary format \-Pipeline\-: \-T $|$ \-B\-W\-T $|$ \-M\-T\-F $|$ \-R\-L\-E $|$ \-V\-L\-P\-C. \end{DoxyCompactList}\item 
+int \hyperlink{class_compressor_a152ee53aea824f882eb13d43d91e32f5}{occ} (char c, int q)
+\begin{DoxyCompactList}\small\item\em \-Returns how many times c appears in first q letters of \-L (\-B\-W\-T of input text) \end{DoxyCompactList}\item 
+string \hyperlink{class_compressor_a0f5363356c004c747b51b7934d88ee2a}{decode} (const \hyperlink{class_bit_array}{\-Bit\-Array} \&bits)
+\begin{DoxyCompactList}\small\item\em \-Decodes given \hyperlink{class_bit_array}{\-Bit\-Array} back to letters \-Used for testing purposes. \end{DoxyCompactList}\item 
+vector$<$ vector$<$ char $>$ $>$ \hyperlink{class_compressor_a051317d444cdadaa7d58be919843f186}{get\-M\-T\-F\-States} ()
+\begin{DoxyCompactList}\small\item\em \-Getter for \-M\-T\-F\-States. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Compresses input text for use by \-F\-M\-Index \-Pipeline\-: \-T $|$ \-B\-W\-T $|$ \-M\-T\-F $|$ \-R\-L\-E $|$ \-V\-L\-P\-C. 
+
+\-T -\/ \-Input text \-B\-W\-T -\/ \-Burrows-\/\-Wheeler transform \-M\-T\-F -\/ \-Move-\/to-\/front encoding \-R\-L\-E -\/ \-Run-\/length encoder \-V\-L\-P\-C -\/ \-Variable-\/length prefix code
+
+\-Note\-: \-R\-L\-E and \-V\-L\-P\-C are implemented together in get\-Var\-Length\-Prefix\-Encoding() 
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{class_compressor_a5bb2db003d123bb6214b329f6603da00}{\index{\-Compressor@{\-Compressor}!\-Compressor@{\-Compressor}}
+\index{\-Compressor@{\-Compressor}!Compressor@{\-Compressor}}
+\subsubsection[{\-Compressor}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Compressor\-::\-Compressor} (
+\begin{DoxyParamCaption}
+\item[{char}]{eof, }
+\item[{{\bf \-Alphabet}}]{alpha}
+\end{DoxyParamCaption}
+)}}\label{class_compressor_a5bb2db003d123bb6214b329f6603da00}
+
+
+\-Constructor \-Sets eof character used in compression \-Sets alphabet of input text. 
+
+\-Constructor.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em eof} & \\
+\hline
+{\em alpha} & \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_compressor_a09683910e8b5facb19d79ee4d1d79e19}{\index{\-Compressor@{\-Compressor}!\-Compressor@{\-Compressor}}
+\index{\-Compressor@{\-Compressor}!Compressor@{\-Compressor}}
+\subsubsection[{\-Compressor}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Compressor\-::\-Compressor} (
+\begin{DoxyParamCaption}
+\item[{char}]{eof, }
+\item[{{\bf \-Alphabet}}]{alpha, }
+\item[{int}]{bucket\-Size}
+\end{DoxyParamCaption}
+)}}\label{class_compressor_a09683910e8b5facb19d79ee4d1d79e19}
+
+
+\-Constructor \-Initializes stuff. 
+
+\-Constructor.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em eof} & eof character used in compression \\
+\hline
+{\em alpha} & alphabet of input text \\
+\hline
+{\em bucket\-Size} & size of a bucket\\
+\hline
+\end{DoxyParams}
+\-Initializes \-M\-T\-F\-Code map for alphabet 
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{class_compressor_a5ffe1a80b2ad17f7709c62c0f00b5bd9}{\index{\-Compressor@{\-Compressor}!compress@{compress}}
+\index{compress@{compress}!Compressor@{\-Compressor}}
+\subsubsection[{compress}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Bit\-Array} {\bf \-Compressor\-::compress} (
+\begin{DoxyParamCaption}
+\item[{string \&}]{\-T}
+\end{DoxyParamCaption}
+)}}\label{class_compressor_a5ffe1a80b2ad17f7709c62c0f00b5bd9}
+
+
+\-Compresses input text to binary format \-Pipeline\-: \-T $|$ \-B\-W\-T $|$ \-M\-T\-F $|$ \-R\-L\-E $|$ \-V\-L\-P\-C. 
+
+\-Returns compressed original text (only for testing, should be void)
+
+\-Return compressed original text.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em \-T} & \-Original text \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Compressed \-T
+\end{DoxyReturn}
+\-Main (and only) public class \hypertarget{class_compressor_a5ffe1a80b2ad17f7709c62c0f00b5bd9}{\index{\-Compressor@{\-Compressor}!compress@{compress}}
+\index{compress@{compress}!Compressor@{\-Compressor}}
+\subsubsection[{compress}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Bit\-Array} {\bf \-Compressor\-::compress} (
+\begin{DoxyParamCaption}
+\item[{string \&}]{\-T}
+\end{DoxyParamCaption}
+)}}\label{class_compressor_a5ffe1a80b2ad17f7709c62c0f00b5bd9}
+
+
+\-Compresses input text to binary format \-Pipeline\-: \-T $|$ \-B\-W\-T $|$ \-M\-T\-F $|$ \-R\-L\-E $|$ \-V\-L\-P\-C. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em \-T} & \-Original text \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Compressed \-T 
+\end{DoxyReturn}
+\hypertarget{class_compressor_a0f5363356c004c747b51b7934d88ee2a}{\index{\-Compressor@{\-Compressor}!decode@{decode}}
+\index{decode@{decode}!Compressor@{\-Compressor}}
+\subsubsection[{decode}]{\setlength{\rightskip}{0pt plus 5cm}string {\bf \-Compressor\-::decode} (
+\begin{DoxyParamCaption}
+\item[{const {\bf \-Bit\-Array} \&}]{bits}
+\end{DoxyParamCaption}
+)}}\label{class_compressor_a0f5363356c004c747b51b7934d88ee2a}
+
+
+\-Decodes given \hyperlink{class_bit_array}{\-Bit\-Array} back to letters \-Used for testing purposes. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em bits} & \-Encoded text in binary \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Decoded text 
+\end{DoxyReturn}
+\hypertarget{class_compressor_a051317d444cdadaa7d58be919843f186}{\index{\-Compressor@{\-Compressor}!get\-M\-T\-F\-States@{get\-M\-T\-F\-States}}
+\index{get\-M\-T\-F\-States@{get\-M\-T\-F\-States}!Compressor@{\-Compressor}}
+\subsubsection[{get\-M\-T\-F\-States}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ vector$<$ char $>$ $>$ {\bf \-Compressor\-::get\-M\-T\-F\-States} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_compressor_a051317d444cdadaa7d58be919843f186}
+
+
+\-Getter for \-M\-T\-F\-States. 
+
+\-Getter for \-M\-T\-F\-States \-Used for testing purposes. \hypertarget{class_compressor_a152ee53aea824f882eb13d43d91e32f5}{\index{\-Compressor@{\-Compressor}!occ@{occ}}
+\index{occ@{occ}!Compressor@{\-Compressor}}
+\subsubsection[{occ}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-Compressor\-::occ} (
+\begin{DoxyParamCaption}
+\item[{char}]{c, }
+\item[{int}]{q}
+\end{DoxyParamCaption}
+)}}\label{class_compressor_a152ee53aea824f882eb13d43d91e32f5}
+
+
+\-Returns how many times c appears in first q letters of \-L (\-B\-W\-T of input text) 
+
+\-Counts number of occurrences of c in first q letters of \-L.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em c} & \-Char whose appearance is counted \\
+\hline
+{\em q} & \-Determines how far to look in \-L \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Number of occurrences of c in first q letters of \-L
+\end{DoxyReturn}
+\-Reads occurrences of c in first left super\-Bucket \-Reads occurrences of c in first left bucket \-Counts occurrences of c in first h letters in bucket in which q falls \-Sums those 3 numbers and returns result -\/ it is occ(c, q) 
+
+\-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+\-Opp/\-\_\-\-Opp\-Misc/\-Compressor\-Old/\-Compressor.\-hpp\item 
+\-Opp/\-Compressor.\-hpp\item 
+\-Opp/\-\_\-\-Opp\-Misc/\-Compressor\-Old/\-Compressor.\-cpp\item 
+\-Opp/\-Compressor.\-cpp\end{DoxyCompactItemize}

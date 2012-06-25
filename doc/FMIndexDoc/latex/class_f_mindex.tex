@@ -1,0 +1,51 @@
+\hypertarget{class_f_mindex}{\section{\-F\-Mindex \-Class \-Reference}
+\label{class_f_mindex}\index{\-F\-Mindex@{\-F\-Mindex}}
+}
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_f_mindex_a913c77dbd97c33c79b3c32f1fe28b45b}{\-F\-Mindex} (string \&\-T)
+\begin{DoxyCompactList}\small\item\em \-Builds \hyperlink{class_f_mindex}{\-F\-Mindex} for string \-T. \end{DoxyCompactList}\item 
+vector$<$ \-Index $>$ \hyperlink{class_f_mindex_aea5b0a8ee473a05d59253f19ebf3658d}{get\-Locations} (const string \&\-P)
+\begin{DoxyCompactList}\small\item\em \-Returns all locations of string \-P in string \-T. \end{DoxyCompactList}\item 
+\hypertarget{class_f_mindex_a997deb72c81ddd65c199f439c1422e84}{\-Index \hyperlink{class_f_mindex_a997deb72c81ddd65c199f439c1422e84}{get\-Count} (const string \&\-P)}\label{class_f_mindex_a997deb72c81ddd65c199f439c1422e84}
+
+\begin{DoxyCompactList}\small\item\em \-Returns number of occurrences of string \-P in string \-T. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{class_f_mindex_a913c77dbd97c33c79b3c32f1fe28b45b}{\index{\-F\-Mindex@{\-F\-Mindex}!\-F\-Mindex@{\-F\-Mindex}}
+\index{\-F\-Mindex@{\-F\-Mindex}!FMindex@{\-F\-Mindex}}
+\subsubsection[{\-F\-Mindex}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-F\-Mindex\-::\-F\-Mindex} (
+\begin{DoxyParamCaption}
+\item[{string \&}]{\-T}
+\end{DoxyParamCaption}
+)}}\label{class_f_mindex_a913c77dbd97c33c79b3c32f1fe28b45b}
+
+
+\-Builds \hyperlink{class_f_mindex}{\-F\-Mindex} for string \-T. 
+
+\-Possible problem\-: build\-Trie() returns vector$<$\-Index$>$, if it is very big maybe it would be better to pass reference to build\-Trie().
+
+\-T will not be changed.
+
+\-T\-O\-D\-O\-: change build\-Trie so it doesnt return anything? 
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{class_f_mindex_aea5b0a8ee473a05d59253f19ebf3658d}{\index{\-F\-Mindex@{\-F\-Mindex}!get\-Locations@{get\-Locations}}
+\index{get\-Locations@{get\-Locations}!FMindex@{\-F\-Mindex}}
+\subsubsection[{get\-Locations}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ \-Index $>$ {\bf \-F\-Mindex\-::get\-Locations} (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{\-P}
+\end{DoxyParamCaption}
+)}}\label{class_f_mindex_aea5b0a8ee473a05d59253f19ebf3658d}
+
+
+\-Returns all locations of string \-P in string \-T. 
+
+\-First character of string \-T is on position 1. 
+
+\-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+\-F\-Mindex.\-hpp\item 
+\-F\-Mindex.\-cpp\end{DoxyCompactItemize}

@@ -1,0 +1,63 @@
+\hypertarget{class_r_t_q}{\section{\-R\-T\-Q \-Class \-Reference}
+\label{class_r_t_q}\index{\-R\-T\-Q@{\-R\-T\-Q}}
+}
+
+
+\-Interface for \hyperlink{class_r_t_q}{\-R\-T\-Q} geometric structure.  
+
+
+
+
+{\ttfamily \#include $<$\-R\-T\-Q.\-hpp$>$}
+
+\-Inheritance diagram for \-R\-T\-Q\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_r_t_q}
+\end{center}
+\end{figure}
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+virtual void \hyperlink{class_r_t_q_a6735bb4974ca680b5dc2367b98dc11eb}{build} (const vector$<$ pair$<$ \-Index, \-Index $>$ $>$ \&\-Q, const vector$<$ pair$<$ \-Index, \-Index $>$ $>$ \&\-V)=0
+\begin{DoxyCompactList}\small\item\em \-Builds structure \hyperlink{class_r_t_q}{\-R\-T\-Q}. \end{DoxyCompactList}\item 
+\hypertarget{class_r_t_q_a99dfe8340d96d3d78c9df1f5eed74471}{virtual vector$<$ pair$<$ \-Index, \*
+\-Index $>$ $>$ \hyperlink{class_r_t_q_a99dfe8340d96d3d78c9df1f5eed74471}{query} (\-Index x\-Min, \-Index x\-Max, \-Index y\-Min, \-Index y\-Max)=0}\label{class_r_t_q_a99dfe8340d96d3d78c9df1f5eed74471}
+
+\begin{DoxyCompactList}\small\item\em \-Returns values (v,k) from \-V of all points (x,y) from \-Q such that (x\-Min $<$= x $<$= x\-Max) and (y\-Min $<$= y $<$= y\-Max). \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Interface for \hyperlink{class_r_t_q}{\-R\-T\-Q} geometric structure. 
+
+\hyperlink{class_r_t_q}{\-R\-T\-Q} is geometric data structure that contains set of 2\-D-\/grid points \-Q and set of values (v, k) where each value (v,k) corresponds to one point from \-Q. \-Supports orthogonal range queries in \-Q and returns corresponding data (v,k) for each matched point. 
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{class_r_t_q_a6735bb4974ca680b5dc2367b98dc11eb}{\index{\-R\-T\-Q@{\-R\-T\-Q}!build@{build}}
+\index{build@{build}!RTQ@{\-R\-T\-Q}}
+\subsubsection[{build}]{\setlength{\rightskip}{0pt plus 5cm}virtual void {\bf \-R\-T\-Q\-::build} (
+\begin{DoxyParamCaption}
+\item[{const vector$<$ pair$<$ \-Index, \-Index $>$ $>$ \&}]{\-Q, }
+\item[{const vector$<$ pair$<$ \-Index, \-Index $>$ $>$ \&}]{\-V}
+\end{DoxyParamCaption}
+)\hspace{0.3cm}{\ttfamily  \mbox{[}pure virtual\mbox{]}}}}\label{class_r_t_q_a6735bb4974ca680b5dc2367b98dc11eb}
+
+
+\-Builds structure \hyperlink{class_r_t_q}{\-R\-T\-Q}. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em \-Q} & \-Set of points \\
+\hline
+{\em \-V} & \-Set of values, \-V\mbox{[}i\mbox{]} corresponds(belongs) to \-Q\mbox{[}i\mbox{]} \\
+\hline
+\end{DoxyParams}
+
+
+\-Implemented in \hyperlink{class_r_t_q_r_tree_a5ad156987c9c875f0c87d2030989847d}{\-R\-T\-Q\-R\-Tree}.
+
+
+
+\-The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+\-R\-T\-Q.\-hpp\end{DoxyCompactItemize}

@@ -1,0 +1,54 @@
+\hypertarget{class_r_tree_1_1_iterator}{\section{\-R\-Tree$<$ \-D\-A\-T\-A\-T\-Y\-P\-E, \-E\-L\-E\-M\-T\-Y\-P\-E, \-N\-U\-M\-D\-I\-M\-S, \-E\-L\-E\-M\-T\-Y\-P\-E\-R\-E\-A\-L, \-T\-M\-A\-X\-N\-O\-D\-E\-S, \-T\-M\-I\-N\-N\-O\-D\-E\-S $>$\-:\-:\-Iterator \-Class \-Reference}
+\label{class_r_tree_1_1_iterator}\index{\-R\-Tree$<$ D\-A\-T\-A\-T\-Y\-P\-E, E\-L\-E\-M\-T\-Y\-P\-E, N\-U\-M\-D\-I\-M\-S, E\-L\-E\-M\-T\-Y\-P\-E\-R\-E\-A\-L, T\-M\-A\-X\-N\-O\-D\-E\-S, T\-M\-I\-N\-N\-O\-D\-E\-S $>$\-::\-Iterator@{\-R\-Tree$<$ D\-A\-T\-A\-T\-Y\-P\-E, E\-L\-E\-M\-T\-Y\-P\-E, N\-U\-M\-D\-I\-M\-S, E\-L\-E\-M\-T\-Y\-P\-E\-R\-E\-A\-L, T\-M\-A\-X\-N\-O\-D\-E\-S, T\-M\-I\-N\-N\-O\-D\-E\-S $>$\-::\-Iterator}}
+}
+
+
+\hyperlink{class_r_tree_1_1_iterator}{\-Iterator} is not remove safe.  
+
+
+
+
+{\ttfamily \#include $<$\-R\-Tree.\-hpp$>$}
+
+\subsection*{\-Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct {\bfseries \-Stack\-Element}
+\end{DoxyCompactItemize}
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_r_tree_1_1_iterator_a23f756ac37acc2b162b61230c27732b3}{bool \hyperlink{class_r_tree_1_1_iterator_a23f756ac37acc2b162b61230c27732b3}{\-Is\-Null} ()}\label{class_r_tree_1_1_iterator_a23f756ac37acc2b162b61230c27732b3}
+
+\begin{DoxyCompactList}\small\item\em \-Is iterator invalid. \end{DoxyCompactList}\item 
+\hypertarget{class_r_tree_1_1_iterator_a8cd6bf4fa228497ac736e8d7993e7daf}{bool \hyperlink{class_r_tree_1_1_iterator_a8cd6bf4fa228497ac736e8d7993e7daf}{\-Is\-Not\-Null} ()}\label{class_r_tree_1_1_iterator_a8cd6bf4fa228497ac736e8d7993e7daf}
+
+\begin{DoxyCompactList}\small\item\em \-Is iterator pointing to valid data. \end{DoxyCompactList}\item 
+\hypertarget{class_r_tree_1_1_iterator_abb61d3a8396473b543cb15aa9002cfeb}{\-D\-A\-T\-A\-T\-Y\-P\-E \& \hyperlink{class_r_tree_1_1_iterator_abb61d3a8396473b543cb15aa9002cfeb}{operator$\ast$} ()}\label{class_r_tree_1_1_iterator_abb61d3a8396473b543cb15aa9002cfeb}
+
+\begin{DoxyCompactList}\small\item\em \-Access the current data element. \-Caller must be sure iterator is not \-N\-U\-L\-L first. \end{DoxyCompactList}\item 
+\hypertarget{class_r_tree_1_1_iterator_a45496ad72eba6929d40239ed711bf129}{const \-D\-A\-T\-A\-T\-Y\-P\-E \& \hyperlink{class_r_tree_1_1_iterator_a45496ad72eba6929d40239ed711bf129}{operator$\ast$} () const }\label{class_r_tree_1_1_iterator_a45496ad72eba6929d40239ed711bf129}
+
+\begin{DoxyCompactList}\small\item\em \-Access the current data element. \-Caller must be sure iterator is not \-N\-U\-L\-L first. \end{DoxyCompactList}\item 
+\hypertarget{class_r_tree_1_1_iterator_ad578bac71cfc7d324b84595032feda21}{bool \hyperlink{class_r_tree_1_1_iterator_ad578bac71cfc7d324b84595032feda21}{operator++} ()}\label{class_r_tree_1_1_iterator_ad578bac71cfc7d324b84595032feda21}
+
+\begin{DoxyCompactList}\small\item\em \-Find the next data element. \end{DoxyCompactList}\item 
+\hypertarget{class_r_tree_1_1_iterator_a65121f5016c2b1bf4696797748092709}{void \hyperlink{class_r_tree_1_1_iterator_a65121f5016c2b1bf4696797748092709}{\-Get\-Bounds} (\-E\-L\-E\-M\-T\-Y\-P\-E a\-\_\-min\mbox{[}\-N\-U\-M\-D\-I\-M\-S\mbox{]}, \-E\-L\-E\-M\-T\-Y\-P\-E a\-\_\-max\mbox{[}\-N\-U\-M\-D\-I\-M\-S\mbox{]})}\label{class_r_tree_1_1_iterator_a65121f5016c2b1bf4696797748092709}
+
+\begin{DoxyCompactList}\small\item\em \-Get the bounds for this node. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Friends}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_r_tree_1_1_iterator_af5d7fbb9e949ef77e8d3e32670fa9dd6}{class {\bfseries \-R\-Tree}}\label{class_r_tree_1_1_iterator_af5d7fbb9e949ef77e8d3e32670fa9dd6}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\subsubsection*{template$<$class \-D\-A\-T\-A\-T\-Y\-P\-E, class \-E\-L\-E\-M\-T\-Y\-P\-E, int \-N\-U\-M\-D\-I\-M\-S, class \-E\-L\-E\-M\-T\-Y\-P\-E\-R\-E\-A\-L = \-E\-L\-E\-M\-T\-Y\-P\-E, int \-T\-M\-A\-X\-N\-O\-D\-E\-S = 8, int \-T\-M\-I\-N\-N\-O\-D\-E\-S = \-T\-M\-A\-X\-N\-O\-D\-E\-S / 2$>$class R\-Tree$<$ D\-A\-T\-A\-T\-Y\-P\-E, E\-L\-E\-M\-T\-Y\-P\-E, N\-U\-M\-D\-I\-M\-S, E\-L\-E\-M\-T\-Y\-P\-E\-R\-E\-A\-L, T\-M\-A\-X\-N\-O\-D\-E\-S, T\-M\-I\-N\-N\-O\-D\-E\-S $>$\-::\-Iterator}
+
+\hyperlink{class_r_tree_1_1_iterator}{\-Iterator} is not remove safe. 
+
+\-The documentation for this class was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+\-R\-Tree.\-hpp\end{DoxyCompactItemize}

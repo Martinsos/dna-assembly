@@ -1,0 +1,77 @@
+==================================================================
+/home/matija/english.50MB -- Testing for 1 MB
+Pattern length: 50    Number of patterns: 1000
+==================================================================
+Broj ucitanih znakova: 1000000
+Izgradnja SA je trajala: 0.68
+Building time for OppTLZR: 2.19000
+Building time for Trie: 7.81000
+Izgradnja SA je trajala: 0.58
+Building time for oppT: 1.85000
+Building time for RTQ: 17.58000
+Vrijeme izgradnje: 27.70000
+Ukupno vrijeme lociranja za 1000 uzoraka duljine 50: 1.17000000
+Ukupno vrijeme brojanja  za 1000 uzoraka duljine 50: 0.70000000
+Prosjecno vrijeme lociranja po uzorku: 0.00117000
+Prosjecno vrijeme brojanja  po uzorku: 0.00070000
+------------------------------------------------------------------------------------
+==================================================================
+/home/matija/english.50MB -- Testing for 5 MB
+Pattern length: 50    Number of patterns: 1000
+==================================================================
+Broj ucitanih znakova: 5000000
+Izgradnja SA je trajala: 4.19
+Building time for OppTLZR: 12.08000
+Building time for Trie: 38.63000
+Izgradnja SA je trajala: 4.87
+Building time for oppT: 11.64000
+Building time for RTQ: 91.86000
+Vrijeme izgradnje: 144.65000
+Ukupno vrijeme lociranja za 1000 uzoraka duljine 50: 1.05000000
+Ukupno vrijeme brojanja  za 1000 uzoraka duljine 50: 0.97000000
+Prosjecno vrijeme lociranja po uzorku: 0.00105000
+Prosjecno vrijeme brojanja  po uzorku: 0.00097000
+------------------------------------------------------------------------------------
+==================================================================
+/home/matija/english.50MB -- Testing for 10 MB
+Pattern length: 50    Number of patterns: 1000
+==================================================================
+Broj ucitanih znakova: 10000000
+Izgradnja SA je trajala: 11.35
+Building time for OppTLZR: 27.03000
+Building time for Trie: 77.59000
+Izgradnja SA je trajala: 14.8
+Building time for oppT: 27.97000
+Building time for RTQ: 178.21000
+Vrijeme izgradnje: 288.59000
+Ukupno vrijeme lociranja za 1000 uzoraka duljine 50: 1.36000000
+Ukupno vrijeme brojanja  za 1000 uzoraka duljine 50: 0.67000000
+Prosjecno vrijeme lociranja po uzorku: 0.00136000
+Prosjecno vrijeme brojanja  po uzorku: 0.00067000
+------------------------------------------------------------------------------------
+==================================================================
+/home/matija/english.50MB -- Testing for 25 MB
+Pattern length: 50    Number of patterns: 1000
+==================================================================
+Broj ucitanih znakova: 25000000
+Izgradnja SA je trajala: 33.75
+Building time for OppTLZR: 73.54000
+Building time for Trie: 197.87000
+Izgradnja SA je trajala: 56.15
+Building time for oppT: 90.04000
+Building time for RTQ: 456.29000
+Vrijeme izgradnje: 756.23000
+Ukupno vrijeme lociranja za 1000 uzoraka duljine 50: 1.48000000
+Ukupno vrijeme brojanja  za 1000 uzoraka duljine 50: 0.76000000
+Prosjecno vrijeme lociranja po uzorku: 0.00148000
+Prosjecno vrijeme brojanja  po uzorku: 0.00076000
+------------------------------------------------------------------------------------
+==================================================================
+/home/matija/english.50MB -- Testing for 50 MB
+Pattern length: 50    Number of patterns: 1000
+==================================================================
+Broj ucitanih znakova: 50000000
+Izgradnja SA je trajala: 73.94
+Building time for OppTLZR: 158.37000
+Building time for Trie: 430.83000
+Izgradnja SA je trajala: 109.91

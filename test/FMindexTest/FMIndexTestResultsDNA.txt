@@ -1,0 +1,68 @@
+==================================================================
+/home/matija/dna.50MB -- Testing for 1 MB
+Pattern length: 50    Number of patterns: 1000
+==================================================================
+Broj ucitanih znakova: 1000000
+Izgradnja SA je trajala: 0.72
+Building time for OppTLZR: 1.48000
+Building time for Trie: 3.70000
+Izgradnja SA je trajala: 0.63
+Building time for oppT: 1.26000
+Building time for RTQ: 9.52000
+Vrijeme izgradnje: 14.64000
+Ukupno vrijeme lociranja za 1000 uzoraka duljine 50: 0.65000000
+Ukupno vrijeme brojanja  za 1000 uzoraka duljine 50: 0.38000000
+Prosjecno vrijeme lociranja po uzorku: 0.00065000
+Prosjecno vrijeme brojanja  po uzorku: 0.00038000
+------------------------------------------------------------------------------------
+==================================================================
+/home/matija/dna.50MB -- Testing for 5 MB
+Pattern length: 50    Number of patterns: 1000
+==================================================================
+Broj ucitanih znakova: 5000000
+Izgradnja SA je trajala: 4.32
+Building time for OppTLZR: 8.15000
+Building time for Trie: 18.61000
+Izgradnja SA je trajala: 3.99
+Building time for oppT: 7.17000
+Building time for RTQ: 51.48000
+Vrijeme izgradnje: 77.97000
+Ukupno vrijeme lociranja za 1000 uzoraka duljine 50: 0.74000000
+Ukupno vrijeme brojanja  za 1000 uzoraka duljine 50: 0.45000000
+Prosjecno vrijeme lociranja po uzorku: 0.00074000
+Prosjecno vrijeme brojanja  po uzorku: 0.00045000
+------------------------------------------------------------------------------------
+==================================================================
+/home/matija/dna.50MB -- Testing for 10 MB
+Pattern length: 50    Number of patterns: 1000
+==================================================================
+Broj ucitanih znakova: 10000000
+Izgradnja SA je trajala: 14.16
+Building time for OppTLZR: 24.98000
+Building time for Trie: 54.44000
+Izgradnja SA je trajala: 12.45
+Building time for oppT: 21.91000
+Building time for RTQ: 150.59000
+Vrijeme izgradnje: 228.86000
+Ukupno vrijeme lociranja za 1000 uzoraka duljine 50: 1.22000000
+Ukupno vrijeme brojanja  za 1000 uzoraka duljine 50: 0.57000000
+Prosjecno vrijeme lociranja po uzorku: 0.00122000
+Prosjecno vrijeme brojanja  po uzorku: 0.00057000
+------------------------------------------------------------------------------------
+==================================================================
+/home/matija/dna.50MB -- Testing for 25 MB
+Pattern length: 50    Number of patterns: 1000
+==================================================================
+Broj ucitanih znakova: 25000000
+Izgradnja SA je trajala: 41.66
+Building time for OppTLZR: 71.99000
+Building time for Trie: 141.95000
+Izgradnja SA je trajala: 30.14
+Building time for oppT: 50.08000
+Building time for RTQ: 321.22000
+Vrijeme izgradnje: 516.53000
+Ukupno vrijeme lociranja za 1000 uzoraka duljine 50: 0.90000000
+Ukupno vrijeme brojanja  za 1000 uzoraka duljine 50: 0.71000000
+Prosjecno vrijeme lociranja po uzorku: 0.00090000
+Prosjecno vrijeme brojanja  po uzorku: 0.00071000
+------------------------------------------------------------------------------------

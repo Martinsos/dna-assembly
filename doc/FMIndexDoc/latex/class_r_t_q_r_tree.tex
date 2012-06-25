@@ -1,0 +1,38 @@
+\hypertarget{class_r_t_q_r_tree}{\section{\-R\-T\-Q\-R\-Tree \-Class \-Reference}
+\label{class_r_t_q_r_tree}\index{\-R\-T\-Q\-R\-Tree@{\-R\-T\-Q\-R\-Tree}}
+}
+
+
+\-Implementation of \hyperlink{class_r_t_q}{\-R\-T\-Q} using \-R\-Tree\-Template.  
+
+
+
+
+{\ttfamily \#include $<$\-R\-T\-Q\-R\-Tree.\-hpp$>$}
+
+\-Inheritance diagram for \-R\-T\-Q\-R\-Tree\-:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{class_r_t_q_r_tree}
+\end{center}
+\end{figure}
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_r_t_q_r_tree_a5ad156987c9c875f0c87d2030989847d}{void \hyperlink{class_r_t_q_r_tree_a5ad156987c9c875f0c87d2030989847d}{build} (const vector$<$ pair$<$ \-Index, \-Index $>$ $>$ \&\-Q, const vector$<$ pair$<$ \-Index, \-Index $>$ $>$ \&\-V)}\label{class_r_t_q_r_tree_a5ad156987c9c875f0c87d2030989847d}
+
+\begin{DoxyCompactList}\small\item\em \end{DoxyCompactList}\item 
+\hypertarget{class_r_t_q_r_tree_a00f5a820e471e70c911c3402ac270ea5}{vector$<$ pair$<$ \-Index, \-Index $>$ $>$ \hyperlink{class_r_t_q_r_tree_a00f5a820e471e70c911c3402ac270ea5}{query} (\-Index x\-Min, \-Index x\-Max, \-Index y\-Min, \-Index y\-Max)}\label{class_r_t_q_r_tree_a00f5a820e471e70c911c3402ac270ea5}
+
+\begin{DoxyCompactList}\small\item\em \-Time complexity\-: \-Ideal would be \-O(log(log $|$\-Q$|$) + q), but this implementation is (log($|$\-Q$|$) + q), where q is the number of points retrieved by a query. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Implementation of \hyperlink{class_r_t_q}{\-R\-T\-Q} using \-R\-Tree\-Template. 
+
+// \href{https://github.com/nushoin/RTree}{\tt https\-://github.\-com/nushoin/\-R\-Tree} \-Memory usage\-: \-O($|$\-Q$|$ $\ast$ log($|$\-Q$|$)). 
+
+\-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+\-R\-T\-Q\-R\-Tree.\-hpp\item 
+\-R\-T\-Q\-R\-Tree.\-cpp\end{DoxyCompactItemize}

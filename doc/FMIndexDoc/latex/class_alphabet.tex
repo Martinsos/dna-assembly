@@ -1,0 +1,217 @@
+\hypertarget{class_alphabet}{\section{\-Alphabet \-Class \-Reference}
+\label{class_alphabet}\index{\-Alphabet@{\-Alphabet}}
+}
+
+
+\-Class representing an alphabet.  
+
+
+
+
+{\ttfamily \#include $<$\-Alphabet.\-hpp$>$}
+
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hyperlink{class_alphabet_a7a32c28f82e6dde155795f2602721359}{\-Alphabet} (const string \&\-T, char eof)
+\begin{DoxyCompactList}\small\item\em \-Constructor \-Initializes members text\-Size, letters and \-C from \-T. \end{DoxyCompactList}\item 
+\hyperlink{class_alphabet_a366d7084c19e7e0733bbc33e6319d8d6}{\-Alphabet} (set$<$ char $>$ letters\-\_\-)
+\begin{DoxyCompactList}\small\item\em \-Constructor \-Explicitly takes letters of alphabet, sorts them ascending. \end{DoxyCompactList}\item 
+list$<$ char $>$ \hyperlink{class_alphabet_a484d9a2c3b1404e566a1dad181853cd6}{to\-Sorted\-List} ()
+\begin{DoxyCompactList}\small\item\em \-Returns linked list representation of alphabet \-Elements are lexicographically sorted. \end{DoxyCompactList}\item 
+bool \hyperlink{class_alphabet_af11bc49f984b6f62d835cdd3e8a3edc3}{contains\-Code} (const string \&coded\-Word)
+\begin{DoxyCompactList}\small\item\em \-Checks if given code exists for this alphabet. \end{DoxyCompactList}\item 
+int \hyperlink{class_alphabet_a6a2f6ba1c9e3bb6201ba40eb4e58b629}{decode\-To\-M\-T\-F} (const string \&coded\-Word)
+\begin{DoxyCompactList}\small\item\em \-Gets \-M\-T\-F code for given binary coded word. \end{DoxyCompactList}\item 
+void \hyperlink{class_alphabet_a773497c2b58cd635377f81873802978c}{put\-Code} (string bin\-Code, int \-M\-T\-F\-Code)
+\begin{DoxyCompactList}\small\item\em \-Puts key and value to \-M\-T\-F\-Codes map. \end{DoxyCompactList}\item 
+int \hyperlink{class_alphabet_a1047481660a55d32bf4bba23c9fe2225}{get\-Letter\-Idx} (char c)
+\begin{DoxyCompactList}\small\item\em \-Get index of given letter. \end{DoxyCompactList}\item 
+int \hyperlink{class_alphabet_aa56f98ddd19c2b4243e4f74601ef0811}{size} ()
+\begin{DoxyCompactList}\small\item\em \-Returns number of letters in alphabet (including \-E\-O\-F) \end{DoxyCompactList}\item 
+void \hyperlink{class_alphabet_a83e312815099e3b7206a925356046d7d}{empty} ()
+\begin{DoxyCompactList}\small\item\em \-Delete memory usage of this structure \-Used for testing. \end{DoxyCompactList}\item 
+\hypertarget{class_alphabet_ac06dee79f1e7b76bd061152b52cad84e}{void \hyperlink{class_alphabet_ac06dee79f1e7b76bd061152b52cad84e}{print\-Letters} ()}\label{class_alphabet_ac06dee79f1e7b76bd061152b52cad84e}
+
+\begin{DoxyCompactList}\small\item\em \-Prints letters of alphabet to stdout. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\-Class representing an alphabet. 
+
+\subsection{\-Constructor \& \-Destructor \-Documentation}
+\hypertarget{class_alphabet_a7a32c28f82e6dde155795f2602721359}{\index{\-Alphabet@{\-Alphabet}!\-Alphabet@{\-Alphabet}}
+\index{\-Alphabet@{\-Alphabet}!Alphabet@{\-Alphabet}}
+\subsubsection[{\-Alphabet}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Alphabet\-::\-Alphabet} (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{\-T, }
+\item[{char}]{eof}
+\end{DoxyParamCaption}
+)}}\label{class_alphabet_a7a32c28f82e6dde155795f2602721359}
+
+
+\-Constructor \-Initializes members text\-Size, letters and \-C from \-T. 
+
+\-Constructor \-Initializes structures from input text \-T.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em \-T} & input text \\
+\hline
+{\em eof} & \-E\-O\-F sign \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_alphabet_a366d7084c19e7e0733bbc33e6319d8d6}{\index{\-Alphabet@{\-Alphabet}!\-Alphabet@{\-Alphabet}}
+\index{\-Alphabet@{\-Alphabet}!Alphabet@{\-Alphabet}}
+\subsubsection[{\-Alphabet}]{\setlength{\rightskip}{0pt plus 5cm}{\bf \-Alphabet\-::\-Alphabet} (
+\begin{DoxyParamCaption}
+\item[{set$<$ char $>$}]{letters\-\_\-}
+\end{DoxyParamCaption}
+)}}\label{class_alphabet_a366d7084c19e7e0733bbc33e6319d8d6}
+
+
+\-Constructor \-Explicitly takes letters of alphabet, sorts them ascending. 
+
+\-Constructor.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em letters\-\_\-} & \-Letters of alphabet \\
+\hline
+\end{DoxyParams}
+
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{class_alphabet_af11bc49f984b6f62d835cdd3e8a3edc3}{\index{\-Alphabet@{\-Alphabet}!contains\-Code@{contains\-Code}}
+\index{contains\-Code@{contains\-Code}!Alphabet@{\-Alphabet}}
+\subsubsection[{contains\-Code}]{\setlength{\rightskip}{0pt plus 5cm}bool {\bf \-Alphabet\-::contains\-Code} (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{coded\-Word}
+\end{DoxyParamCaption}
+)}}\label{class_alphabet_af11bc49f984b6f62d835cdd3e8a3edc3}
+
+
+\-Checks if given code exists for this alphabet. 
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em coded\-Word} & \-Code that we check \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-True if code exists 
+\end{DoxyReturn}
+\hypertarget{class_alphabet_a6a2f6ba1c9e3bb6201ba40eb4e58b629}{\index{\-Alphabet@{\-Alphabet}!decode\-To\-M\-T\-F@{decode\-To\-M\-T\-F}}
+\index{decode\-To\-M\-T\-F@{decode\-To\-M\-T\-F}!Alphabet@{\-Alphabet}}
+\subsubsection[{decode\-To\-M\-T\-F}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-Alphabet\-::decode\-To\-M\-T\-F} (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{coded\-Word}
+\end{DoxyParamCaption}
+)}}\label{class_alphabet_a6a2f6ba1c9e3bb6201ba40eb4e58b629}
+
+
+\-Gets \-M\-T\-F code for given binary coded word. 
+
+\-Decodes given binary code to \-M\-T\-F number.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em coded\-Word} & \-Word to decode \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-M\-T\-F code of coded\-Word 
+\end{DoxyReturn}
+\hypertarget{class_alphabet_a83e312815099e3b7206a925356046d7d}{\index{\-Alphabet@{\-Alphabet}!empty@{empty}}
+\index{empty@{empty}!Alphabet@{\-Alphabet}}
+\subsubsection[{empty}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Alphabet\-::empty} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_alphabet_a83e312815099e3b7206a925356046d7d}
+
+
+\-Delete memory usage of this structure \-Used for testing. 
+
+\-Empty alphabet -\/ delete all memory usage by this structure \-This makes this structure unusable, so this method is used only for testing. \hypertarget{class_alphabet_a1047481660a55d32bf4bba23c9fe2225}{\index{\-Alphabet@{\-Alphabet}!get\-Letter\-Idx@{get\-Letter\-Idx}}
+\index{get\-Letter\-Idx@{get\-Letter\-Idx}!Alphabet@{\-Alphabet}}
+\subsubsection[{get\-Letter\-Idx}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-Alphabet\-::get\-Letter\-Idx} (
+\begin{DoxyParamCaption}
+\item[{char}]{c}
+\end{DoxyParamCaption}
+)}}\label{class_alphabet_a1047481660a55d32bf4bba23c9fe2225}
+
+
+\-Get index of given letter. 
+
+\-Returns index in alphabet of given letter.
+
+\-Looks at letters\-Idx structre.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em c} & \-Letter of alphabet whose index we wish to know \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{\-Returns}
+\-Index of c 
+\end{DoxyReturn}
+\hypertarget{class_alphabet_a773497c2b58cd635377f81873802978c}{\index{\-Alphabet@{\-Alphabet}!put\-Code@{put\-Code}}
+\index{put\-Code@{put\-Code}!Alphabet@{\-Alphabet}}
+\subsubsection[{put\-Code}]{\setlength{\rightskip}{0pt plus 5cm}void {\bf \-Alphabet\-::put\-Code} (
+\begin{DoxyParamCaption}
+\item[{string}]{bin\-Code, }
+\item[{int}]{\-M\-T\-F\-Code}
+\end{DoxyParamCaption}
+)}}\label{class_alphabet_a773497c2b58cd635377f81873802978c}
+
+
+\-Puts key and value to \-M\-T\-F\-Codes map. 
+
+\-Puts (key -\/$>$ value) to \-M\-T\-F\-Codes map.
+
+
+\begin{DoxyParams}{\-Parameters}
+{\em bin\-Code} & key \\
+\hline
+{\em \-M\-T\-F\-Code} & value \\
+\hline
+\end{DoxyParams}
+\hypertarget{class_alphabet_aa56f98ddd19c2b4243e4f74601ef0811}{\index{\-Alphabet@{\-Alphabet}!size@{size}}
+\index{size@{size}!Alphabet@{\-Alphabet}}
+\subsubsection[{size}]{\setlength{\rightskip}{0pt plus 5cm}int {\bf \-Alphabet\-::size} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_alphabet_aa56f98ddd19c2b4243e4f74601ef0811}
+
+
+\-Returns number of letters in alphabet (including \-E\-O\-F) 
+
+\-Returns size of alphabet.
+
+\begin{DoxyReturn}{\-Returns}
+\-Size of alphabet 
+\end{DoxyReturn}
+\hypertarget{class_alphabet_a484d9a2c3b1404e566a1dad181853cd6}{\index{\-Alphabet@{\-Alphabet}!to\-Sorted\-List@{to\-Sorted\-List}}
+\index{to\-Sorted\-List@{to\-Sorted\-List}!Alphabet@{\-Alphabet}}
+\subsubsection[{to\-Sorted\-List}]{\setlength{\rightskip}{0pt plus 5cm}list$<$ char $>$ {\bf \-Alphabet\-::to\-Sorted\-List} (
+\begin{DoxyParamCaption}
+{}
+\end{DoxyParamCaption}
+)}}\label{class_alphabet_a484d9a2c3b1404e566a1dad181853cd6}
+
+
+\-Returns linked list representation of alphabet \-Elements are lexicographically sorted. 
+
+\-Returns alphabet as lexicographically sorted list.
+
+\begin{DoxyReturn}{\-Returns}
+\hyperlink{class_alphabet}{\-Alphabet} as sorted list 
+\end{DoxyReturn}
+
+
+\-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+\-Opp/\-Alphabet.\-hpp\item 
+\-Opp/\-Alphabet.\-cpp\end{DoxyCompactItemize}

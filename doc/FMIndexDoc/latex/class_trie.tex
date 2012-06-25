@@ -1,0 +1,86 @@
+\hypertarget{class_trie}{\section{\-Trie \-Class \-Reference}
+\label{class_trie}\index{\-Trie@{\-Trie}}
+}
+
+
+\hyperlink{class_trie}{\-Trie} is used for finding internal occurences of string \-P in string \-T.  
+
+
+
+
+{\ttfamily \#include $<$\-Trie.\-hpp$>$}
+
+\subsection*{\-Public \-Member \-Functions}
+\begin{DoxyCompactItemize}
+\item 
+vector$<$ \-Index $>$ \hyperlink{class_trie_a27d392f8b23c583302ba3df760dcb5f6}{build\-Trie\-L\-Z78} (const string \&\-T, char \-L\-Zsep, \hyperlink{class_opp}{\-Opp} $\ast$\&opp\-T\-L\-Z\-R)
+\begin{DoxyCompactList}\small\item\em \-Takes string \-T and separator for separating \-L\-Z words. \end{DoxyCompactList}\item 
+vector$<$ \-Index $>$ \hyperlink{class_trie_acd3d2035d57a7816d923ced0ab1f27d8}{get\-Locations\-From\-Subtree} (\-Index row, \-Index length\-P)
+\begin{DoxyCompactList}\small\item\em \-Given index of row in conceptual matrix and length of string \-P, maps that index to a subtree using array \-N, goes through that subtree and returns locations of string \-P in string \-T. \end{DoxyCompactList}\item 
+\-Index \hyperlink{class_trie_ade3b77636341d717c5b30e101331b997}{get\-Opp\-Row\-For\-Word} (string word)
+\begin{DoxyCompactList}\small\item\em \-Finds given word in trie and returns opp\-Row remembered for \$word. \end{DoxyCompactList}\item 
+\hypertarget{class_trie_a52ea2aaf006bf6e1dafb3accbdbf2ddf}{\-Index \hyperlink{class_trie_a52ea2aaf006bf6e1dafb3accbdbf2ddf}{get\-Size} ()}\label{class_trie_a52ea2aaf006bf6e1dafb3accbdbf2ddf}
+
+\begin{DoxyCompactList}\small\item\em \-Returns number of \-L\-Z words in \hyperlink{class_trie}{\-Trie}. \end{DoxyCompactList}\item 
+\hypertarget{class_trie_a68065bc13f6c49bb7f139290cceff091}{void \hyperlink{class_trie_a68065bc13f6c49bb7f139290cceff091}{print\-Trie} ()}\label{class_trie_a68065bc13f6c49bb7f139290cceff091}
+
+\begin{DoxyCompactList}\small\item\em \-Prints \hyperlink{class_trie}{\-Trie}, used for testing. \end{DoxyCompactList}\item 
+\hypertarget{class_trie_af486a8cc3ac5664f936a11ab71f7794e}{\-Index \hyperlink{class_trie_af486a8cc3ac5664f936a11ab71f7794e}{get\-Trie\-Size} ()}\label{class_trie_af486a8cc3ac5664f936a11ab71f7794e}
+
+\begin{DoxyCompactList}\small\item\em \-Returns approximate size of trie in bytes. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\subsection*{\-Static \-Public \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{class_trie_a1e3da53b8903e31a053cfcb53c359f06}{static const char {\bfseries duplicate} = 0}\label{class_trie_a1e3da53b8903e31a053cfcb53c359f06}
+
+\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\hyperlink{class_trie}{\-Trie} is used for finding internal occurences of string \-P in string \-T. 
+
+\hyperlink{class_trie}{\-Trie} parses \-T using \-L\-Z78 algorithm, and then stores \-L\-Z78 words in suffix tree (trie). \-Parsed \-T is called \-T\-L\-Z. \-It also builds \-Opp(\-T\-L\-Z\-R) and returns it. \-It also maps rows of \-Opp(\-T\-L\-Z\-R) to nodes of trie. (only some rows, all nodes). \-Efficiently returns locations of string \-P in certain subtree. \-Usage\-: \-Create trie, then call method build\-Trie\-L\-Z78(...) to initialize and build trie, then you can use get\-Locations\-From\-Subtree(...) method. 
+
+\subsection{\-Member \-Function \-Documentation}
+\hypertarget{class_trie_a27d392f8b23c583302ba3df760dcb5f6}{\index{\-Trie@{\-Trie}!build\-Trie\-L\-Z78@{build\-Trie\-L\-Z78}}
+\index{build\-Trie\-L\-Z78@{build\-Trie\-L\-Z78}!Trie@{\-Trie}}
+\subsubsection[{build\-Trie\-L\-Z78}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ \-Index $>$ {\bf \-Trie\-::build\-Trie\-L\-Z78} (
+\begin{DoxyParamCaption}
+\item[{const string \&}]{\-T, }
+\item[{char}]{\-L\-Zsep, }
+\item[{{\bf \-Opp} $\ast$\&}]{opp\-T\-L\-Z\-R}
+\end{DoxyParamCaption}
+)}}\label{class_trie_a27d392f8b23c583302ba3df760dcb5f6}
+
+
+\-Takes string \-T and separator for separating \-L\-Z words. 
+
+\-Separator must have lower \-A\-S\-C\-I\-I value than all characters in text \-T. \-Uses \-L\-Z78 parsing to parse string \-T into words. \-Builds trie from this words. \-Returns vector of numbers where each number is length of \-L\-Zword, also creates and returns \-Opp(\-T\-L\-Z\-R). \-For example, if \char`\"{}aabab\char`\"{} is parsed like this\-: \char`\"{}a\$ab\$ab\$\char`\"{} it would return \mbox{[}1,2,2\mbox{]} \-It is possible that last word is same as some other word (like in example). \hypertarget{class_trie_acd3d2035d57a7816d923ced0ab1f27d8}{\index{\-Trie@{\-Trie}!get\-Locations\-From\-Subtree@{get\-Locations\-From\-Subtree}}
+\index{get\-Locations\-From\-Subtree@{get\-Locations\-From\-Subtree}!Trie@{\-Trie}}
+\subsubsection[{get\-Locations\-From\-Subtree}]{\setlength{\rightskip}{0pt plus 5cm}vector$<$ \-Index $>$ {\bf \-Trie\-::get\-Locations\-From\-Subtree} (
+\begin{DoxyParamCaption}
+\item[{\-Index}]{row, }
+\item[{\-Index}]{length\-P}
+\end{DoxyParamCaption}
+)}}\label{class_trie_acd3d2035d57a7816d923ced0ab1f27d8}
+
+
+\-Given index of row in conceptual matrix and length of string \-P, maps that index to a subtree using array \-N, goes through that subtree and returns locations of string \-P in string \-T. 
+
+\-Uses length of \-P to calculate the locations. \hypertarget{class_trie_ade3b77636341d717c5b30e101331b997}{\index{\-Trie@{\-Trie}!get\-Opp\-Row\-For\-Word@{get\-Opp\-Row\-For\-Word}}
+\index{get\-Opp\-Row\-For\-Word@{get\-Opp\-Row\-For\-Word}!Trie@{\-Trie}}
+\subsubsection[{get\-Opp\-Row\-For\-Word}]{\setlength{\rightskip}{0pt plus 5cm}\-Index {\bf \-Trie\-::get\-Opp\-Row\-For\-Word} (
+\begin{DoxyParamCaption}
+\item[{string}]{word}
+\end{DoxyParamCaption}
+)}}\label{class_trie_ade3b77636341d717c5b30e101331b997}
+
+
+\-Finds given word in trie and returns opp\-Row remembered for \$word. 
+
+\-First character of word is leaf. 
+
+\-The documentation for this class was generated from the following files\-:\begin{DoxyCompactItemize}
+\item 
+\-Trie.\-hpp\item 
+\-Trie.\-cpp\end{DoxyCompactItemize}

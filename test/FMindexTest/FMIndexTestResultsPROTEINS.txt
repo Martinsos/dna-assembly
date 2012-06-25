@@ -1,0 +1,68 @@
+==================================================================
+/home/matija/proteins.50MB -- Testing for 1 MB
+Pattern length: 50    Number of patterns: 1000
+==================================================================
+Broj ucitanih znakova: 1000000
+Izgradnja SA je trajala: 0.68
+Building time for OppTLZR: 1.78000
+Building time for Trie: 6.92000
+Izgradnja SA je trajala: 0.66
+Building time for oppT: 1.43000
+Building time for RTQ: 14.10000
+Vrijeme izgradnje: 23.37000
+Ukupno vrijeme lociranja za 1000 uzoraka duljine 50: 0.73000000
+Ukupno vrijeme brojanja  za 1000 uzoraka duljine 50: 0.55000000
+Prosjecno vrijeme lociranja po uzorku: 0.00073000
+Prosjecno vrijeme brojanja  po uzorku: 0.00055000
+------------------------------------------------------------------------------------
+==================================================================
+/home/matija/proteins.50MB -- Testing for 5 MB
+Pattern length: 50    Number of patterns: 1000
+==================================================================
+Broj ucitanih znakova: 5000000
+Izgradnja SA je trajala: 4.25
+Building time for OppTLZR: 9.81000
+Building time for Trie: 33.39000
+Izgradnja SA je trajala: 4.18
+Building time for oppT: 8.42000
+Building time for RTQ: 81.33000
+Vrijeme izgradnje: 127.82000
+Ukupno vrijeme lociranja za 1000 uzoraka duljine 50: 0.92000000
+Ukupno vrijeme brojanja  za 1000 uzoraka duljine 50: 0.70000000
+Prosjecno vrijeme lociranja po uzorku: 0.00092000
+Prosjecno vrijeme brojanja  po uzorku: 0.00070000
+------------------------------------------------------------------------------------
+==================================================================
+/home/matija/proteins.50MB -- Testing for 10 MB
+Pattern length: 50    Number of patterns: 1000
+==================================================================
+Broj ucitanih znakova: 10000000
+Izgradnja SA je trajala: 10.77
+Building time for OppTLZR: 21.17000
+Building time for Trie: 61.15000
+Izgradnja SA je trajala: 10.56
+Building time for oppT: 18.44000
+Building time for RTQ: 143.89000
+Vrijeme izgradnje: 231.24000
+Ukupno vrijeme lociranja za 1000 uzoraka duljine 50: 0.90000000
+Ukupno vrijeme brojanja  za 1000 uzoraka duljine 50: 0.67000000
+Prosjecno vrijeme lociranja po uzorku: 0.00090000
+Prosjecno vrijeme brojanja  po uzorku: 0.00067000
+------------------------------------------------------------------------------------
+==================================================================
+/home/matija/proteins.50MB -- Testing for 25 MB
+Pattern length: 50    Number of patterns: 1000
+==================================================================
+Broj ucitanih znakova: 25000000
+Izgradnja SA je trajala: 33.99
+Building time for OppTLZR: 61.53000
+Building time for Trie: 167.46000
+Izgradnja SA je trajala: 34.08
+Building time for oppT: 54.25000
+Building time for RTQ: 371.57000
+Vrijeme izgradnje: 613.92000
+Ukupno vrijeme lociranja za 1000 uzoraka duljine 50: 1.09000000
+Ukupno vrijeme brojanja  za 1000 uzoraka duljine 50: 0.55000000
+Prosjecno vrijeme lociranja po uzorku: 0.00109000
+Prosjecno vrijeme brojanja  po uzorku: 0.00055000
+------------------------------------------------------------------------------------

@@ -1,0 +1,41 @@
+\hypertarget{struct_r_tree_1_1_branch}{\section{\-R\-Tree$<$ \-D\-A\-T\-A\-T\-Y\-P\-E, \-E\-L\-E\-M\-T\-Y\-P\-E, \-N\-U\-M\-D\-I\-M\-S, \-E\-L\-E\-M\-T\-Y\-P\-E\-R\-E\-A\-L, \-T\-M\-A\-X\-N\-O\-D\-E\-S, \-T\-M\-I\-N\-N\-O\-D\-E\-S $>$\-:\-:\-Branch \-Struct \-Reference}
+\label{struct_r_tree_1_1_branch}\index{\-R\-Tree$<$ D\-A\-T\-A\-T\-Y\-P\-E, E\-L\-E\-M\-T\-Y\-P\-E, N\-U\-M\-D\-I\-M\-S, E\-L\-E\-M\-T\-Y\-P\-E\-R\-E\-A\-L, T\-M\-A\-X\-N\-O\-D\-E\-S, T\-M\-I\-N\-N\-O\-D\-E\-S $>$\-::\-Branch@{\-R\-Tree$<$ D\-A\-T\-A\-T\-Y\-P\-E, E\-L\-E\-M\-T\-Y\-P\-E, N\-U\-M\-D\-I\-M\-S, E\-L\-E\-M\-T\-Y\-P\-E\-R\-E\-A\-L, T\-M\-A\-X\-N\-O\-D\-E\-S, T\-M\-I\-N\-N\-O\-D\-E\-S $>$\-::\-Branch}}
+}
+
+
+\-May be data or may be another subtree \-The parents level determines this.  
+
+
+
+
+{\ttfamily \#include $<$\-R\-Tree.\-hpp$>$}
+
+\subsection*{\-Public \-Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{struct_r_tree_1_1_branch_a7e98e0d7fb6afd18ec243450b22d9abe}{\hyperlink{struct_r_tree_1_1_rect}{\-Rect} \hyperlink{struct_r_tree_1_1_branch_a7e98e0d7fb6afd18ec243450b22d9abe}{m\-\_\-rect}}\label{struct_r_tree_1_1_branch_a7e98e0d7fb6afd18ec243450b22d9abe}
+
+\begin{DoxyCompactList}\small\item\em \-Bounds. \end{DoxyCompactList}\item 
+\hypertarget{struct_r_tree_1_1_branch_a09550be1bb11264c02406ac337ac1a69}{\begin{tabbing}
+xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=xx\=\kill
+union \{\\
+\>\hyperlink{struct_r_tree_1_1_node}{Node} $\ast$ \hyperlink{struct_r_tree_1_1_branch_aa15f22000d06c726372eb84f46db0fa0}{m\_child}\\
+\>\>{\em Child node. }\\
+\>DATATYPE \hyperlink{struct_r_tree_1_1_branch_afc1aee31a1a62ad4e800a536a3a9d665}{m\_data}\\
+\>\>{\em Data Id or Ptr. }\\
+\}; }\label{struct_r_tree_1_1_branch_a09550be1bb11264c02406ac337ac1a69}
+\\
+
+\end{tabbing}\end{DoxyCompactItemize}
+
+
+\subsection{\-Detailed \-Description}
+\subsubsection*{template$<$class \-D\-A\-T\-A\-T\-Y\-P\-E, class \-E\-L\-E\-M\-T\-Y\-P\-E, int \-N\-U\-M\-D\-I\-M\-S, class \-E\-L\-E\-M\-T\-Y\-P\-E\-R\-E\-A\-L = \-E\-L\-E\-M\-T\-Y\-P\-E, int \-T\-M\-A\-X\-N\-O\-D\-E\-S = 8, int \-T\-M\-I\-N\-N\-O\-D\-E\-S = \-T\-M\-A\-X\-N\-O\-D\-E\-S / 2$>$struct R\-Tree$<$ D\-A\-T\-A\-T\-Y\-P\-E, E\-L\-E\-M\-T\-Y\-P\-E, N\-U\-M\-D\-I\-M\-S, E\-L\-E\-M\-T\-Y\-P\-E\-R\-E\-A\-L, T\-M\-A\-X\-N\-O\-D\-E\-S, T\-M\-I\-N\-N\-O\-D\-E\-S $>$\-::\-Branch}
+
+\-May be data or may be another subtree \-The parents level determines this. 
+
+\-If the parents level is 0, then this is data 
+
+\-The documentation for this struct was generated from the following file\-:\begin{DoxyCompactItemize}
+\item 
+\-R\-Tree.\-hpp\end{DoxyCompactItemize}
