@@ -99,10 +99,8 @@ int main(int argc, char** argv)
     printf("Ukupno vrijeme brojanja  za %d uzoraka duljine %ld: %.8lf\n", (int)patterns.size(), p, counting);
     printf("Prosjecno vrijeme lociranja po uzorku: %.8lf\n", locating / patterns.size());
     printf("Prosjecno vrijeme brojanja  po uzorku: %.8lf\n", counting / patterns.size());
-    
-    
-    int i;
-    cin >> i;
+
+    printf("------------------------------------------------------------------------------------\n");
     
     delete fmIndex;
     return 0;
