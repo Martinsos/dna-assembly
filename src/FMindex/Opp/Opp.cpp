@@ -87,13 +87,13 @@ OppRows Opp::findRows(const StringView& P) const
  */
 vector<OppRows> Opp::findRowsForSuffixes(const StringView& P) const
 {
+    vector<OppRows> results;
     try {
         int i       = P.getLength();       
         char c      = P.charAt(i - 1);         
         int first   = getCFor(c) + 1;   
         int last    = getCForNext(c);   
 
-        vector<OppRows> results;
         if (last < first)
             results.push_back(OppRows(0, 0, true));
         else
@@ -110,25 +110,23 @@ vector<OppRows> Opp::findRowsForSuffixes(const StringView& P) const
             else
                 results.push_back(OppRows(first, last, false));
         }
-        while (results.size() < P.getLength())
-            results.push_back(OppRows(0, 0, true));
-        return results;
-    } catch (char *str) {
-        return vector<OppRows>(P.getLength(), OppRows(0, 0, true));
-    }
+    } catch (char *str) {}
+    while (results.size() < P.getLength())
+        results.push_back(OppRows(0, 0, true));
+    return results;
 }
 
 /** Like findRowsForSuffixes(), but adds prefix to each suffix before searching
  */
 vector<OppRows> Opp::findRowsForSuffixesWithPrefix(const StringView& P, char C) const
 {
+    vector<OppRows> results;
     try {
         int i       = P.getLength();       
         char c      = P.charAt(i - 1);         
         int first   = getCFor(c) + 1;   
         int last    = getCForNext(c);   
 
-        vector<OppRows> results;
         while (first <= last && i >= 2)
         {
             // Add special character
@@ -146,12 +144,10 @@ vector<OppRows> Opp::findRowsForSuffixesWithPrefix(const StringView& P, char C) 
             last = getCFor(c) + compressor->occ(c, last);
             i--;
         }
-        while (results.size() < P.getLength())
-            results.push_back(OppRows(0, 0, true));
-        return results;
-    } catch (char *str) {
-        return vector<OppRows>(P.getLength(), OppRows(0, 0, true));
-    }
+    } catch (char *str) {}
+    while (results.size() < P.getLength())
+        results.push_back(OppRows(0, 0, true));
+    return results;
 }
 
 /** Does only one step of find rows
