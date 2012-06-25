@@ -78,7 +78,7 @@ OppRows Opp::findRows(const StringView& P) const
 
         return OppRows(first, last, false);
 
-    } catch (char *str) {
+    } catch (char const* str) {
         return OppRows(0, 0, true);
     }
 }
@@ -110,7 +110,7 @@ vector<OppRows> Opp::findRowsForSuffixes(const StringView& P) const
             else
                 results.push_back(OppRows(first, last, false));
         }
-    } catch (char *str) {}
+    } catch (char const* str) {}
     while (results.size() < P.getLength())
         results.push_back(OppRows(0, 0, true));
     return results;
@@ -144,7 +144,7 @@ vector<OppRows> Opp::findRowsForSuffixesWithPrefix(const StringView& P, char C) 
             last = getCFor(c) + compressor->occ(c, last);
             i--;
         }
-    } catch (char *str) {}
+    } catch (char const* str) {}
     while (results.size() < P.getLength())
         results.push_back(OppRows(0, 0, true));
     return results;
@@ -175,7 +175,7 @@ OppRows Opp::findRowsDoStep(const OppRows& init, char c) const
             return OppRows(0, 0, true); // 0 means undef here
 
         return OppRows(first, last, false);
-    } catch (char *str) {
+    } catch (char const* str) {
         return OppRows(0, 0, true);
     }
 }
