@@ -15,6 +15,9 @@ testFromFile: $(FMINDEX_OBJ) $(OPP_OBJ) testFromFile.cpp
 test: $(FMINDEX_OBJ) $(OPP_OBJ) test.cpp
 	$(CPP) $(FLAGS) $(FMINDEX_OBJ) $(OPP_OBJ) test.cpp -o test
 
+simpleDemo: $(FMINDEX_OBJ) $(OPP_OBJ) simpleDemo.cpp
+	$(CPP) $(FLAGS) $(FMINDEX_OBJ) $(OPP_OBJ) simpleDemo.cpp -o simpleDemo
+
 # FMindex
 FMindex.o: FMindex.cpp FMindex.hpp StringView.hpp
 	$(CPP) -c $(FLAGS) FMindex.cpp -o FMindex.o

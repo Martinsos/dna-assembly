@@ -6,9 +6,6 @@
 #include "StringView.hpp"
 #include "RTQRTree.hpp"
 
-#include <iostream>
-#include <ctime>
-
 #include <algorithm>
 #include <cmath>
 #include <map>
@@ -20,12 +17,10 @@ using namespace std;
 /**
  * Possible problem: buildTrie() returns vector<Index>,
  * if it is very big maybe it would be better to pass reference to buildTrie().
- * TODO: change buildTrie so it doesnt return anything?
+ * change buildTrie so it doesnt return anything?
  */
 FMindex::FMindex(string &T)
-{
-    clock_t begin, end;    
-    
+{  
 	// Set LZ separator.
 	LZsep_ = 1;
     // Remember size of T
@@ -37,21 +32,15 @@ FMindex::FMindex(string &T)
         lengthThreshold_ = 16;  // if word T is shorter than 16, set lengthThreshold_ to 16 so every word P is considered short
 
 	// We use LZ78 parsing to parse string T and build a trie. 
-    // oppTLZR is also created.
-begin = clock();   
+    // oppTLZR is also created. 
 	trie_ = new Trie();
 	vector<Index> wordLengths = trie_->buildTrieLZ78(T, LZsep_, oppTLZR_);  // oppTLZR_ is created!
-printf("Building time for Trie: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);
 	
 	// create Opp(T)
-begin = clock(); 
 	oppT_ = new Opp(T);
-printf("Building time for oppT: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);
 
     // create RTQ
-begin = clock(); 
     buildRTQ(T, wordLengths);
-printf("Building time for RTQ: %.5lf\n", (double)(clock()-begin) / CLOCKS_PER_SEC);
    
     // create shortPatterns
     memorizeShortPatterns(T, wordLengths);

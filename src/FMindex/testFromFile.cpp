@@ -55,7 +55,7 @@ int main(int argc, char** argv)
     
     cout << "Broj ucitanih znakova: " << T.length() << endl;
     
-  /*
+  
     
     srand ( time(NULL) );
   
@@ -70,7 +70,7 @@ int main(int argc, char** argv)
         
         patterns.push_back(T.substr(pos, p));
     }
-*/  
+  
     
     clock_t begin, end, begin2, end2;
     
@@ -79,7 +79,7 @@ int main(int argc, char** argv)
     end = clock();
     printf("Vrijeme izgradnje: %.5lf\n", (double)(end-begin) / CLOCKS_PER_SEC);
     
- /*   
+   
     double locating = 0.0;
     double counting = 0.0;
     for (int i = 0; i < patterns.size(); i++)
@@ -100,7 +100,7 @@ int main(int argc, char** argv)
     printf("Prosjecno vrijeme lociranja po uzorku: %.8lf\n", locating / patterns.size());
     printf("Prosjecno vrijeme brojanja  po uzorku: %.8lf\n", counting / patterns.size());
     
-  */  
+    
     delete fmIndex;
     return 0;
 }
