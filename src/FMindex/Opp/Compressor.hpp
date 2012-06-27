@@ -57,7 +57,7 @@ class Compressor
          *
          *  @param c    Char whose appearance is counted
          *  @param q    Determines how far to look in L
-         *  @returns    Number of occurrences of c in first q letters of L
+         *  @return     Number of occurrences of c in first q letters of L
          */
         int occ(char c, int q); 
 
@@ -74,7 +74,7 @@ class Compressor
         /** Getter for MTFStates
          */
         vector< vector<char> > getMTFStates();
-    public:// mora biti private
+    private:
         /* -------------------------------- Data structures -------------------------------------- */
 
         char BWTEof;            // Character appended to T, end-of-file
@@ -125,7 +125,7 @@ class Compressor
          *  @param BZStart          Index where bucket starts in Z
          *  @param MTFState         State of MTFList just before encoding of given bucket
          *  @param missingZeroes    Missing zeroes at beginning of given bucket
-         *  @returns                Occurrences of c in first h letters of given bucket
+         *  @return                 Occurrences of c in first h letters of given bucket
          */
         int S(char c, int h, int BZStart, vector<char> MTFState, int missingZeroes);
 
@@ -172,15 +172,15 @@ class Compressor
 
         /** Encode zero sequence to binary according to algorithm in article
          *  
-         *  @param m Length of zero sequence
-         *  @return encoded zero sequence
+         *  @param m    Length of zero sequence
+         *  @return     encoded zero sequence
          */
         deque<bool> zeroSeqEncode(int m);
 
         /** Converts non-zero MTF digit to binary prefix code
          *
-         *  @param i    MTF digit
-         *  @returns    Binary representation of i
+         *  @param i   MTF digit
+         *  @return    Binary representation of i
          */
         vector<bool> MTFToBin(int i);
 
@@ -210,7 +210,7 @@ class Compressor
          *
          *  @param MTFCode  code to decode
          *  @param MTFState Picture of MTF table for bucket being decoded
-         *  @returns        Decoded text
+         *  @return         Decoded text
          */
         string decodeMTF(const vector<int>& MTFCode, vector<char>& MTFState); // Mozda bolje ovo ubaciti on-fly u S
 };
